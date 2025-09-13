@@ -38,7 +38,7 @@ export default function AboutPage() {
   ];
 
   return (
-    <div className="max-w-4xl flex-col gap-16">
+    <div className="max-w-4xl flex-col gap-16 flex h-full">
       {/* 헤더 */}
       <section className="mb-28">
         <div className="animate-fade-in">

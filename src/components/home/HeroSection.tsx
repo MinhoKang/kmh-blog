@@ -1,10 +1,17 @@
 "use client";
 
-interface HeroSectionProps {
-  isLoaded: boolean;
-}
+import { useState, useEffect } from "react";
 
-export function HeroSection({ isLoaded }: HeroSectionProps) {
+export function HeroSection() {
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoaded(true);
+    }, 500);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <section className="py-32">
       <div className="max-w-4xl">

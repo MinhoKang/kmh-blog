@@ -1,10 +1,7 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
-
-interface NavigationCardsProps {
-  isLoaded: boolean;
-}
 
 interface NavigationCard {
   href: string;
@@ -12,7 +9,16 @@ interface NavigationCard {
   desc: string;
 }
 
-export function NavigationCards({ isLoaded }: NavigationCardsProps) {
+export function NavigationCards() {
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoaded(true);
+    }, 1100);
+    return () => clearTimeout(timer);
+  }, []);
+
   const navigationCards: NavigationCard[] = [
     {
       href: "/writes",
