@@ -19,6 +19,14 @@ export const metadata: Metadata = {
   description: "Personal blog and portfolio by KMH",
   keywords: ["blog", "portfolio", "development", "writing"],
   authors: [{ name: "KMH" }],
+  icons: {
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon.ico", type: "image/x-icon", sizes: "16x16" }
+    ],
+    shortcut: "/favicon.svg",
+    apple: "/favicon.svg",
+  },
 };
 
 export default function RootLayout({
