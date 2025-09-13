@@ -1,9 +1,9 @@
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
-import { MDXRemote } from "next-mdx-remote/rsc";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { CustomMdxRemote } from "@/components/mdx/CustomMdxRemote";
 
 interface Props {
   params: Promise<{
@@ -110,7 +110,7 @@ export default async function PostPage({ params }: Props) {
       {/* 포스트 내용 */}
       <article className="animate-fade-in delay-300">
         <div className="prose prose-lg prose-neutral dark:prose-invert max-w-none">
-          <MDXRemote source={post.content} />
+          <CustomMdxRemote source={post.content} />
         </div>
       </article>
 

@@ -1,10 +1,10 @@
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
-import { MDXRemote } from "next-mdx-remote/rsc";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { formatDateRange } from "@/lib/date-utils";
+import { CustomMdxRemote } from "@/components/mdx/CustomMdxRemote";
 
 interface Props {
   params: Promise<{
@@ -189,7 +189,7 @@ export default async function ProjectPage({ params }: Props) {
       {/* 프로젝트 상세 내용 */}
       <main className="">
         <div className="prose prose-lg prose-neutral dark:prose-invert max-w-none">
-          <MDXRemote source={project.content} />
+          <CustomMdxRemote source={project.content} />
         </div>
       </main>
 
