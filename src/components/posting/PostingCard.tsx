@@ -1,77 +1,80 @@
 import Link from "next/link";
 
-interface Project {
+interface Posting {
   slug: string;
   title: string;
   description: string;
-  technologies: string[];
+  tags?: string[];
   link?: string;
   github?: string;
   image?: string;
+  startDate?: string;
+  endDate?: string;
   date: string;
+  type: "project" | "post";
 }
 
-interface ProjectCardProps {
-  project: Project;
+interface PostingCardProps {
+  posting: Posting;
   index: number;
 }
 
-export function ProjectCard({ project, index }: ProjectCardProps) {
+export function PostingCard({ posting, index }: PostingCardProps) {
   return (
     <article
       className="group animate-fade-in"
       style={{ animationDelay: `${300 + index * 150}ms` }}
     >
       <div className="border-b border-neutral-200 dark:border-neutral-800 pb-16 last:border-b-0">
-        {/* 프로젝트 이미지 (있는 경우) */}
-        {project.image && (
+        {/* 이미지 (있는 경우) */}
+        {posting.image && (
           <div className="mb-8 overflow-hidden bg-neutral-100 dark:bg-neutral-800 aspect-[16/9] group-hover:bg-neutral-200 dark:group-hover:bg-neutral-700 transition-colors duration-300">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src={project.image}
-              alt={project.title}
+              src={posting.image}
+              alt={posting.title}
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
             />
           </div>
         )}
 
         <div className="grid md:grid-cols-2 gap-12">
-          {/* 왼쪽: 프로젝트 정보 */}
+          {/* 왼쪽: 포스팅 정보 */}
           <div>
             <div className="mb-4">
               <time className="text-sm font-light text-neutral-500 dark:text-neutral-500 tracking-widest uppercase">
-                {project.date}
+                {posting.date}
               </time>
             </div>
 
             <h2 className="text-2xl md:text-3xl font-light text-neutral-900 dark:text-neutral-100 mb-4 tracking-tight leading-tight">
               <Link
-                href={`/portfolio/${project.slug}`}
+                href={`/${posting.type === "project" ? "portfolio" : "posts"}/${posting.slug}`}
                 className="hover:text-neutral-600 dark:hover:text-neutral-300 transition-colors duration-300"
               >
-                {project.title}
+                {posting.title}
               </Link>
             </h2>
 
-            {project.description && (
+            {posting.description && (
               <p className="text-base font-light text-neutral-600 dark:text-neutral-400 leading-relaxed tracking-wide mb-6">
-                {project.description}
+                {posting.description}
               </p>
             )}
 
-            {/* 기술 스택 */}
-            {project.technologies.length > 0 && (
+            {/* 태그 */}
+            {posting.tags && posting.tags.length > 0 && (
               <div className="mb-8">
                 <h3 className="text-sm font-light text-neutral-500 dark:text-neutral-500 mb-3 tracking-widest uppercase">
-                  Technologies
+                  Tags
                 </h3>
                 <div className="flex flex-wrap gap-2">
-                  {project.technologies.map((tech) => (
+                  {posting.tags.map((tag) => (
                     <span
-                      key={tech}
+                      key={tag}
                       className="px-3 py-1 text-sm font-light bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 tracking-wide"
                     >
-                      {tech}
+                      {tag}
                     </span>
                   ))}
                 </div>
@@ -81,10 +84,10 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
             {/* 링크들 */}
             <div className="flex gap-6">
               <Link
-                href={`/portfolio/${project.slug}`}
+                href={`/${posting.type === "project" ? "portfolio" : "posts"}/${posting.slug}`}
                 className="inline-flex items-center text-sm font-light text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors duration-300 tracking-wide group/link"
               >
-                View Details
+                {posting.type === "project" ? "View Details" : "Read More"}
                 <svg
                   className="w-4 h-4 ml-2 transition-transform duration-300 group-hover/link:translate-x-1"
                   fill="none"
@@ -100,9 +103,9 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
                 </svg>
               </Link>
 
-              {project.link && (
+              {posting.link && (
                 <a
-                  href={project.link}
+                  href={posting.link}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center text-sm font-light text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors duration-300 tracking-wide group/link"
@@ -124,9 +127,9 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
                 </a>
               )}
 
-              {project.github && (
+              {posting.github && (
                 <a
-                  href={project.github}
+                  href={posting.github}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center text-sm font-light text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors duration-300 tracking-wide"

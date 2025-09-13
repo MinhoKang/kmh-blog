@@ -1,14 +1,15 @@
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
-import { ProjectCard } from "@/components/projects/ProjectCard";
+import { PostingCard } from "@/components/posting/PostingCard";
+import { PageHeader } from "@/components/common/PageHeader";
 import { formatDateRange, sortProjectsByStartDate } from "@/lib/date-utils";
 
 interface Project {
   slug: string;
   title: string;
   description: string;
-  technologies: string[];
+  tags?: string[];
   link?: string;
   github?: string;
   image?: string;
@@ -37,7 +38,7 @@ function getAllProjects(): Project[] {
         slug,
         title: data.title || slug,
         description: data.description || "",
-        technologies: data.technologies || [],
+        tags: data.technologies || data.tags || [],
         link: data.link,
         github: data.github,
         image: data.image,
@@ -57,35 +58,21 @@ export default async function PortfolioPage() {
   return (
     <div className="max-w-4xl flex-col gap-8 flex h-full">
       {/* 헤더 섹션 */}
-      <section className="">
-        <div className="animate-fade-in flex flex-col gap-y-2">
-          <h1 className="text-4xl md:text-6xl font-extralight text-neutral-900 dark:text-neutral-50 mb-6 tracking-tighter leading-tight">
-            Portfolio
-          </h1>
-          <div className="w-16 h-px bg-neutral-300 dark:bg-neutral-700 mb-8"></div>
-          <p className="text-xl font-light text-neutral-600 dark:text-neutral-400 max-w-3xl tracking-wide leading-relaxed">
-            A curated selection of projects that showcase my passion for
-            creating exceptional digital experiences.
-          </p>
-        </div>
-      </section>
+      <PageHeader title="Portfolio" />
 
       {/* 프로젝트 목록 */}
       <section className="animate-fade-in delay-200">
-        {projects.length === 0 ? (
-          <div className="text-center py-20">
-            <div className="w-16 h-px bg-neutral-300 dark:bg-neutral-700 mx-auto mb-8"></div>
-            <p className="text-lg font-light text-neutral-500 dark:text-neutral-500 mb-2 tracking-wide">
-              Projects coming soon.
-            </p>
-            <p className="text-sm font-light text-neutral-400 dark:text-neutral-600 tracking-wide">
-              Currently working on some exciting new projects.
-            </p>
-          </div>
-        ) : (
+        {projects.length !== 0 && (
           <div className="space-y-32">
             {projects.map((project, index) => (
-              <ProjectCard key={project.slug} project={project} index={index} />
+              <PostingCard
+                key={project.slug}
+                posting={{
+                  ...project,
+                  type: "project" as const,
+                }}
+                index={index}
+              />
             ))}
           </div>
         )}

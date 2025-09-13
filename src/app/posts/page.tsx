@@ -1,12 +1,16 @@
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
-import { PostCard } from "@/components/posts/PostCard";
+import { PostingCard } from "@/components/posting/PostingCard";
+import { PageHeader } from "@/components/common/PageHeader";
+import { formatDateRange, sortProjectsByStartDate } from "@/lib/date-utils";
 
 interface Post {
   slug: string;
   title: string;
   description: string;
+  startDate?: string;
+  endDate?: string;
   date: string;
   tags?: string[];
 }
@@ -31,12 +35,15 @@ function getAllPosts(): Post[] {
         slug,
         title: data.title || slug,
         description: data.description || "",
-        date: data.date || "2024-01-01",
+        startDate: data.startDate,
+        endDate: data.endDate,
+        date: formatDateRange(data.startDate, data.endDate),
         tags: data.tags || [],
       };
     });
 
-  return allPostsData.sort((a, b) => (a.date < b.date ? 1 : -1));
+  // startDate 기준으로 정렬 (최신순 - 오래된 것이 아래로)
+  return allPostsData.sort(sortProjectsByStartDate);
 }
 
 export default function PostsPage() {
@@ -45,18 +52,10 @@ export default function PostsPage() {
   return (
     <div className="max-w-4xl flex-col gap-8 flex h-full">
       {/* 헤더 섹션 */}
-      <section className="">
-        <div className="animate-fade-in flex flex-col gap-y-2">
-          <h1 className="text-4xl md:text-6xl font-extralight text-neutral-900 dark:text-neutral-50 mb-6 tracking-tighter leading-tight">
-            Posts
-          </h1>
-          <div className="w-16 h-px bg-neutral-300 dark:bg-neutral-700 mb-8"></div>
-          <p className="text-xl font-light text-neutral-600 dark:text-neutral-400 max-w-3xl tracking-wide leading-relaxed">
-            Thoughts, ideas, and insights on technology, design, and life. A
-            collection of words that matter.
-          </p>
-        </div>
-      </section>
+      <PageHeader
+        title="Posts"
+        description="Thoughts, ideas, and insights on technology, design, and life. A collection of words that matter."
+      />
 
       {/* 포스트 목록 */}
       <section className="animate-fade-in delay-200">
@@ -73,7 +72,14 @@ export default function PostsPage() {
         ) : (
           <div className="space-y-20">
             {posts.map((post, index) => (
-              <PostCard key={post.slug} post={post} index={index} />
+              <PostingCard
+                key={post.slug}
+                posting={{
+                  ...post,
+                  type: "post" as const,
+                }}
+                index={index}
+              />
             ))}
           </div>
         )}

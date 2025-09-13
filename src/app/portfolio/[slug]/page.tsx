@@ -26,7 +26,7 @@ async function getProject(slug: string) {
   return {
     title: data.title || slug,
     description: data.description || "",
-    technologies: data.technologies || [],
+    tags: data.tags || [],
     link: data.link,
     github: data.github,
     image: data.image,
@@ -107,13 +107,13 @@ export default async function ProjectPage({ params }: Props) {
           {/* 오른쪽: 메타 정보 */}
           <div className="space-y-8">
             {/* 기술 스택 */}
-            {project.technologies.length > 0 && (
+            {project.tags.length > 0 && (
               <div>
                 <h2 className="text-sm font-light text-neutral-500 dark:text-neutral-500 mb-4 tracking-widest uppercase">
                   Technologies
                 </h2>
                 <div className="space-y-2">
-                  {project.technologies.map((tech: string) => (
+                  {project.tags.map((tech: string) => (
                     <div
                       key={tech}
                       className="text-base font-light text-neutral-700 dark:text-neutral-300 tracking-wide"
@@ -159,7 +159,7 @@ export default async function ProjectPage({ params }: Props) {
                     href={project.github}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center text-base font-light text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors duration-300 tracking-wide block"
+                    className="items-center text-base font-light text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors duration-300 tracking-wide block"
                   >
                     GitHub Repository
                     <svg
@@ -215,25 +215,6 @@ export default async function ProjectPage({ params }: Props) {
             </svg>
             More Projects
           </Link>
-
-          <div className="flex gap-6">
-            <a
-              href={`mailto:hello@kmh.dev?subject=About ${project.title}`}
-              className="text-sm font-light text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors duration-300 tracking-wide"
-            >
-              Let&apos;s Talk
-            </a>
-            {project.link && (
-              <a
-                href={project.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm font-light text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors duration-300 tracking-wide"
-              >
-                Visit Site
-              </a>
-            )}
-          </div>
         </div>
       </footer>
     </div>
