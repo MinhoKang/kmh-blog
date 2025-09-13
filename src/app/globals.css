@@ -21,7 +21,8 @@
   --color-neutral-950: #0a0a0a;
 
   /* 폰트 패밀리 */
-  --font-family-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --font-family-heading: "Avenir Next", system-ui, -apple-system, sans-serif;
+  --font-family-body: "Roboto", system-ui, -apple-system, sans-serif;
   --font-family-mono: "JetBrains Mono", "Menlo", monospace;
 
   /* 커스텀 스페이싱 */
@@ -85,7 +86,8 @@
 }
 
 /* 커스텀 폰트 정의 */
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Avenir+Next:wght@400;500;600;700;800;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@200;300;400;500;600;700;800&display=swap");
 
 /* 기본 스타일 */
@@ -113,7 +115,7 @@ html.dark {
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: var(--font-family-sans);
+  font-family: var(--font-family-body);
   line-height: 1.6;
   font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   font-variation-settings: normal;
@@ -191,6 +193,19 @@ html.dark ::selection {
 
 .text-light-text {
   color: var(--color-light-text);
+}
+
+/* 폰트 패밀리 유틸리티 클래스 */
+.font-heading {
+  font-family: var(--font-family-heading);
+}
+
+.font-body {
+  font-family: var(--font-family-body);
+}
+
+.font-mono {
+  font-family: var(--font-family-mono);
 }
 
 /* 다크모드 색상 */

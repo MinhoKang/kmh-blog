@@ -50,7 +50,7 @@ export function Header({ variant = "page" }: HeaderProps) {
           >
             <Link
               href="/"
-              className={`font-light text-charcoal-gray dark:text-light-text tracking-wide hover:opacity-60 transition-opacity duration-300 ${
+              className={`font-medium font-heading text-charcoal-gray dark:text-light-text tracking-wide hover:opacity-60 transition-opacity duration-300 ${
                 isHomePage ? "text-xl" : "text-lg"
               }`}
             >

@@ -35,10 +35,10 @@ export function NavigationCards() {
             style={{ animationDelay: `${1200 + index * 100}ms` }}
           >
             <div className="flex flex-col">
-              <span className="text-lg font-light text-charcoal-gray dark:text-light-text mb-1 tracking-wide">
+              <span className="text-lg font-medium font-heading text-charcoal-gray dark:text-light-text mb-1 tracking-wide">
                 {item.label}
               </span>
-              <span className="text-sm text-neutral-500 dark:text-neutral-500 tracking-wide">
+              <span className="text-sm font-body text-neutral-500 dark:text-neutral-500 tracking-wide">
                 {item.desc}
               </span>
             </div>

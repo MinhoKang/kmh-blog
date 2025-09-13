@@ -42,11 +42,11 @@ export default function AboutPage() {
       {/* 헤더 */}
       <section className="mb-28">
         <div className="animate-fade-in">
-          <h1 className="text-4xl md:text-6xl font-extralight text-neutral-900 dark:text-neutral-50 mb-6 tracking-tighter leading-tight">
+          <h1 className="text-4xl md:text-6xl font-bold font-heading text-charcoal-gray dark:text-light-text mb-6 tracking-tighter leading-tight">
             About
           </h1>
           <div className="w-16 h-px bg-neutral-300 dark:bg-neutral-700 mb-8"></div>
-          <p className="text-xl font-light text-neutral-600 dark:text-neutral-400 max-w-3xl tracking-wide leading-relaxed">
+          <p className="text-xl font-normal font-body text-neutral-600 dark:text-neutral-400 max-w-3xl tracking-wide leading-relaxed">
             교육학 전공에서 개발자로 전향한 프론트엔드 개발자입니다. 학생 관리
             경험을 바탕으로 사용자 중심의 웹 애플리케이션을 개발합니다.
           </p>
@@ -58,7 +58,7 @@ export default function AboutPage() {
         {/* 왼쪽 컬럼 */}
         <div className="space-y-12">
           <AboutSection title="경력" delay="delay-200">
-            <div className="space-y-6 text-base font-light text-neutral-600 dark:text-neutral-400 leading-relaxed tracking-wide">
+            <div className="space-y-6 text-base font-normal font-body text-neutral-600 dark:text-neutral-400 leading-relaxed tracking-wide">
               <div className="border-l-4 border-neutral-300 dark:border-neutral-700 pl-6">
                 <h4 className="font-medium text-neutral-800 dark:text-neutral-200 mb-2">
                   프론트엔드 개발자 (2024.01 ~ 현재)
@@ -85,7 +85,7 @@ export default function AboutPage() {
           </AboutSection>
 
           <AboutSection title="개발 철학">
-            <div className="space-y-4 text-base font-light text-neutral-600 dark:text-neutral-400 leading-relaxed tracking-wide">
+            <div className="space-y-4 text-base font-normal font-body text-neutral-600 dark:text-neutral-400 leading-relaxed tracking-wide">
               <p>
                 깨끗하고 유지보수가 쉬운 코드를 작성하는 것을 중요하게
                 생각합니다. 모든 컴포넌트는 재사용 가능해야 하고, 각 함수는 단일
@@ -100,7 +100,7 @@ export default function AboutPage() {
           </AboutSection>
 
           <AboutSection title="주요 성과">
-            <div className="space-y-3 text-base font-light text-neutral-600 dark:text-neutral-400 leading-relaxed tracking-wide">
+            <div className="space-y-3 text-base font-normal font-body text-neutral-600 dark:text-neutral-400 leading-relaxed tracking-wide">
               <div className="flex items-start">
                 <div className="w-1 h-1 bg-neutral-400 dark:bg-neutral-600 rounded-full mr-4 mt-3"></div>
                 <span>채팅 시스템 성능 97% 향상 (INP 3217ms → 87ms)</span>
@@ -124,7 +124,7 @@ export default function AboutPage() {
               {focusAreas.map((item, index) => (
                 <li
                   key={item}
-                  className="flex items-center text-base font-light text-neutral-600 dark:text-neutral-400 tracking-wide"
+                  className="flex items-center text-base font-normal font-body text-neutral-600 dark:text-neutral-400 tracking-wide"
                   style={{ animationDelay: `${400 + index * 50}ms` }}
                 >
                   <div className="w-1 h-1 bg-neutral-400 dark:bg-neutral-600 rounded-full mr-4"></div>
@@ -144,7 +144,7 @@ export default function AboutPage() {
           </AboutSection>
 
           <AboutSection title="학력">
-            <div className="space-y-4 text-sm font-light text-neutral-600 dark:text-neutral-400 leading-relaxed tracking-wide">
+            <div className="space-y-4 text-sm font-normal font-body text-neutral-600 dark:text-neutral-400 leading-relaxed tracking-wide">
               <div className="border-l-2 border-neutral-300 dark:border-neutral-700 pl-4">
                 <p className="font-medium text-neutral-800 dark:text-neutral-200">
                   컴퓨터과학과 (3학년 편입)
@@ -166,17 +166,17 @@ export default function AboutPage() {
 
       {/* 연락처 섹션 */}
       <section className="border-t border-neutral-200 dark:border-neutral-800 pt-16 animate-fade-in delay-400">
-        <h2 className="text-xl font-light text-neutral-900 dark:text-neutral-100 mb-8 tracking-wide">
+        <h2 className="text-xl font-semibold font-heading text-charcoal-gray dark:text-light-text mb-8 tracking-wide">
           연락하기
         </h2>
 
         <div className="grid md:grid-cols-2 gap-12">
           <div>
-            <p className="text-base font-light text-neutral-600 dark:text-neutral-400 leading-relaxed tracking-wide mb-6">
+            <p className="text-base font-normal font-body text-neutral-600 dark:text-neutral-400 leading-relaxed tracking-wide mb-6">
               실시간 시스템, 모바일 개발, 성능 최적화 등 도전적인 프로젝트에
               항상 관심이 있습니다.
             </p>
-            <p className="text-base font-light text-neutral-600 dark:text-neutral-400 leading-relaxed tracking-wide">
+            <p className="text-base font-normal font-body text-neutral-600 dark:text-neutral-400 leading-relaxed tracking-wide">
               현재 서울에 거주하고 있으며, 원격 근무 기회와 전 세계 협업
               프로젝트에 열려있습니다.
             </p>
