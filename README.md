@@ -58,6 +58,12 @@ npm run build
 
 **Production**: https://kmh-blog.vercel.app
 
+## 📞 Contact
+
+- **Email**: rkdalsgh0106@naver.com
+- **GitHub**: [github.com/MinhoKang](https://github.com/MinhoKang)
+- **LinkedIn**: [linkedin.com/in/minhokang](https://www.linkedin.com/in/%EB%AF%BC%ED%98%B8-%EA%B0%95-8838502a7/?trk=opento_sprofile_topcard)
+
 ## 📁 Project Structure
 
 ```
