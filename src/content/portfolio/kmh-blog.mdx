@@ -1,0 +1,452 @@
+---
+title: "KMH Blog - Next.js 기반 개인 포트폴리오 블로그"
+description: "Next.js 15, TypeScript, Tailwind CSS를 활용하여 개발한 개인 포트폴리오 블로그. MDX 기반 콘텐츠 관리, 다크모드, 반응형 디자인을 구현했다."
+startDate: "2025-09"
+tags: ["Next.js", "TypeScript", "Tailwind CSS", "MDX", "Portfolio", "Blog"]
+category: "portfolio"
+featured: true
+---
+
+## 프로젝트 개요
+
+**개인 포트폴리오와 블로그 기능을 통합한 웹사이트**를 Next.js 15와 TypeScript, Tailwind v4로 개발했다.
+
+포트폴리오 프로젝트 소개, 기술 블로그, 개인 소개 등 **다양한 콘텐츠를 체계적으로 관리**할 수 있는 현대적인 웹사이트다.
+
+---
+
+## 주요 성과
+
+<div className="overflow-x-auto mb-8">
+  <table className="min-w-full">
+    <thead>
+      <tr>
+        <th className="text-left py-2 pr-4">구분</th>
+        <th className="text-left py-2">성과</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td className="py-2 pr-4">
+          <strong>개발 기간</strong>
+        </td>
+        <td className="py-2">2024년 12월 (약 2주)</td>
+      </tr>
+      <tr>
+        <td className="py-2 pr-4">
+          <strong>프로젝트 성격</strong>
+        </td>
+        <td className="py-2">개인 포트폴리오 웹사이트</td>
+      </tr>
+      <tr>
+        <td className="py-2 pr-4">
+          <strong>배포</strong>
+        </td>
+        <td className="py-2">Vercel을 통한 자동 배포</td>
+      </tr>
+      <tr>
+        <td className="py-2 pr-4">
+          <strong>콘텐츠 관리</strong>
+        </td>
+        <td className="py-2">MDX 기반 마크다운 콘텐츠 시스템</td>
+      </tr>
+      <tr>
+        <td className="py-2 pr-4">
+          <strong>사용자 경험</strong>
+        </td>
+        <td className="py-2">다크모드, 반응형 디자인, 애니메이션</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### 기술 스택 구성
+
+<div className="overflow-x-auto mb-8">
+  <table className="min-w-full">
+    <thead>
+      <tr>
+        <th className="text-left py-2 pr-4">영역</th>
+        <th className="text-left py-2 pr-4">기술</th>
+        <th className="text-left py-2">용도</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td className="py-2 pr-4">
+          <strong>프레임워크</strong>
+        </td>
+        <td className="py-2 pr-4">Next.js 14 (App Router)</td>
+        <td className="py-2">React 기반 풀스택 프레임워크</td>
+      </tr>
+      <tr>
+        <td className="py-2 pr-4">
+          <strong>언어</strong>
+        </td>
+        <td className="py-2 pr-4">TypeScript</td>
+        <td className="py-2">타입 안전성 확보</td>
+      </tr>
+      <tr>
+        <td className="py-2 pr-4">
+          <strong>스타일링</strong>
+        </td>
+        <td className="py-2 pr-4">Tailwind CSS</td>
+        <td className="py-2">유틸리티 퍼스트 CSS 프레임워크</td>
+      </tr>
+      <tr>
+        <td className="py-2 pr-4">
+          <strong>콘텐츠</strong>
+        </td>
+        <td className="py-2 pr-4">MDX + next-mdx-remote</td>
+        <td className="py-2">마크다운 기반 콘텐츠 관리</td>
+      </tr>
+      <tr>
+        <td className="py-2 pr-4">
+          <strong>메타데이터</strong>
+        </td>
+        <td className="py-2 pr-4">gray-matter</td>
+        <td className="py-2">Frontmatter 파싱</td>
+      </tr>
+      <tr>
+        <td className="py-2 pr-4">
+          <strong>배포</strong>
+        </td>
+        <td className="py-2 pr-4">Vercel</td>
+        <td className="py-2">자동 배포 및 호스팅</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+---
+
+## 핵심 기능
+
+### 1. MDX 기반 콘텐츠 관리 시스템
+
+**마크다운과 JSX를 결합한 MDX**를 활용하여 동적 콘텐츠를 구현했다.
+
+**주요 기능**:
+
+- **포트폴리오 프로젝트**: 프로젝트 상세 정보 및 이미지
+- **기술 블로그**: 마크다운 기반 글 작성
+- **개인 소개**: About 페이지
+- **동적 라우팅**: `[slug]` 기반 페이지 생성
+
+### 2. 반응형 디자인 시스템
+
+**모든 디바이스에서 최적화된 사용자 경험**을 제공한다.
+
+<div className="overflow-x-auto mb-8">
+  <table className="min-w-full">
+    <thead>
+      <tr>
+        <th className="text-left py-2 pr-4">화면 크기</th>
+        <th className="text-left py-2 pr-4">레이아웃</th>
+        <th className="text-left py-2">특징</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td className="py-2 pr-4">
+          <strong>모바일</strong>
+        </td>
+        <td className="py-2 pr-4">1열 레이아웃</td>
+        <td className="py-2">터치 친화적, 세로 스크롤</td>
+      </tr>
+      <tr>
+        <td className="py-2 pr-4">
+          <strong>태블릿</strong>
+        </td>
+        <td className="py-2 pr-4">2열 그리드</td>
+        <td className="py-2">균형잡힌 레이아웃</td>
+      </tr>
+      <tr>
+        <td className="py-2 pr-4">
+          <strong>데스크톱</strong>
+        </td>
+        <td className="py-2 pr-4">3열 그리드</td>
+        <td className="py-2">최대 정보 밀도</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### 3. 다크모드 지원
+
+**시스템 설정 기반 자동 다크모드**와 수동 토글 기능을 구현했다.
+
+**구현 방식**:
+
+- **Tailwind CSS**: `dark:` 접두사 활용
+- **시스템 감지**: `prefers-color-scheme` 미디어 쿼리
+- **상태 관리**: React Context API
+- **지속성**: localStorage 저장
+
+### 4. 컴포넌트 기반 아키텍처
+
+**재사용 가능한 컴포넌트**로 코드 중복을 최소화했다.
+
+**주요 컴포넌트**:
+
+- **PageHeader**: 페이지 헤더 통합 관리
+- **PostingCard**: 포트폴리오/블로그 카드 통합
+- **AboutSection**: About 페이지 섹션
+- **SkillList**: 기술 스택 표시
+
+---
+
+## 기술적 도전과 해결
+
+### 1. MDX 테이블 렌더링 문제
+
+**문제**: MDX에서 HTML 테이블이 제대로 렌더링되지 않는 문제
+
+**상황 분석**:
+
+- 마크다운 테이블 문법이 MDX에서 제대로 파싱되지 않음
+- `next-mdx-remote`의 기본 설정으로는 복잡한 테이블 지원 한계
+- 빌드 시 MDX 컴파일 에러 발생
+
+**해결책**:
+
+<div className="overflow-x-auto mb-8">
+  <table className="min-w-full">
+    <thead>
+      <tr>
+        <th className="text-left py-2 pr-4">해결 방법</th>
+        <th className="text-left py-2 pr-4">구현 내용</th>
+        <th className="text-left py-2">효과</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td className="py-2 pr-4">
+          <strong>HTML 테이블 변환</strong>
+        </td>
+        <td className="py-2 pr-4">마크다운 테이블을 HTML 태그로 직접 작성</td>
+        <td className="py-2">안정적인 테이블 렌더링</td>
+      </tr>
+      <tr>
+        <td className="py-2 pr-4">
+          <strong>커스텀 MDX 컴포넌트</strong>
+        </td>
+        <td className="py-2 pr-4">
+          table, thead, tbody, tr, th, td 컴포넌트 정의
+        </td>
+        <td className="py-2">일관된 테이블 스타일링</td>
+      </tr>
+      <tr>
+        <td className="py-2 pr-4">
+          <strong>Tailwind Typography</strong>
+        </td>
+        <td className="py-2 pr-4">@tailwindcss/typography 플러그인 활용</td>
+        <td className="py-2">자동 테이블 스타일링</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### 2. 반응형 이미지 레이아웃 최적화
+
+**문제**: 모바일에서 이미지가 화면을 벗어나 가로 스크롤 발생
+
+**해결책**:
+
+<div className="overflow-x-auto mb-8">
+  <table className="min-w-full">
+    <thead>
+      <tr>
+        <th className="text-left py-2 pr-4">화면 크기</th>
+        <th className="text-left py-2 pr-4">레이아웃</th>
+        <th className="text-left py-2">이미지 크기</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td className="py-2 pr-4">
+          <strong>모바일</strong>
+        </td>
+        <td className="py-2 pr-4">flex-col (세로 배치)</td>
+        <td className="py-2">w-full (전체 너비)</td>
+      </tr>
+      <tr>
+        <td className="py-2 pr-4">
+          <strong>데스크톱</strong>
+        </td>
+        <td className="py-2 pr-4">flex-row (가로 배치)</td>
+        <td className="py-2">w-80 (고정 너비)</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### 3. 날짜 범위 처리 시스템
+
+**문제**: 프로젝트 기간을 단일 날짜가 아닌 범위로 표시해야 하는 요구사항
+
+**해결책**:
+
+```typescript
+// date-utils.ts
+export const formatDateRange = (
+  startDate?: string,
+  endDate?: string
+): string => {
+  if (!startDate && !endDate) return "2024-01-01";
+  if (!startDate) return endDate!;
+  if (!endDate) return startDate!;
+  return `${startDate} ~ ${endDate}`;
+};
+```
+
+**적용 결과**:
+
+- **단일 날짜**: "2024-12"
+- **날짜 범위**: "2024-10 ~ 2025-08"
+- **진행 중**: "2024-12" (endDate 없음)
+
+---
+
+## 결과 및 성과
+
+### 개발 성과
+
+<div className="overflow-x-auto mb-8">
+  <table className="min-w-full">
+    <thead>
+      <tr>
+        <th className="text-left py-2 pr-4">지표</th>
+        <th className="text-left py-2">성과</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td className="py-2 pr-4">
+          <strong>웹사이트 완성</strong>
+        </td>
+        <td className="py-2">포트폴리오 + 블로그 통합 사이트</td>
+      </tr>
+      <tr>
+        <td className="py-2 pr-4">
+          <strong>콘텐츠 관리</strong>
+        </td>
+        <td className="py-2">MDX 기반 마크다운 시스템</td>
+      </tr>
+      <tr>
+        <td className="py-2 pr-4">
+          <strong>반응형 디자인</strong>
+        </td>
+        <td className="py-2">모든 디바이스 최적화</td>
+      </tr>
+      <tr>
+        <td className="py-2 pr-4">
+          <strong>성능 최적화</strong>
+        </td>
+        <td className="py-2">Next.js 14 App Router 활용</td>
+      </tr>
+      <tr>
+        <td className="py-2 pr-4">
+          <strong>배포 자동화</strong>
+        </td>
+        <td className="py-2">Vercel 연동 자동 배포</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### 개인 역량 성장
+
+<div className="overflow-x-auto mb-8">
+  <table className="min-w-full">
+    <thead>
+      <tr>
+        <th className="text-left py-2 pr-4">영역</th>
+        <th className="text-left py-2">성장 내용</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td className="py-2 pr-4">
+          <strong>Next.js 마스터</strong>
+        </td>
+        <td className="py-2">App Router, Server Components, 동적 라우팅</td>
+      </tr>
+      <tr>
+        <td className="py-2 pr-4">
+          <strong>TypeScript 활용</strong>
+        </td>
+        <td className="py-2">타입 안전성과 개발 생산성 향상</td>
+      </tr>
+      <tr>
+        <td className="py-2 pr-4">
+          <strong>MDX 콘텐츠 관리</strong>
+        </td>
+        <td className="py-2">마크다운과 JSX 결합 시스템 구축</td>
+      </tr>
+      <tr>
+        <td className="py-2 pr-4">
+          <strong>반응형 디자인</strong>
+        </td>
+        <td className="py-2">Tailwind CSS를 활용한 모바일 퍼스트 설계</td>
+      </tr>
+      <tr>
+        <td className="py-2 pr-4">
+          <strong>컴포넌트 아키텍처</strong>
+        </td>
+        <td className="py-2">재사용 가능한 컴포넌트 설계</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+---
+
+## 학습한 점
+
+### 기술적 성장
+
+- **Next.js 14 App Router**: 최신 React 서버 컴포넌트와 클라이언트 컴포넌트 분리
+- **MDX 콘텐츠 관리**: 마크다운과 JSX를 결합한 동적 콘텐츠 시스템
+- **TypeScript 활용**: 타입 안전성을 통한 개발 생산성 향상
+- **Tailwind CSS**: 유틸리티 퍼스트 CSS로 빠른 스타일링
+
+### 프로젝트 관리
+
+- **컴포넌트 재사용**: 중복 코드 제거와 유지보수성 향상
+- **반응형 디자인**: 모바일 퍼스트 접근법으로 모든 디바이스 최적화
+- **콘텐츠 구조화**: 일관된 포맷으로 포트폴리오와 블로그 통합 관리
+
+### 문제 해결
+
+- **MDX 테이블 렌더링**: HTML 테이블 직접 작성으로 안정성 확보
+- **반응형 이미지**: flex 방향 변경으로 모바일 최적화
+- **날짜 범위 처리**: 유연한 날짜 포맷팅 시스템 구축
+
+---
+
+## 향후 계획
+
+### 단기 목표
+
+- **SEO 최적화**: 메타 태그, 구조화된 데이터 추가
+- **성능 개선**: 이미지 최적화, 코드 스플리팅
+- **콘텐츠 확장**: 더 많은 프로젝트와 블로그 포스트 추가
+
+### 장기 목표
+
+- **CMS 연동**: Headless CMS를 통한 콘텐츠 관리 자동화
+- **다국어 지원**: i18n을 활용한 다국어 사이트
+- **PWA 기능**: 오프라인 지원, 푸시 알림 등
+
+---
+
+## 결론
+
+KMH Blog 프로젝트를 통해 **현대적인 웹 개발 기술 스택**을 활용한 **완전한 포트폴리오 웹사이트**를 구축했다.
+
+**Next.js 14, TypeScript, Tailwind CSS**의 조합으로 **타입 안전성, 성능, 개발 경험**을 모두 확보했으며, **MDX 기반 콘텐츠 관리**로 **유연하고 확장 가능한** 시스템을 만들었다.
+
+특히 **반응형 디자인과 다크모드 지원**을 통해 **사용자 경험을 최우선**으로 고려했고, **컴포넌트 기반 아키텍처**로 **유지보수성과 재사용성**을 확보했다.
+
+이 프로젝트는 **개인 브랜딩과 기술 역량을 동시에 보여주는** 효과적인 도구가 되었으며, 앞으로도 **지속적인 개선과 확장**을 통해 더 나은 개발자로 성장하는 기반이 될 것이다.
