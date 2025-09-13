@@ -53,7 +53,7 @@ export function Footer({ variant = "page" }: FooterProps) {
             )}
           </div>
 
-          <div className="flex space-x-6">
+          <div className="flex gap-x-6">
             {CONTACT_INFO.map((item, index) => (
               <a
                 key={item.href}

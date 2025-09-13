@@ -70,7 +70,7 @@ export function Header({ variant = "page" }: HeaderProps) {
             }`}
           >
             <div
-              className={`hidden md:flex items-center ${isHomePage ? "space-x-8 mr-8" : "space-x-6 mr-6"}`}
+              className={`hidden md:flex items-center ${isHomePage ? "gap-x-8 mr-8" : "gap-x-6 mr-6"}`}
             >
               {NAVIGATION_ITEMS.map((item, index) => (
                 <Link
