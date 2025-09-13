@@ -35,7 +35,7 @@ export function Header({ variant = "page" }: HeaderProps) {
           : "sticky top-0 bg-ghost-white/80 dark:bg-charcoal-gray/80 border-b border-neutral-200 dark:border-neutral-800"
       }`}
     >
-      <div className={`grid-minimal ${isHomePage ? "py-10" : "py-8"}`}>
+      <div className={`grid-minimal !py-5 ${isHomePage ? "py-10" : "py-8"}`}>
         <div className="flex items-center justify-between">
           <div
             className={`${
@@ -59,7 +59,7 @@ export function Header({ variant = "page" }: HeaderProps) {
           </div>
 
           <nav
-            className={`flex items-center space-x-6 ${
+            className={`flex items-center gap-x-6 ${
               isHomePage
                 ? `transition-all duration-1000 delay-300 ${
                     isLoaded
@@ -105,7 +105,7 @@ export function Header({ variant = "page" }: HeaderProps) {
 
             {/* 모바일 메뉴 */}
             {!isHomePage && (
-              <div className="md:hidden flex items-center space-x-4 mr-4">
+              <div className="md:hidden flex items-center gap-x-4">
                 {NAVIGATION_ITEMS.map((item) => (
                   <Link
                     key={item.href}
@@ -118,7 +118,6 @@ export function Header({ variant = "page" }: HeaderProps) {
               </div>
             )}
 
-            {/* ThemeToggle */}
             <ThemeToggle />
           </nav>
         </div>
