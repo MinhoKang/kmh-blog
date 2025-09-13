@@ -4,12 +4,6 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { NAVIGATION_CARDS } from "@/lib/constants";
 
-interface NavigationCard {
-  href: string;
-  label: string;
-  desc: string;
-}
-
 export function NavigationCards() {
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -31,7 +25,7 @@ export function NavigationCards() {
           <Link
             key={item.href}
             href={item.href}
-            className="group relative block p-6 border border-neutral-200 dark:border-neutral-700 hover:border-neutral-400 dark:hover:border-neutral-500 transition-all duration-300 bg-ghost-white/50 dark:bg-neutral-800/30 backdrop-blur-sm"
+            className="group relative block !p-6 border border-neutral-200 dark:border-neutral-700 hover:border-neutral-400 dark:hover:border-neutral-500 transition-all duration-300 bg-ghost-white/50 dark:bg-neutral-800/30 backdrop-blur-sm"
             style={{ animationDelay: `${1200 + index * 100}ms` }}
           >
             <div className="flex flex-col">

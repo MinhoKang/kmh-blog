@@ -17,7 +17,7 @@ export function HeroSection() {
     <section className="py-32">
       <div className="max-w-4xl">
         {/* 메인 타이틀 */}
-        <div className="mb-16">
+        <div className="">
           <div className="overflow-hidden">
             <h1
               className={`text-6xl md:text-8xl lg:text-9xl font-bold font-heading text-charcoal-gray dark:text-light-text leading-none tracking-tighter transition-all duration-1200 delay-500 ${
@@ -29,7 +29,7 @@ export function HeroSection() {
               {HERO_CONTENT.title1}
             </h1>
           </div>
-          <div className="overflow-hidden">
+          {/* <div className="overflow-hidden">
             <h2
               className={`text-6xl md:text-8xl lg:text-9xl font-bold font-heading text-charcoal-gray dark:text-light-text leading-none tracking-tighter transition-all duration-1200 delay-700 ${
                 isLoaded
@@ -39,7 +39,7 @@ export function HeroSection() {
             >
               {HERO_CONTENT.title2}
             </h2>
-          </div>
+          </div> */}
         </div>
 
         {/* 설명 */}

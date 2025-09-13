@@ -44,11 +44,11 @@ export const NAVIGATION_CARDS = [
 ];
 
 export const HERO_CONTENT = {
-  title1: "Creative",
-  title2: "Developer",
+  title1: "KMH",
+  title2: "Blog",
   description:
-    "Crafting digital experiences with precision, passion, and purpose.",
-  subtitle: "Welcome to my creative space.",
+    "I'm Kang Minho, a developer who thinks and develops from the customer's point of view.",
+  subtitle: "Welcome to my blog.",
 };
 
 export const SITE_CONFIG = {

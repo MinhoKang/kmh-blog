@@ -28,7 +28,7 @@ export function Footer({ variant = "page" }: FooterProps) {
     <Component
       className={`border-t border-neutral-200 dark:border-neutral-800 ${
         isHomePage
-          ? `py-16 mt-20 transition-all duration-1000 delay-1400 ${
+          ? `!py-5 mt-20 transition-all duration-1000 delay-1400 ${
               isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`
           : "mt-auto"
@@ -39,16 +39,16 @@ export function Footer({ variant = "page" }: FooterProps) {
           <div>
             {isHomePage ? (
               <>
-                <p className="text-sm font-light text-neutral-500 dark:text-neutral-500 tracking-wide">
+                {/* <p className="text-sm font-light text-neutral-500 dark:text-neutral-500 tracking-wide">
                   Currently available for new opportunities
-                </p>
+                </p> */}
                 <p className="text-sm font-light text-neutral-400 dark:text-neutral-600 tracking-wide mt-1">
                   Based in Seoul, South Korea
                 </p>
               </>
             ) : (
               <p className="text-sm font-light text-neutral-500 dark:text-neutral-500 tracking-wide">
-                © 2024 KMH. All rights reserved.
+                © 2025 KMH. All rights reserved.
               </p>
             )}
           </div>
