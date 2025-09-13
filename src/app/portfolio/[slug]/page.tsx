@@ -46,7 +46,7 @@ export default async function ProjectPage({ params }: Props) {
   }
 
   return (
-    <div className="max-w-6xl">
+    <div className="max-w-6xl flex flex-col gap-y-8">
       {/* 뒤로가기 */}
       <div className="mb-12 animate-fade-in">
         <Link
@@ -71,7 +71,7 @@ export default async function ProjectPage({ params }: Props) {
       </div>
 
       {/* 프로젝트 헤더 */}
-      <header className="mb-16 animate-fade-in delay-200">
+      <header className="mb-16 animate-fade-in delay-200 flex flex-col gap-y-4">
         {/* 프로젝트 이미지 */}
         {project.image && (
           <div className="mb-12 overflow-hidden bg-neutral-100 dark:bg-neutral-800 aspect-[16/9]">
@@ -105,7 +105,7 @@ export default async function ProjectPage({ params }: Props) {
           </div>
 
           {/* 오른쪽: 메타 정보 */}
-          <div className="space-y-8">
+          <div className="flex flex-col gap-y-8">
             {/* 기술 스택 */}
             {project.tags.length > 0 && (
               <div>
@@ -183,7 +183,7 @@ export default async function ProjectPage({ params }: Props) {
         </div>
 
         {/* 구분선 */}
-        <div className="w-full h-px bg-neutral-200 dark:bg-neutral-800 mt-16"></div>
+        <div className="w-full h-px bg-neutral-200 dark:bg-neutral-800"></div>
       </header>
 
       {/* 프로젝트 상세 내용 */}
