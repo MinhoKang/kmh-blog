@@ -43,7 +43,7 @@ export default function RootLayout({
           attribute="class"
           defaultTheme="system"
           enableSystem={true}
-          disableTransitionOnChange
+          disableTransitionOnChange={false}
           storageKey="kmh-theme"
           forcedTheme={undefined}
         >

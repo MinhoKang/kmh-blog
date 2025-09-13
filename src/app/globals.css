@@ -124,6 +124,14 @@ html {
   --foreground: var(--color-charcoal-gray);
 }
 
+/* 시스템 다크모드 지원 */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: var(--color-charcoal-gray);
+    --foreground: var(--color-light-text);
+  }
+}
+
 html.dark {
   --background: var(--color-charcoal-gray);
   --foreground: var(--color-light-text);
