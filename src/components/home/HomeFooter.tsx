@@ -5,7 +5,6 @@ import { CONTACT_INFO } from "@/lib/constants";
 interface HomeFooterProps {
   isLoaded: boolean;
 }
-
 export function HomeFooter({ isLoaded }: HomeFooterProps) {
   return (
     <section

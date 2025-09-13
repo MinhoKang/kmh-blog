@@ -1,6 +1,7 @@
 interface ContactItem {
   href: string;
   label: string;
+  fullLabel: string;
   type: string;
 }
 
@@ -28,7 +29,7 @@ export function ContactInfo({ contacts }: ContactInfoProps) {
             }
             className="text-base font-light text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors duration-300 tracking-wide"
           >
-            {item.label}
+            {item.fullLabel}
           </a>
         </div>
       ))}

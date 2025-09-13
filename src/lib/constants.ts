@@ -1,17 +1,20 @@
 export const CONTACT_INFO = [
   {
     href: "mailto:rkdalsgh0106@naver.com",
-    label: "rkdalsgh0106@naver.com",
+    label: "Email",
+    fullLabel: "rkdalsgh0106@naver.com",
     type: "Email",
   },
   {
     href: "https://github.com/MinhoKang",
-    label: "github.com/MinhoKang",
+    label: "GitHub",
+    fullLabel: "github.com/MinhoKang",
     type: "GitHub",
   },
   {
     href: "https://www.linkedin.com/in/%EB%AF%BC%ED%98%B8-%EA%B0%95-8838502a7/?trk=opento_sprofile_topcard",
-    label: "linkedin.com/in/minhokang",
+    label: "LinkedIn",
+    fullLabel: "linkedin.com/in/minhokang",
     type: "LinkedIn",
   },
 ];
