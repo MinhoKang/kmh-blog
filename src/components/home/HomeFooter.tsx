@@ -1,21 +1,12 @@
 "use client";
 
+import { CONTACT_INFO } from "@/lib/constants";
+
 interface HomeFooterProps {
   isLoaded: boolean;
 }
 
-interface ContactLink {
-  href: string;
-  label: string;
-}
-
 export function HomeFooter({ isLoaded }: HomeFooterProps) {
-  const contactLinks: ContactLink[] = [
-    { href: "mailto:hello@kmh.dev", label: "Email" },
-    { href: "https://github.com/kmh", label: "GitHub" },
-    { href: "https://linkedin.com/in/kmh", label: "LinkedIn" },
-  ];
-
   return (
     <section
       className={`py-16 border-t border-neutral-200 dark:border-neutral-800 mt-20 transition-all duration-1000 delay-1400 ${
@@ -33,7 +24,7 @@ export function HomeFooter({ isLoaded }: HomeFooterProps) {
         </div>
 
         <div className="flex space-x-6">
-          {contactLinks.map((item, index) => (
+          {CONTACT_INFO.map((item, index) => (
             <a
               key={item.href}
               href={item.href}
