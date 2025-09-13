@@ -1,0 +1,370 @@
+---
+title: "오늘 뭐 먹지 - 위치 기반 랜덤 맛집 추천 앱"
+description: "React Native + Expo로 개발한 위치 기반 랜덤 맛집 추천 모바일 앱을 구글 플레이스토어에 성공적으로 출시한 개인 사이드 프로젝트다."
+startDate: "2025-06"
+tags: ["React Native", "Expo", "Location", "Side Project", "Google Play"]
+category: "portfolio"
+featured: true
+technologies:
+  ["React Native", "Expo SDK 53", "TypeScript", "Kakao API", "Google Ads"]
+---
+
+# 오늘 뭐 먹지 - 위치 기반 랜덤 맛집 추천 앱
+
+---
+
+## 프로젝트 개요
+
+"**뭘 먹을지 고민되는 순간**"을 해결하기 위해 개발한 **위치 기반 랜덤 맛집 추천 모바일 앱**이다.
+
+사용자 현재 위치를 기준으로 원하는 거리 내의 음식점, 카페, 술집을 랜덤으로 추천해주는 서비스로 **구글 플레이스토어에 실제 출시**한 개인 사이드 프로젝트다.
+
+---
+
+## 주요 성과
+
+<table>
+  <thead>
+    <tr>
+      <th>구분</th>
+      <th>성과</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <strong>개발 기간</strong>
+      </td>
+      <td>2025년 6월 ~ 현재 (지속 개발)</td>
+    </tr>
+    <tr>
+      <td>
+        <strong>플랫폼 출시</strong>
+      </td>
+      <td>구글 플레이스토어 정식 출시</td>
+    </tr>
+    <tr>
+      <td>
+        <strong>프로젝트 성격</strong>
+      </td>
+      <td>개인 사이드 프로젝트</td>
+    </tr>
+    <tr>
+      <td>
+        <strong>수익화</strong>
+      </td>
+      <td>Google Ads 적용</td>
+    </tr>
+    <tr>
+      <td>
+        <strong>API 최적화</strong>
+      </td>
+      <td>카카오 API 제한 5배 확장 (45개 → 225개)</td>
+    </tr>
+  </tbody>
+</table>
+
+### 기술 스택 구성
+
+<table>
+  <thead>
+    <tr>
+      <th>영역</th>
+      <th>기술</th>
+      <th>용도</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <strong>프레임워크</strong>
+      </td>
+      <td>React Native + Expo SDK 53</td>
+      <td>크로스 플랫폼 모바일 개발</td>
+    </tr>
+    <tr>
+      <td>
+        <strong>언어</strong>
+      </td>
+      <td>TypeScript</td>
+      <td>타입 안전성 확보</td>
+    </tr>
+    <tr>
+      <td>
+        <strong>스타일링</strong>
+      </td>
+      <td>NativeWind + clsx</td>
+      <td>Tailwind 기반 모바일 스타일링</td>
+    </tr>
+    <tr>
+      <td>
+        <strong>지도/위치</strong>
+      </td>
+      <td>카카오 지도 API + Places API</td>
+      <td>위치 기반 맛집 검색</td>
+    </tr>
+    <tr>
+      <td>
+        <strong>위치 서비스</strong>
+      </td>
+      <td>Expo Location</td>
+      <td>사용자 현재 위치 획득</td>
+    </tr>
+    <tr>
+      <td>
+        <strong>수익화</strong>
+      </td>
+      <td>Google Ads</td>
+      <td>광고 수익 창출</td>
+    </tr>
+  </tbody>
+</table>
+
+---
+
+## 핵심 기능
+
+### 1. 위치 기반 랜덤 추천
+
+**사용자 현재 위치**를 기준으로 설정한 거리 내의 맛집을 랜덤으로 추천하는 핵심 기능이다.
+
+**주요 기능**:
+
+- 현재 위치 자동 감지 (Expo Location)
+- 거리 설정 (500m ~ 5km)
+- 카테고리 선택 (식당, 카페, 술집)
+- 랜덤 맛집 추천 알고리즘
+
+### 2. 지도 연동 서비스
+
+추천된 맛집의 **위치 정보와 상세 정보**를 다양한 방식으로 제공한다.
+
+<table>
+  <thead>
+    <tr>
+      <th>서비스</th>
+      <th>기능</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <strong>카카오맵 연동</strong>
+      </td>
+      <td>맛집 위치 지도에서 확인</td>
+    </tr>
+    <tr>
+      <td>
+        <strong>네이버 지도 연동</strong>
+      </td>
+      <td>대안 지도 서비스 제공</td>
+    </tr>
+    <tr>
+      <td>
+        <strong>정보 공유</strong>
+      </td>
+      <td>맛집 정보 SNS 공유</td>
+    </tr>
+    <tr>
+      <td>
+        <strong>방문 기록</strong>
+      </td>
+      <td>본 식당 목록 관리</td>
+    </tr>
+  </tbody>
+</table>
+
+### 3. 수익화 모델
+
+**Google Ads**를 적용하여 개인 프로젝트의 수익화를 시도했다.
+
+**광고 전략**:
+
+- 사용자 경험을 해치지 않는 광고 배치
+- 맛집 추천 결과 하단에 배너 광고
+- 앱 사용 패턴에 맞춘 광고 노출 빈도 조절
+
+---
+
+## 기술적 도전과 해결
+
+### 1. 카카오 API 검색 결과 제한 우회
+
+**문제**: 카카오 Places API의 검색 결과가 45개로 제한되어 넓은 범위 검색 시 선택지 부족
+
+**상황 분석**:
+
+- 2km 이상 범위에서는 45개 결과로는 다양성 부족
+- 사용자가 원하는 거리 내 모든 맛집을 찾기 어려움
+- 랜덤 추천의 품질 저하 우려
+
+**해결책**:
+
+<table>
+  <thead>
+    <tr>
+      <th>해결 방법</th>
+      <th>구현 내용</th>
+      <th>효과</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <strong>구역 분할 검색</strong>
+      </td>
+      <td>중심점 기준 동서남북 4개 구역으로 분할</td>
+      <td>검색 범위 4배 확장</td>
+    </tr>
+    <tr>
+      <td>
+        <strong>중복 제거</strong>
+      </td>
+      <td>동일한 place_id 기준 중복 맛집 제거</td>
+      <td>데이터 품질 향상</td>
+    </tr>
+    <tr>
+      <td>
+        <strong>거리순 정렬</strong>
+      </td>
+      <td>사용자 위치 기준 가까운 순으로 정렬</td>
+      <td>사용자 편의성 증대</td>
+    </tr>
+    <tr>
+      <td>
+        <strong>결과 확장</strong>
+      </td>
+      <td>최대 225개까지 검색 결과 확보</td>
+      <td>선택지 5배 증가</td>
+    </tr>
+  </tbody>
+</table>
+
+---
+
+## 결과 및 성과
+
+### 개발 성과
+
+<table>
+  <thead>
+    <tr>
+      <th>지표</th>
+      <th>성과</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <strong>앱 스토어 출시</strong>
+      </td>
+      <td>구글 플레이스토어 정식 배포</td>
+    </tr>
+    <tr>
+      <td>
+        <strong>기술적 혁신</strong>
+      </td>
+      <td>API 제한 5배 확장 솔루션</td>
+    </tr>
+    <tr>
+      <td>
+        <strong>사용자 경험</strong>
+      </td>
+      <td>직관적인 위치 기반 추천 서비스</td>
+    </tr>
+    <tr>
+      <td>
+        <strong>수익화</strong>
+      </td>
+      <td>Google Ads 통합 및 운영</td>
+    </tr>
+  </tbody>
+</table>
+
+### 개인 역량 성장
+
+<table>
+  <thead>
+    <tr>
+      <th>영역</th>
+      <th>성장 내용</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <strong>프로덕트 개발</strong>
+      </td>
+      <td>아이디어 기획부터 출시까지 전 과정 경험</td>
+    </tr>
+    <tr>
+      <td>
+        <strong>위치 기반 서비스</strong>
+      </td>
+      <td>GPS, 지도 API 활용 전문성 확보</td>
+    </tr>
+    <tr>
+      <td>
+        <strong>앱 스토어 배포</strong>
+      </td>
+      <td>구글 플레이 콘솔 관리 및 배포 프로세스</td>
+    </tr>
+    <tr>
+      <td>
+        <strong>수익화 모델</strong>
+      </td>
+      <td>모바일 앱 광고 수익 구조 이해</td>
+    </tr>
+    <tr>
+      <td>
+        <strong>API 최적화</strong>
+      </td>
+      <td>제한된 리소스 활용 최적화 기법</td>
+    </tr>
+  </tbody>
+</table>
+
+---
+
+## 학습한 점
+
+### 기술적 성장
+
+- **위치 기반 서비스**: GPS, 지도 API를 활용한 모바일 서비스 개발 전문성
+- **API 최적화**: 제한된 외부 API를 효율적으로 활용하는 창의적 솔루션 개발
+- **React Native 심화**: Expo 생태계와 네이티브 기능 통합 경험
+- **광고 플랫폼**: Google Ads 연동 및 모바일 앱 수익화 모델 구현
+
+### 프로덕트 개발
+
+- **전 과정 경험**: 아이디어 기획부터 개발, 배포, 운영까지 1인 개발자 경험
+- **사용자 중심 설계**: 실제 사용자의 니즈를 해결하는 서비스 기획 및 구현
+- **앱 스토어 정책**: 구글 플레이 정책 이해 및 심사 과정 경험
+
+---
+
+## 향후 계획
+
+### 단기 목표
+
+- **iOS 앱스토어 출시**: Apple App Store 배포 준비
+- **사용자 피드백 반영**: 리뷰를 통한 기능 개선 및 버그 수정
+- **추가 기능**: 맛집 북마크, 리뷰 시스템 구현
+
+### 장기 목표
+
+- **AI 추천**: 사용자 취향 학습 기반 개인화 추천 알고리즘
+- **소셜 기능**: 친구와 맛집 공유 및 추천 기능
+- **다양한 카테고리**: 관광지, 쇼핑몰 등 확장 서비스
+
+---
+
+## 결론
+
+"오늘 뭐 먹지" 앱 개발을 통해 **개인 사이드 프로젝트의 전 과정**을 경험했다.
+
+아이디어 기획부터 기술적 문제 해결, 실제 앱스토어 배포까지 **1인 개발자로서의 역량**을 크게 성장시킨 의미 있는 프로젝트다.
+
+특히 **카카오 API 제한을 창의적으로 우회**하여 서비스 품질을 5배 향상시킨 경험은 제한된 리소스 환경에서의 **문제 해결 능력**을 보여주는 사례다.
+
+앞으로도 **사용자의 일상 문제를 해결**하는 실용적인 서비스를 지속 개발하며, **기술과 비즈니스를 연결**하는 프로덕트 개발자로 성장하고자 한다.
