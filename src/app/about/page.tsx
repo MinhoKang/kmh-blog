@@ -1,6 +1,7 @@
 import { AboutSection } from "@/components/about/AboutSection";
 import { SkillList } from "@/components/about/SkillList";
 import { ContactInfo } from "@/components/about/ContactInfo";
+import { CONTACT_INFO } from "@/lib/constants";
 
 export default function AboutPage() {
   const frontendSkills = [
@@ -34,24 +35,6 @@ export default function AboutPage() {
     "User Experience Design",
     "State Management Architecture",
     "Cross-Platform Development",
-  ];
-
-  const contactInfo = [
-    {
-      href: "mailto:rkdalsgh0106@naver.com",
-      label: "rkdalsgh0106@naver.com",
-      type: "Email",
-    },
-    {
-      href: "https://github.com/MinhoKang",
-      label: "github.com/MinhoKang",
-      type: "GitHub",
-    },
-    {
-      href: "https://www.linkedin.com/in/%EB%AF%BC%ED%98%B8-%EA%B0%95-8838502a7/?trk=opento_sprofile_topcard",
-      label: "linkedin.com/in/minhokang",
-      type: "LinkedIn",
-    },
   ];
 
   return (
@@ -196,7 +179,7 @@ export default function AboutPage() {
             </p>
           </div>
 
-          <ContactInfo contacts={contactInfo} />
+          <ContactInfo contacts={CONTACT_INFO} />
         </div>
       </section>
     </div>

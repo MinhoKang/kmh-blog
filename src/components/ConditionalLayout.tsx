@@ -3,6 +3,7 @@
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { ThemeToggle } from "./ThemeToggle";
+import { CONTACT_INFO } from "@/lib/constants";
 
 interface ConditionalLayoutProps {
   children: React.ReactNode;
@@ -101,11 +102,7 @@ export function ConditionalLayout({ children }: ConditionalLayoutProps) {
             </div>
 
             <div className="flex space-x-6">
-              {[
-                { href: "mailto:hello@kmh.dev", label: "Email" },
-                { href: "https://github.com/kmh", label: "GitHub" },
-                { href: "https://linkedin.com/in/kmh", label: "LinkedIn" },
-              ].map((item) => (
+              {CONTACT_INFO.map((item) => (
                 <a
                   key={item.href}
                   href={item.href}
