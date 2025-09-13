@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { HERO_CONTENT } from "@/lib/constants";
 
 export function HeroSection() {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -25,7 +26,7 @@ export function HeroSection() {
                   : "opacity-0 translate-y-16"
               }`}
             >
-              Creative
+              {HERO_CONTENT.title1}
             </h1>
           </div>
           <div className="overflow-hidden">
@@ -36,7 +37,7 @@ export function HeroSection() {
                   : "opacity-0 translate-y-16"
               }`}
             >
-              Developer
+              {HERO_CONTENT.title2}
             </h2>
           </div>
         </div>
@@ -48,8 +49,8 @@ export function HeroSection() {
           }`}
         >
           <p className="text-lg md:text-xl font-light text-neutral-600 dark:text-neutral-400 leading-relaxed tracking-wide">
-            Crafting digital experiences with precision, passion, and purpose.
-            <span className="block mt-2">Welcome to my creative space.</span>
+            {HERO_CONTENT.description}
+            <span className="block mt-2">{HERO_CONTENT.subtitle}</span>
           </p>
         </div>
       </div>

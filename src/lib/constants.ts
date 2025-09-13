@@ -19,6 +19,38 @@ export const CONTACT_INFO = [
   },
 ];
 
+export const NAVIGATION_ITEMS = [
+  { href: "/writes", label: "Writes" },
+  { href: "/portfolio", label: "Portfolio" },
+  { href: "/about", label: "About" },
+];
+
+export const NAVIGATION_CARDS = [
+  {
+    href: "/writes",
+    label: "View Writes",
+    desc: "Thoughts & Ideas",
+  },
+  {
+    href: "/portfolio",
+    label: "See Work",
+    desc: "Selected Projects",
+  },
+  {
+    href: "/about",
+    label: "About Me",
+    desc: "Story & Vision",
+  },
+];
+
+export const HERO_CONTENT = {
+  title1: "Creative",
+  title2: "Developer",
+  description:
+    "Crafting digital experiences with precision, passion, and purpose.",
+  subtitle: "Welcome to my creative space.",
+};
+
 export const SITE_CONFIG = {
   name: "KMH",
   title: "KMH Portfolio",

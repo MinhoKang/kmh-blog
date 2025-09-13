@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { ThemeToggle } from "./ThemeToggle";
+import { NAVIGATION_ITEMS } from "@/lib/constants";
 
 interface HeaderProps {
   variant?: "home" | "page";
@@ -23,12 +23,6 @@ export function Header({ variant = "page" }: HeaderProps) {
       setIsLoaded(true);
     }
   }, [variant]);
-
-  const navigationItems = [
-    { href: "/writes", label: "Writes" },
-    { href: "/portfolio", label: "Portfolio" },
-    { href: "/about", label: "About" },
-  ];
 
   const isHomePage = variant === "home";
 
@@ -77,7 +71,7 @@ export function Header({ variant = "page" }: HeaderProps) {
             <div
               className={`hidden md:flex items-center ${isHomePage ? "space-x-8 mr-8" : "space-x-6 mr-6"}`}
             >
-              {navigationItems.map((item, index) => (
+              {NAVIGATION_ITEMS.map((item, index) => (
                 <Link
                   key={item.href}
                   href={item.href}

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { NAVIGATION_CARDS } from "@/lib/constants";
 
 interface NavigationCard {
   href: string;
@@ -19,24 +20,6 @@ export function NavigationCards() {
     return () => clearTimeout(timer);
   }, []);
 
-  const navigationCards: NavigationCard[] = [
-    {
-      href: "/writes",
-      label: "View Writes",
-      desc: "Thoughts & Ideas",
-    },
-    {
-      href: "/portfolio",
-      label: "See Work",
-      desc: "Selected Projects",
-    },
-    {
-      href: "/about",
-      label: "About Me",
-      desc: "Story & Vision",
-    },
-  ];
-
   return (
     <div className="max-w-4xl">
       <div
@@ -44,7 +27,7 @@ export function NavigationCards() {
           isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
         }`}
       >
-        {navigationCards.map((item, index) => (
+        {NAVIGATION_CARDS.map((item, index) => (
           <Link
             key={item.href}
             href={item.href}
