@@ -6,7 +6,20 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "lint:fix": "eslint --fix",
+    "type-check": "tsc --noEmit",
+    "pre-commit": "lint-staged",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "npm run type-check"
+    ],
+    "*.{js,jsx,ts,tsx,json,css,md,mdx}": [
+      "prettier --write"
+    ]
   },
   "dependencies": {
     "@mdx-js/loader": "^3.1.1",
@@ -29,8 +42,13 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@typescript-eslint/eslint-plugin": "^8.43.0",
+    "@typescript-eslint/parser": "^8.43.0",
     "eslint": "^9",
     "eslint-config-next": "15.5.3",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.1.6",
+    "prettier": "^3.6.2",
     "tailwindcss": "^4.1.13",
     "typescript": "^5"
   }
