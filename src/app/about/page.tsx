@@ -29,16 +29,16 @@ export default function AboutPage() {
   ];
 
   const focusAreas = [
-    "Real-time Web Applications",
-    "Mobile App Development",
-    "Performance Optimization",
-    "User Experience Design",
-    "State Management Architecture",
-    "Cross-Platform Development",
+    "실시간 웹 애플리케이션",
+    "모바일 앱 개발",
+    "성능 최적화",
+    "사용자 경험 설계",
+    "상태 관리 아키텍처",
+    "크로스 플랫폼 개발",
   ];
 
   return (
-    <div className="max-w-4xl">
+    <div className="max-w-4xl flex-col gap-16">
       {/* 헤더 */}
       <section className="mb-28">
         <div className="animate-fade-in">
@@ -47,9 +47,8 @@ export default function AboutPage() {
           </h1>
           <div className="w-16 h-px bg-neutral-300 dark:bg-neutral-700 mb-8"></div>
           <p className="text-xl font-light text-neutral-600 dark:text-neutral-400 max-w-3xl tracking-wide leading-relaxed">
-            Frontend Developer with 2+ years of experience building modern web
-            and mobile applications. Specialized in React ecosystem and
-            passionate about performance optimization.
+            교육학 전공에서 개발자로 전향한 프론트엔드 개발자입니다. 학생 관리
+            경험을 바탕으로 사용자 중심의 웹 애플리케이션을 개발합니다.
           </p>
         </div>
       </section>
@@ -58,56 +57,61 @@ export default function AboutPage() {
       <div className="grid md:grid-cols-2 gap-16 mb-20">
         {/* 왼쪽 컬럼 */}
         <div className="space-y-12">
-          <AboutSection title="Journey" delay="delay-200">
+          <AboutSection title="경력" delay="delay-200">
+            <div className="space-y-6 text-base font-light text-neutral-600 dark:text-neutral-400 leading-relaxed tracking-wide">
+              <div className="border-l-4 border-neutral-300 dark:border-neutral-700 pl-6">
+                <h4 className="font-medium text-neutral-800 dark:text-neutral-200 mb-2">
+                  프론트엔드 개발자 (2024.01 ~ 현재)
+                </h4>
+                <p className="text-sm text-neutral-500 mb-3">개발팀</p>
+                <p>
+                  React 기반 웹 애플리케이션과 React Native 모바일 앱 개발을
+                  담당하고 있습니다. 실시간 채팅 시스템, 학생 관리 플랫폼 등
+                  다양한 프로젝트를 진행했습니다.
+                </p>
+              </div>
+              <div className="border-l-4 border-neutral-300 dark:border-neutral-700 pl-6">
+                <h4 className="font-medium text-neutral-800 dark:text-neutral-200 mb-2">
+                  학생 관리 팀장 (2022.09 ~ 2023.12)
+                </h4>
+                <p className="text-sm text-neutral-500 mb-3">매니징팀</p>
+                <p>
+                  학생 관리 업무를 맡으며 팀원에서 팀장으로 성장했습니다. 이
+                  경험을 통해 사용자의 니즈를 깊이 이해하고 효율적인 시스템의
+                  중요성을 깨달았습니다.
+                </p>
+              </div>
+            </div>
+          </AboutSection>
+
+          <AboutSection title="개발 철학">
             <div className="space-y-4 text-base font-light text-neutral-600 dark:text-neutral-400 leading-relaxed tracking-wide">
               <p>
-                Started as a student management team leader, then transitioned
-                to frontend development in 2024. Currently pursuing Computer
-                Science at Korea National Open University while working as a
-                professional developer.
+                깨끗하고 유지보수가 쉬운 코드를 작성하는 것을 중요하게
+                생각합니다. 모든 컴포넌트는 재사용 가능해야 하고, 각 함수는 단일
+                책임을 가져야 한다고 믿습니다.
               </p>
               <p>
-                My unique background in education and management gives me a deep
-                understanding of user needs and the importance of intuitive,
-                accessible interfaces.
+                성능은 단순히 빠른 로딩 시간이 아닌, 사용자가 기술을 사용하고
+                있다는 것을 잊을 정도로 자연스러운 경험을 만드는 것이라고
+                생각합니다.
               </p>
             </div>
           </AboutSection>
 
-          <AboutSection title="Philosophy">
-            <div className="space-y-4 text-base font-light text-neutral-600 dark:text-neutral-400 leading-relaxed tracking-wide">
-              <p>
-                I believe in writing clean, maintainable code that not only
-                works but tells a story. Every component should be reusable,
-                every function should have a single responsibility.
-              </p>
-              <p>
-                Performance isn&apos;t just about fast loading times—it&apos;s
-                about creating seamless experiences that make users forget
-                they&apos;re using technology.
-              </p>
-            </div>
-          </AboutSection>
-
-          <AboutSection title="Recent Achievements">
+          <AboutSection title="주요 성과">
             <div className="space-y-3 text-base font-light text-neutral-600 dark:text-neutral-400 leading-relaxed tracking-wide">
               <div className="flex items-start">
                 <div className="w-1 h-1 bg-neutral-400 dark:bg-neutral-600 rounded-full mr-4 mt-3"></div>
-                <span>
-                  Improved chat system INP from 3217ms to 87ms using React.memo
-                </span>
+                <span>채팅 시스템 성능 97% 향상 (INP 3217ms → 87ms)</span>
               </div>
               <div className="flex items-start">
                 <div className="w-1 h-1 bg-neutral-400 dark:bg-neutral-600 rounded-full mr-4 mt-3"></div>
-                <span>
-                  Published mobile app on Google Play Store with 100+ downloads
-                </span>
+                <span>구글 플레이스토어 앱 출시 (100+ 다운로드)</span>
               </div>
               <div className="flex items-start">
                 <div className="w-1 h-1 bg-neutral-400 dark:bg-neutral-600 rounded-full mr-4 mt-3"></div>
-                <span>
-                  Built real-time chat system serving 1000+ concurrent users
-                </span>
+                <span>1000+ 동시 사용자 지원하는 실시간 채팅 시스템 구축</span>
               </div>
             </div>
           </AboutSection>
@@ -115,7 +119,7 @@ export default function AboutPage() {
 
         {/* 오른쪽 컬럼 */}
         <div className="space-y-12">
-          <AboutSection title="Current Focus" delay="delay-300">
+          <AboutSection title="관심 분야" delay="delay-300">
             <ul className="space-y-3">
               {focusAreas.map((item, index) => (
                 <li
@@ -130,30 +134,30 @@ export default function AboutPage() {
             </ul>
           </AboutSection>
 
-          <AboutSection title="Technology Stack">
+          <AboutSection title="기술 스택">
             <div className="space-y-6">
-              <SkillList title="Frontend & Mobile" skills={frontendSkills} />
-              <SkillList title="State Management" skills={stateManagement} />
-              <SkillList title="Testing & Quality" skills={testingTools} />
-              <SkillList title="Development Tools" skills={devTools} />
+              <SkillList title="프론트엔드 & 모바일" skills={frontendSkills} />
+              <SkillList title="상태 관리" skills={stateManagement} />
+              <SkillList title="테스팅 & 품질관리" skills={testingTools} />
+              <SkillList title="개발 도구" skills={devTools} />
             </div>
           </AboutSection>
 
-          <AboutSection title="Education">
+          <AboutSection title="학력">
             <div className="space-y-4 text-sm font-light text-neutral-600 dark:text-neutral-400 leading-relaxed tracking-wide">
               <div className="border-l-2 border-neutral-300 dark:border-neutral-700 pl-4">
                 <p className="font-medium text-neutral-800 dark:text-neutral-200">
-                  Computer Science
+                  컴퓨터과학과 (3학년 편입)
                 </p>
-                <p>Korea National Open University (2025 - Present)</p>
-                <p className="text-neutral-500">GPA: 4.13/4.5</p>
+                <p>한국방송통신대학교 (2025.02 ~ 재학 중)</p>
+                <p className="text-neutral-500">3학년 1학기: 4.13/4.5</p>
               </div>
               <div className="border-l-2 border-neutral-300 dark:border-neutral-700 pl-4">
                 <p className="font-medium text-neutral-800 dark:text-neutral-200">
-                  Education
+                  교육학과
                 </p>
-                <p>Chung-Ang University (2016 - 2022)</p>
-                <p className="text-neutral-500">GPA: 4.05/4.5</p>
+                <p>중앙대학교 (2016.03 ~ 2022.02)</p>
+                <p className="text-neutral-500">졸업학점: 4.05/4.5</p>
               </div>
             </div>
           </AboutSection>
@@ -163,19 +167,18 @@ export default function AboutPage() {
       {/* 연락처 섹션 */}
       <section className="border-t border-neutral-200 dark:border-neutral-800 pt-16 animate-fade-in delay-400">
         <h2 className="text-xl font-light text-neutral-900 dark:text-neutral-100 mb-8 tracking-wide">
-          Let&apos;s Connect
+          연락하기
         </h2>
 
         <div className="grid md:grid-cols-2 gap-12">
           <div>
             <p className="text-base font-light text-neutral-600 dark:text-neutral-400 leading-relaxed tracking-wide mb-6">
-              I&apos;m always interested in challenging projects, especially
-              those involving real-time systems, mobile development, or
-              performance optimization.
+              실시간 시스템, 모바일 개발, 성능 최적화 등 도전적인 프로젝트에
+              항상 관심이 있습니다.
             </p>
             <p className="text-base font-light text-neutral-600 dark:text-neutral-400 leading-relaxed tracking-wide">
-              Currently based in Seoul, South Korea. Open to remote
-              opportunities and collaborative projects worldwide.
+              현재 서울에 거주하고 있으며, 원격 근무 기회와 전 세계 협업
+              프로젝트에 열려있습니다.
             </p>
           </div>
 

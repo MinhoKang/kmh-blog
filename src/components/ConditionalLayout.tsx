@@ -20,7 +20,7 @@ export function ConditionalLayout({ children }: ConditionalLayoutProps) {
 
   // 다른 페이지들은 미니멀한 레이아웃 사용
   return (
-    <div className="min-h-screen bg-neutral-25 dark:bg-neutral-900 transition-colors duration-500">
+    <div className="min-h-screen bg-neutral-25 dark:bg-neutral-900 transition-colors duration-500 flex flex-col">
       {/* 헤더 */}
       <header className="sticky top-0 z-50 backdrop-blur-sm bg-neutral-25/80 dark:bg-neutral-900/80 border-b border-neutral-200 dark:border-neutral-800">
         <div className="grid-minimal py-8">
@@ -89,10 +89,10 @@ export function ConditionalLayout({ children }: ConditionalLayoutProps) {
       </header>
 
       {/* 메인 콘텐츠 */}
-      <main className="grid-minimal py-16">{children}</main>
+      <main className="grid-minimal py-16 flex-1 min-h-0">{children}</main>
 
       {/* 푸터 */}
-      <footer className="border-t border-neutral-200 dark:border-neutral-800 mt-32">
+      <footer className="border-t border-neutral-200 dark:border-neutral-800 mt-auto">
         <div className="grid-minimal py-16">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
             <div>

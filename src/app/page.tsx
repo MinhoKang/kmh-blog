@@ -38,7 +38,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-neutral-25 dark:bg-neutral-900 transition-colors duration-700">
       {/* 그리드 시스템 */}
-      <div className="grid-minimal min-h-screen">
+      <div className="grid-minimal min-h-screen h-full">
         <HomeHeader isLoaded={isLoaded} />
 
         {/* 메인 콘텐츠 */}
