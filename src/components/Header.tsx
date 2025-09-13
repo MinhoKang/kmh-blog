@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import { ThemeToggle } from "./ThemeToggle";
 import { NAVIGATION_ITEMS } from "@/lib/constants";
 
 interface HeaderProps {
@@ -31,7 +32,7 @@ export function Header({ variant = "page" }: HeaderProps) {
       className={`z-50 backdrop-blur-sm ${
         isHomePage
           ? "fixed top-0 left-0 right-0"
-          : "sticky top-0 bg-neutral-25/80 dark:bg-neutral-900/80 border-b border-neutral-200 dark:border-neutral-800"
+          : "sticky top-0 bg-ghost-white/80 dark:bg-charcoal-gray/80 border-b border-neutral-200 dark:border-neutral-800"
       }`}
     >
       <div className={`grid-minimal ${isHomePage ? "py-10" : "py-8"}`}>
@@ -49,7 +50,7 @@ export function Header({ variant = "page" }: HeaderProps) {
           >
             <Link
               href="/"
-              className={`font-light text-neutral-900 dark:text-neutral-100 tracking-wide hover:opacity-60 transition-opacity duration-300 ${
+              className={`font-light text-charcoal-gray dark:text-light-text tracking-wide hover:opacity-60 transition-opacity duration-300 ${
                 isHomePage ? "text-xl" : "text-lg"
               }`}
             >
@@ -105,26 +106,20 @@ export function Header({ variant = "page" }: HeaderProps) {
             {/* 모바일 메뉴 */}
             {!isHomePage && (
               <div className="md:hidden flex items-center space-x-4 mr-4">
-                <Link
-                  href="/writes"
-                  className="text-xs font-light text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors duration-300"
-                >
-                  W
-                </Link>
-                <Link
-                  href="/portfolio"
-                  className="text-xs font-light text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors duration-300"
-                >
-                  P
-                </Link>
-                <Link
-                  href="/about"
-                  className="text-xs font-light text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors duration-300"
-                >
-                  A
-                </Link>
+                {NAVIGATION_ITEMS.map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className="text-xs font-light text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors duration-300"
+                  >
+                    {item.label.charAt(0)}
+                  </Link>
+                ))}
               </div>
             )}
+
+            {/* ThemeToggle */}
+            <ThemeToggle />
           </nav>
         </div>
       </div>

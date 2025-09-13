@@ -20,7 +20,7 @@ export function HeroSection() {
         <div className="mb-16">
           <div className="overflow-hidden">
             <h1
-              className={`text-6xl md:text-8xl lg:text-9xl font-extralight text-neutral-900 dark:text-neutral-50 leading-none tracking-tighter transition-all duration-1200 delay-500 ${
+              className={`text-6xl md:text-8xl lg:text-9xl font-extralight text-charcoal-gray dark:text-light-text leading-none tracking-tighter transition-all duration-1200 delay-500 ${
                 isLoaded
                   ? "opacity-100 translate-y-0"
                   : "opacity-0 translate-y-16"
@@ -31,7 +31,7 @@ export function HeroSection() {
           </div>
           <div className="overflow-hidden">
             <h2
-              className={`text-6xl md:text-8xl lg:text-9xl font-extralight text-neutral-900 dark:text-neutral-50 leading-none tracking-tighter transition-all duration-1200 delay-700 ${
+              className={`text-6xl md:text-8xl lg:text-9xl font-extralight text-charcoal-gray dark:text-light-text leading-none tracking-tighter transition-all duration-1200 delay-700 ${
                 isLoaded
                   ? "opacity-100 translate-y-0"
                   : "opacity-0 translate-y-16"

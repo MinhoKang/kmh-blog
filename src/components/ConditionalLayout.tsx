@@ -19,7 +19,7 @@ export function ConditionalLayout({ children }: ConditionalLayoutProps) {
 
   // 다른 페이지들은 미니멀한 레이아웃 사용
   return (
-    <div className="min-h-screen bg-neutral-25 dark:bg-neutral-900 transition-colors duration-500 flex flex-col">
+    <div className="min-h-screen bg-ghost-white dark:bg-charcoal-gray transition-colors duration-500 flex flex-col">
       <Header variant="page" />
 
       {/* 메인 콘텐츠 */}

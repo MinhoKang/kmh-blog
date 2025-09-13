@@ -31,11 +31,11 @@ export function NavigationCards() {
           <Link
             key={item.href}
             href={item.href}
-            className="group relative block p-6 border border-neutral-200 dark:border-neutral-700 hover:border-neutral-400 dark:hover:border-neutral-500 transition-all duration-300 bg-white/50 dark:bg-neutral-800/30 backdrop-blur-sm"
+            className="group relative block p-6 border border-neutral-200 dark:border-neutral-700 hover:border-neutral-400 dark:hover:border-neutral-500 transition-all duration-300 bg-ghost-white/50 dark:bg-neutral-800/30 backdrop-blur-sm"
             style={{ animationDelay: `${1200 + index * 100}ms` }}
           >
             <div className="flex flex-col">
-              <span className="text-lg font-light text-neutral-900 dark:text-neutral-100 mb-1 tracking-wide">
+              <span className="text-lg font-light text-charcoal-gray dark:text-light-text mb-1 tracking-wide">
                 {item.label}
               </span>
               <span className="text-sm text-neutral-500 dark:text-neutral-500 tracking-wide">
@@ -44,7 +44,7 @@ export function NavigationCards() {
             </div>
 
             {/* 호버 효과 */}
-            <div className="absolute inset-0 border border-transparent group-hover:border-neutral-900 dark:group-hover:border-neutral-100 transition-all duration-300 translate-x-0 translate-y-0 group-hover:translate-x-1 group-hover:translate-y-1"></div>
+            <div className="absolute inset-0 border border-transparent group-hover:border-charcoal-gray dark:group-hover:border-light-text transition-all duration-300 translate-x-0 translate-y-0 group-hover:translate-x-1 group-hover:translate-y-1"></div>
           </Link>
         ))}
       </div>
