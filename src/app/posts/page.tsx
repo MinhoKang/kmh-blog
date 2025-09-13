@@ -39,7 +39,7 @@ function getAllPosts(): Post[] {
   return allPostsData.sort((a, b) => (a.date < b.date ? 1 : -1));
 }
 
-export default function postsPage() {
+export default function PostsPage() {
   const posts = getAllPosts();
 
   return (

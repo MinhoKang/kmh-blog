@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @custom-variant dark (&:where(.dark, .dark *));
+@plugin "@tailwindcss/typography";
 
 @theme {
   /* 새로운 색상 팔레트 */
@@ -503,4 +504,69 @@ html.dark p code,
 html.dark li code {
   background: transparent;
   color: inherit;
+}
+
+/* MDX 콘텐츠 개선된 간격 */
+.prose {
+  @apply text-base leading-relaxed text-neutral-700 dark:text-neutral-300;
+}
+
+.prose h1 {
+  @apply text-3xl md:text-4xl font-bold mb-8 mt-12 first:mt-0 text-neutral-900 dark:text-neutral-100;
+}
+
+.prose h2 {
+  @apply text-2xl md:text-3xl font-semibold mb-6 mt-12 text-neutral-900 dark:text-neutral-100;
+}
+
+.prose h3 {
+  @apply text-xl md:text-2xl font-semibold mb-5 mt-10 text-neutral-900 dark:text-neutral-100;
+}
+
+.prose h4 {
+  @apply text-lg md:text-xl font-semibold mb-4 mt-8 text-neutral-900 dark:text-neutral-100;
+}
+
+.prose p {
+  @apply mb-6 leading-7 text-neutral-700 dark:text-neutral-300;
+}
+
+.prose ul,
+.prose ol {
+  @apply mb-6 space-y-3 pl-6;
+}
+
+.prose li {
+  @apply mb-2 leading-7;
+}
+
+.prose li p {
+  @apply mb-3;
+}
+
+.prose blockquote {
+  @apply border-l-4 border-neutral-300 dark:border-neutral-600 pl-6 mb-8 mt-8 italic text-neutral-600 dark:text-neutral-400;
+}
+
+.prose strong {
+  @apply font-semibold text-neutral-900 dark:text-neutral-100;
+}
+
+.prose pre {
+  @apply mb-8 mt-8;
+}
+
+.prose code {
+  @apply text-sm;
+}
+
+/* 섹션 간 간격 추가 */
+.prose > * + * {
+  @apply mt-6;
+}
+
+.prose > h1 + *,
+.prose > h2 + *,
+.prose > h3 + * {
+  @apply mt-4;
 }
