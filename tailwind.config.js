@@ -1,0 +1,235 @@
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/content/**/*.{js,ts,jsx,tsx,mdx}",
+  ],
+  darkMode: "class",
+  theme: {
+    extend: {
+      fontFamily: {
+        sans: ["Inter", "system-ui", "-apple-system", "sans-serif"],
+        mono: ["JetBrains Mono", "Menlo", "monospace"],
+      },
+      colors: {
+        // 커스텀 흑백 팔레트
+        neutral: {
+          25: "#fafafa",
+          50: "#f8f9fa",
+          100: "#f1f3f4",
+          150: "#e8eaed",
+          200: "#e1e5e9",
+          250: "#dadce0",
+          300: "#c0c4c7",
+          350: "#a8abad",
+          400: "#909396",
+          450: "#787c80",
+          500: "#60646c",
+          550: "#4a4d55",
+          600: "#393c41",
+          650: "#2d2f32",
+          700: "#202124",
+          750: "#1a1b1d",
+          800: "#131416",
+          850: "#0d0e0f",
+          900: "#090a0b",
+          950: "#050505",
+        },
+      },
+      spacing: {
+        18: "4.5rem",
+        22: "5.5rem",
+        26: "6.5rem",
+        30: "7.5rem",
+        34: "8.5rem",
+        88: "22rem",
+        92: "23rem",
+        96: "24rem",
+        100: "25rem",
+        104: "26rem",
+        108: "27rem",
+        112: "28rem",
+        128: "32rem",
+        144: "36rem",
+      },
+      fontSize: {
+        "2xs": ["0.625rem", { lineHeight: "0.75rem" }],
+        xs: ["0.75rem", { lineHeight: "1rem" }],
+        sm: ["0.875rem", { lineHeight: "1.25rem" }],
+        base: ["1rem", { lineHeight: "1.5rem" }],
+        lg: ["1.125rem", { lineHeight: "1.75rem" }],
+        xl: ["1.25rem", { lineHeight: "1.75rem" }],
+        "2xl": ["1.5rem", { lineHeight: "2rem" }],
+        "3xl": ["1.875rem", { lineHeight: "2.25rem" }],
+        "4xl": ["2.25rem", { lineHeight: "2.5rem" }],
+        "5xl": ["3rem", { lineHeight: "3.5rem" }],
+        "6xl": ["3.75rem", { lineHeight: "4rem" }],
+        "7xl": ["4.5rem", { lineHeight: "5rem" }],
+        "8xl": ["6rem", { lineHeight: "6.5rem" }],
+        "9xl": ["8rem", { lineHeight: "8.5rem" }],
+        "10xl": ["10rem", { lineHeight: "10.5rem" }],
+      },
+      letterSpacing: {
+        tightest: "-0.075em",
+        tighter: "-0.05em",
+        tight: "-0.025em",
+        normal: "0em",
+        wide: "0.025em",
+        wider: "0.05em",
+        widest: "0.1em",
+        "ultra-wide": "0.25em",
+      },
+      animation: {
+        "fade-in": "fadeIn 0.8s ease-out forwards",
+        "fade-in-up": "fadeInUp 1s ease-out forwards",
+        "slide-in": "slideIn 0.6s ease-out forwards",
+        "scale-in": "scaleIn 0.5s ease-out forwards",
+        "text-reveal": "textReveal 0.8s ease-out forwards",
+        float: "float 6s ease-in-out infinite",
+        "pulse-subtle": "pulseSubtle 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+        "slide-up": "slideUp 0.4s ease-out",
+        "slide-down": "slideDown 0.4s ease-out",
+      },
+      keyframes: {
+        fadeIn: {
+          "0%": { opacity: "0", transform: "translateY(20px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        fadeInUp: {
+          "0%": { opacity: "0", transform: "translateY(40px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        slideIn: {
+          "0%": { opacity: "0", transform: "translateX(-20px)" },
+          "100%": { opacity: "1", transform: "translateX(0)" },
+        },
+        scaleIn: {
+          "0%": { opacity: "0", transform: "scale(0.9)" },
+          "100%": { opacity: "1", transform: "scale(1)" },
+        },
+        textReveal: {
+          "0%": { opacity: "0", transform: "translateY(100%)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        float: {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-10px)" },
+        },
+        pulseSubtle: {
+          "0%, 100%": { opacity: "1" },
+          "50%": { opacity: "0.8" },
+        },
+        slideUp: {
+          "0%": { transform: "translateY(100%)" },
+          "100%": { transform: "translateY(0)" },
+        },
+        slideDown: {
+          "0%": { transform: "translateY(-100%)" },
+          "100%": { transform: "translateY(0)" },
+        },
+      },
+      transitionTimingFunction: {
+        "out-expo": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "out-circ": "cubic-bezier(0, 0.55, 0.45, 1)",
+        "out-back": "cubic-bezier(0.34, 1.56, 0.64, 1)",
+      },
+      typography: {
+        DEFAULT: {
+          css: {
+            color: "#202124",
+            maxWidth: "none",
+            lineHeight: "1.7",
+            h1: {
+              color: "#202124",
+              fontWeight: "700",
+              fontSize: "2.25rem",
+              lineHeight: "2.5rem",
+            },
+            h2: {
+              color: "#202124",
+              fontWeight: "600",
+              fontSize: "1.875rem",
+              lineHeight: "2.25rem",
+            },
+            h3: {
+              color: "#202124",
+              fontWeight: "600",
+              fontSize: "1.5rem",
+              lineHeight: "2rem",
+            },
+            p: {
+              color: "#60646c",
+              fontSize: "1rem",
+              lineHeight: "1.75rem",
+            },
+            a: {
+              color: "#202124",
+              textDecoration: "none",
+              borderBottom: "1px solid transparent",
+              transition: "all 0.2s ease",
+              "&:hover": {
+                borderBottomColor: "#202124",
+              },
+            },
+            code: {
+              color: "#202124",
+              backgroundColor: "#f8f9fa",
+              padding: "0.25rem 0.375rem",
+              borderRadius: "0.25rem",
+              fontSize: "0.875rem",
+              fontWeight: "500",
+            },
+            "code::before": {
+              content: '""',
+            },
+            "code::after": {
+              content: '""',
+            },
+            pre: {
+              backgroundColor: "#f8f9fa",
+              color: "#202124",
+              border: "1px solid #e1e5e9",
+              borderRadius: "0.5rem",
+            },
+            blockquote: {
+              borderLeftColor: "#e1e5e9",
+              color: "#60646c",
+              fontStyle: "normal",
+            },
+          },
+        },
+        invert: {
+          css: {
+            color: "#f8f9fa",
+            h1: { color: "#f8f9fa" },
+            h2: { color: "#f8f9fa" },
+            h3: { color: "#f8f9fa" },
+            p: { color: "#c0c4c7" },
+            a: {
+              color: "#f8f9fa",
+              "&:hover": {
+                borderBottomColor: "#f8f9fa",
+              },
+            },
+            code: {
+              color: "#f8f9fa",
+              backgroundColor: "#2d2f32",
+            },
+            pre: {
+              backgroundColor: "#1a1b1d",
+              color: "#f8f9fa",
+              border: "1px solid #2d2f32",
+            },
+            blockquote: {
+              borderLeftColor: "#2d2f32",
+              color: "#c0c4c7",
+            },
+          },
+        },
+      },
+    },
+  },
+  plugins: [require("@tailwindcss/typography")],
+};

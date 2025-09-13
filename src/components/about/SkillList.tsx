@@ -1,0 +1,24 @@
+interface SkillListProps {
+  title: string;
+  skills: string[];
+}
+
+export function SkillList({ title, skills }: SkillListProps) {
+  return (
+    <div>
+      <h3 className="text-sm font-light text-neutral-500 dark:text-neutral-500 mb-3 tracking-widest uppercase">
+        {title}
+      </h3>
+      <div className="flex flex-wrap gap-2">
+        {skills.map((skill) => (
+          <span
+            key={skill}
+            className="px-3 py-1 text-sm font-light bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 tracking-wide"
+          >
+            {skill}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
