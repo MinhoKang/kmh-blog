@@ -14,7 +14,7 @@ export function HeroSection() {
   }, []);
 
   return (
-    <section className="py-32">
+    <section className="py-20">
       <div className="max-w-4xl">
         {/* 메인 타이틀 */}
         <div className="">

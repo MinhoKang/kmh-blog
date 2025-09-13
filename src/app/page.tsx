@@ -11,7 +11,7 @@ export default function Home() {
         <Header variant="home" />
 
         {/* 메인 콘텐츠 */}
-        <main className="flex flex-col justify-center min-h-screen pt-20 gap-y-16">
+        <main className="flex flex-col justify-center min-h-screen gap-y-10">
           <HeroSection />
           <NavigationCards />
           <Footer variant="home" />
