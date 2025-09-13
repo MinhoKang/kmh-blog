@@ -1,0 +1,251 @@
+---
+title: "Building a Real-time Chat System: From 3217ms to 87ms"
+date: "2024-12-15"
+excerpt: "How I built a real-time chat system using Socket.io and optimized its performance by 97% using React.memo and smart architecture decisions."
+author: "KMH"
+tags: ["React", "Socket.io", "Performance", "Real-time"]
+---
+
+# Building a Real-time Chat System: From 3217ms to 87ms
+
+Building a real-time chat system is one of those challenges that sounds simple in theory but quickly becomes complex in practice. Over the course of 4 months, I developed a chat system similar to KakaoTalk for our student management platform, and the journey taught me invaluable lessons about performance optimization and real-time architectures.
+
+## The Challenge
+
+Our requirements were ambitious:
+
+- **Real-time messaging** with instant delivery
+- **Bi-directional infinite scroll** for message history
+- **File sharing** capabilities
+- **Message search, replies, and deletion**
+- **Cross-tab synchronization** using BroadcastChannel API
+- **Support for 1000+ concurrent users**
+
+## Technical Stack
+
+```typescript
+// Core technologies
+const techStack = {
+  realTime: "Socket.io",
+  frontend: "Next.js 15 + React 19",
+  stateManagement: "Zustand",
+  styling: "Tailwind CSS + Shadcn",
+  crossTab: "BroadcastChannel API",
+};
+```
+
+## The Architecture
+
+### 1. Socket.io Integration
+
+```typescript
+// Socket connection with auto-reconnection
+export class ChatSocket {
+  private socket: Socket;
+
+  connect(userId: string) {
+    this.socket = io(process.env.NEXT_PUBLIC_SOCKET_URL, {
+      auth: { userId },
+      autoConnect: true,
+      reconnection: true,
+      reconnectionAttempts: 5,
+      reconnectionDelay: 1000,
+    });
+
+    this.setupEventListeners();
+  }
+
+  private setupEventListeners() {
+    this.socket.on("message:new", this.handleNewMessage);
+    this.socket.on("message:read", this.handleMessageRead);
+    this.socket.on("user:typing", this.handleTyping);
+  }
+}
+```
+
+### 2. Bi-directional Infinite Scroll
+
+The trickiest part was implementing infinite scroll that works both ways - users can scroll up for older messages or down for newer ones.
+
+```typescript
+export const useInfiniteScroll = (chatRoomId: string) => {
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [hasNextPage, setHasNextPage] = useState(true);
+  const [hasPreviousPage, setHasPreviousPage] = useState(true);
+
+  const { ref: topRef } = useIntersection({
+    onIntersect: () => loadOlderMessages(),
+    threshold: 0.1,
+  });
+
+  const { ref: bottomRef } = useIntersection({
+    onIntersect: () => loadNewerMessages(),
+    threshold: 0.1,
+  });
+
+  return {
+    messages,
+    topRef,
+    bottomRef,
+    hasNextPage,
+    hasPreviousPage,
+  };
+};
+```
+
+## The Performance Problem
+
+Initially, the chat worked, but as conversations grew longer and included more images, we noticed severe performance degradation. The **Interaction to Next Paint (INP) reached 3217ms** - completely unacceptable for a real-time application.
+
+### Root Cause Analysis
+
+Using React DevTools Profiler, I identified the culprits:
+
+1. **Unnecessary re-renders**: Every new message caused the entire message list to re-render
+2. **Heavy image processing**: Large images weren't optimized
+3. **Inefficient state updates**: Socket events triggered cascading updates
+
+## The Solution: Strategic Memoization
+
+### 1. Component Memoization
+
+```typescript
+// Before: Every message re-rendered on updates
+const MessageItem = ({ message, onRead, onReply }) => {
+  return (
+    <div className="message-item">
+      <MessageContent content={message.content} />
+      <MessageActions onRead={onRead} onReply={onReply} />
+    </div>
+  );
+};
+
+// After: Memoized with careful prop comparison
+const MessageItem = React.memo(({ message, onRead, onReply }) => {
+  return (
+    <div className="message-item">
+      <MessageContent content={message.content} />
+      <MessageActions onRead={onRead} onReply={onReply} />
+    </div>
+  );
+}, (prevProps, nextProps) => {
+  return (
+    prevProps.message.id === nextProps.message.id &&
+    prevProps.message.readAt === nextProps.message.readAt &&
+    prevProps.message.status === nextProps.message.status
+  );
+});
+```
+
+### 2. Optimized State Structure
+
+```typescript
+// Before: Flat message array causing full re-renders
+interface ChatState {
+  messages: Message[];
+  isLoading: boolean;
+}
+
+// After: Normalized state with message map
+interface OptimizedChatState {
+  messageIds: string[];
+  messageById: Record<string, Message>;
+  isLoading: boolean;
+  lastUpdated: Record<string, number>; // Track individual message updates
+}
+```
+
+### 3. Smart Event Handling
+
+```typescript
+// Debounced scroll handling to reduce event frequency
+const useOptimizedScroll = () => {
+  const scrollHandler = useMemo(
+    () =>
+      debounce((event) => {
+        // Handle scroll logic
+      }, 16), // ~60fps
+    []
+  );
+
+  return scrollHandler;
+};
+```
+
+## Cross-Tab Synchronization
+
+One unique challenge was synchronizing chat state across multiple browser tabs. Users could have both parent and student chat windows open simultaneously.
+
+```typescript
+// BroadcastChannel for cross-tab communication
+class CrossTabSync {
+  private channel = new BroadcastChannel("chat-sync");
+
+  constructor() {
+    this.channel.addEventListener("message", this.handleMessage);
+  }
+
+  syncMessageAcrossTabs(message: Message) {
+    this.channel.postMessage({
+      type: "MESSAGE_UPDATE",
+      payload: { message },
+    });
+  }
+
+  private handleMessage = (event: MessageEvent) => {
+    const { type, payload } = event.data;
+
+    switch (type) {
+      case "MESSAGE_UPDATE":
+        // Update local state without API call
+        updateLocalMessage(payload.message);
+        break;
+    }
+  };
+}
+```
+
+## The Results
+
+After implementing these optimizations:
+
+| Metric                 | Before | After | Improvement       |
+| ---------------------- | ------ | ----- | ----------------- |
+| **INP**                | 3217ms | 87ms  | **97% faster**    |
+| **Initial Load**       | 2.3s   | 0.8s  | **65% faster**    |
+| **Memory Usage**       | ~45MB  | ~23MB | **49% reduction** |
+| **Scroll Performance** | Janky  | 60fps | **Smooth**        |
+
+## Key Lessons Learned
+
+### 1. Measure Before Optimizing
+
+Performance problems are often not where you think they are. Use profiling tools extensively.
+
+### 2. React.memo Is Powerful But Not Magic
+
+Careful prop comparison functions are crucial for effective memoization.
+
+### 3. Normalize Your State
+
+Flat arrays are simple but can become performance bottlenecks in real-time applications.
+
+### 4. WebAPIs Are Your Friend
+
+BroadcastChannel, IntersectionObserver, and other modern web APIs can solve complex problems elegantly.
+
+## What's Next?
+
+Currently exploring:
+
+- **Virtual scrolling** for even better performance with 10k+ messages
+- **WebRTC** for peer-to-peer file sharing
+- **Service Workers** for offline message queue
+
+## Conclusion
+
+Building performant real-time applications requires thinking beyond just making it work. Every millisecond counts when users expect instant responses. The journey from 3217ms to 87ms taught me that **performance is not an afterthought—it's an architectural decision**.
+
+---
+
+_Have questions about real-time architectures or performance optimization? Feel free to reach out!_

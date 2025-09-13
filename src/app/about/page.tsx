@@ -3,16 +3,37 @@ import { SkillList } from "@/components/about/SkillList";
 import { ContactInfo } from "@/components/about/ContactInfo";
 
 export default function AboutPage() {
-  const frontendSkills = ["React", "Next.js", "TypeScript", "Tailwind CSS"];
-  const designSkills = ["Figma", "Adobe Creative Suite", "Framer", "Principle"];
+  const frontendSkills = [
+    "React",
+    "Next.js",
+    "TypeScript",
+    "Tailwind CSS",
+    "Vite",
+    "React Native",
+    "Expo",
+  ];
+
+  const stateManagement = ["TanStack Query", "Zustand", "Recoil"];
+
+  const testingTools = ["Jest", "React Testing Library", "MSW"];
+
+  const devTools = [
+    "GitHub",
+    "Cursor",
+    "Jira",
+    "Confluence",
+    "Slack",
+    "Sentry",
+    "Socket.io",
+  ];
 
   const focusAreas = [
-    "Modern Web Technologies",
-    "User Experience Design",
+    "Real-time Web Applications",
+    "Mobile App Development",
     "Performance Optimization",
-    "Accessibility Standards",
-    "Design Systems",
-    "Creative Coding",
+    "User Experience Design",
+    "State Management Architecture",
+    "Cross-Platform Development",
   ];
 
   const contactInfo = [
@@ -22,8 +43,8 @@ export default function AboutPage() {
       type: "Email",
     },
     {
-      href: "https://github.com/kmh",
-      label: "github.com/kmh",
+      href: "https://github.com/MinhoKang",
+      label: "github.com/MinhoKang",
       type: "GitHub",
     },
     {
@@ -43,8 +64,9 @@ export default function AboutPage() {
           </h1>
           <div className="w-16 h-px bg-neutral-300 dark:bg-neutral-700 mb-8"></div>
           <p className="text-xl font-light text-neutral-600 dark:text-neutral-400 max-w-3xl tracking-wide leading-relaxed">
-            Creating meaningful digital experiences through thoughtful design
-            and precise engineering.
+            Frontend Developer with 2+ years of experience building modern web
+            and mobile applications. Specialized in React ecosystem and
+            passionate about performance optimization.
           </p>
         </div>
       </section>
@@ -53,32 +75,57 @@ export default function AboutPage() {
       <div className="grid md:grid-cols-2 gap-16 mb-20">
         {/* 왼쪽 컬럼 */}
         <div className="space-y-12">
-          <AboutSection title="Philosophy" delay="delay-200">
+          <AboutSection title="Journey" delay="delay-200">
             <div className="space-y-4 text-base font-light text-neutral-600 dark:text-neutral-400 leading-relaxed tracking-wide">
               <p>
-                I believe in the power of simplicity. Every line of code, every
-                design decision, and every user interaction should serve a
-                purpose and contribute to a greater whole.
+                Started as a student management team leader, then transitioned
+                to frontend development in 2024. Currently pursuing Computer
+                Science at Korea National Open University while working as a
+                professional developer.
               </p>
               <p>
-                My approach combines technical precision with creative vision,
-                always keeping the human experience at the center of what I
-                create.
+                My unique background in education and management gives me a deep
+                understanding of user needs and the importance of intuitive,
+                accessible interfaces.
               </p>
             </div>
           </AboutSection>
 
-          <AboutSection title="Background">
+          <AboutSection title="Philosophy">
             <div className="space-y-4 text-base font-light text-neutral-600 dark:text-neutral-400 leading-relaxed tracking-wide">
               <p>
-                With years of experience in web development and digital design,
-                I specialize in creating scalable, accessible, and beautiful
-                digital products.
+                I believe in writing clean, maintainable code that not only
+                works but tells a story. Every component should be reusable,
+                every function should have a single responsibility.
               </p>
               <p>
-                I&apos;m passionate about emerging technologies, clean code
-                practices, and the intersection of design and development.
+                Performance isn&apos;t just about fast loading times—it&apos;s
+                about creating seamless experiences that make users forget
+                they&apos;re using technology.
               </p>
+            </div>
+          </AboutSection>
+
+          <AboutSection title="Recent Achievements">
+            <div className="space-y-3 text-base font-light text-neutral-600 dark:text-neutral-400 leading-relaxed tracking-wide">
+              <div className="flex items-start">
+                <div className="w-1 h-1 bg-neutral-400 dark:bg-neutral-600 rounded-full mr-4 mt-3"></div>
+                <span>
+                  Improved chat system INP from 3217ms to 87ms using React.memo
+                </span>
+              </div>
+              <div className="flex items-start">
+                <div className="w-1 h-1 bg-neutral-400 dark:bg-neutral-600 rounded-full mr-4 mt-3"></div>
+                <span>
+                  Published mobile app on Google Play Store with 100+ downloads
+                </span>
+              </div>
+              <div className="flex items-start">
+                <div className="w-1 h-1 bg-neutral-400 dark:bg-neutral-600 rounded-full mr-4 mt-3"></div>
+                <span>
+                  Built real-time chat system serving 1000+ concurrent users
+                </span>
+              </div>
             </div>
           </AboutSection>
         </div>
@@ -102,8 +149,29 @@ export default function AboutPage() {
 
           <AboutSection title="Technology Stack">
             <div className="space-y-6">
-              <SkillList title="Frontend" skills={frontendSkills} />
-              <SkillList title="Design & Tools" skills={designSkills} />
+              <SkillList title="Frontend & Mobile" skills={frontendSkills} />
+              <SkillList title="State Management" skills={stateManagement} />
+              <SkillList title="Testing & Quality" skills={testingTools} />
+              <SkillList title="Development Tools" skills={devTools} />
+            </div>
+          </AboutSection>
+
+          <AboutSection title="Education">
+            <div className="space-y-4 text-sm font-light text-neutral-600 dark:text-neutral-400 leading-relaxed tracking-wide">
+              <div className="border-l-2 border-neutral-300 dark:border-neutral-700 pl-4">
+                <p className="font-medium text-neutral-800 dark:text-neutral-200">
+                  Computer Science
+                </p>
+                <p>Korea National Open University (2025 - Present)</p>
+                <p className="text-neutral-500">GPA: 4.13/4.5</p>
+              </div>
+              <div className="border-l-2 border-neutral-300 dark:border-neutral-700 pl-4">
+                <p className="font-medium text-neutral-800 dark:text-neutral-200">
+                  Education
+                </p>
+                <p>Chung-Ang University (2016 - 2022)</p>
+                <p className="text-neutral-500">GPA: 4.05/4.5</p>
+              </div>
             </div>
           </AboutSection>
         </div>
@@ -118,13 +186,13 @@ export default function AboutPage() {
         <div className="grid md:grid-cols-2 gap-12">
           <div>
             <p className="text-base font-light text-neutral-600 dark:text-neutral-400 leading-relaxed tracking-wide mb-6">
-              I&apos;m always interested in new opportunities, creative
-              collaborations, and meaningful conversations about design and
-              technology.
+              I&apos;m always interested in challenging projects, especially
+              those involving real-time systems, mobile development, or
+              performance optimization.
             </p>
             <p className="text-base font-light text-neutral-600 dark:text-neutral-400 leading-relaxed tracking-wide">
-              Currently based in Seoul, South Korea, but open to remote work
-              worldwide.
+              Currently based in Seoul, South Korea. Open to remote
+              opportunities and collaborative projects worldwide.
             </p>
           </div>
 

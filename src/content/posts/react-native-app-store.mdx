@@ -1,0 +1,303 @@
+---
+title: "From Idea to Play Store: Building '오늘 뭐 먹지' App"
+date: "2024-11-28"
+excerpt: "The complete journey of building and publishing a location-based restaurant recommendation app using React Native, from conception to 100+ downloads on Google Play Store."
+author: "KMH"
+tags: ["React Native", "Mobile App", "Play Store", "Kakao API"]
+---
+
+# From Idea to Play Store: Building '오늘 뭐 먹지' App
+
+Ever had that daily dilemma of "what should I eat today?" That question sparked the creation of my first published mobile app. Here's the complete journey from initial idea to 100+ downloads on Google Play Store.
+
+## The Idea 💡
+
+The concept was simple: **help people discover nearby restaurants through randomization**. Instead of endless scrolling through restaurant lists, users set their preferences (distance, category) and get random recommendations.
+
+Simple, right? Well, the implementation had some interesting challenges.
+
+## Tech Stack & Architecture
+
+```typescript
+const appStack = {
+  framework: "React Native + Expo SDK 53",
+  language: "TypeScript",
+  styling: "NativeWind + clsx",
+  maps: "Kakao Maps API + Places API",
+  location: "Expo Location",
+  webview: "react-native-webview",
+  monetization: "Google Ads",
+};
+```
+
+## Key Features
+
+### 🎯 Smart Location-Based Search
+
+- Current location detection with 50m-5km radius settings
+- Category filtering (restaurants, cafes, bars)
+- Intelligent random selection algorithm
+
+### 🗺️ Integrated Map Experience
+
+- Kakao Map integration for location visualization
+- One-tap navigation to Naver Maps or Kakao Map
+- Restaurant details and reviews
+
+### 📱 Native Mobile Experience
+
+- Smooth animations and gestures
+- Offline capability for viewed restaurants
+- Social sharing functionality
+
+### 💰 Monetization Strategy
+
+- Google Ads integration
+- Non-intrusive banner and interstitial ads
+
+## The Technical Challenges
+
+### Challenge #1: Kakao API Limitations
+
+The biggest technical hurdle was Kakao's API limit of 45 search results per query. For larger search radii, this meant users might miss great nearby options.
+
+**Problem**: User sets 3km radius → Only gets 45 restaurants max → Missing potentially better options
+
+**Solution**: Implemented multi-zone search strategy
+
+```typescript
+// Multi-zone search for areas > 2km
+const performMultiZoneSearch = async (center: Location, radius: number) => {
+  if (radius <= 2000) {
+    return performSingleSearch(center, radius);
+  }
+
+  // Divide search area into 4 quadrants
+  const quadrants = [
+    { lat: center.lat + offset, lng: center.lng + offset }, // NE
+    { lat: center.lat + offset, lng: center.lng - offset }, // NW
+    { lat: center.lat - offset, lng: center.lng + offset }, // SE
+    { lat: center.lat - offset, lng: center.lng - offset }, // SW
+  ];
+
+  const allResults = await Promise.all(
+    quadrants.map((point) => performSingleSearch(point, radius / 2))
+  );
+
+  // Remove duplicates and sort by distance
+  return removeDuplicatesAndSort(allResults.flat(), center);
+};
+```
+
+This increased the effective search pool from 45 to up to 225 restaurants.
+
+### Challenge #2: WebView Location Services
+
+Using Kakao Maps in React Native WebView presented an unexpected challenge - location services didn't work by default.
+
+```typescript
+// The fix: Setting proper baseUrl for WebView
+const MapWebView = () => {
+  return (
+    <WebView
+      source={{
+        uri: kakaoMapUrl,
+        baseUrl: 'https://map.kakao.com' // This was crucial!
+      }}
+      geolocationEnabled={true}
+      allowsInlineMediaPlayback={true}
+      // Other props...
+    />
+  );
+};
+```
+
+### Challenge #3: Expo Updates Implementation
+
+Wanted to push updates without going through app store review process, but needed to notify users about updates.
+
+```typescript
+// Custom update check with user notification
+export const useAppUpdates = () => {
+  const [updateAvailable, setUpdateAvailable] = useState(false);
+
+  useEffect(() => {
+    checkForUpdates();
+  }, []);
+
+  const checkForUpdates = async () => {
+    try {
+      const update = await Updates.checkForUpdateAsync();
+
+      if (update.isAvailable) {
+        setUpdateAvailable(true);
+        showUpdateModal();
+      }
+    } catch (error) {
+      console.log("Update check failed:", error);
+    }
+  };
+
+  const applyUpdate = async () => {
+    await Updates.fetchUpdateAsync();
+    await Updates.reloadAsync();
+  };
+
+  return { updateAvailable, applyUpdate };
+};
+```
+
+## The Design Philosophy
+
+### Minimalist Interface
+
+Following the principle of "less is more", the app has just three main screens:
+
+1. **Home**: Set preferences and get recommendation
+2. **Map**: View location and navigate
+3. **History**: See previously recommended places
+
+### Performance-First Approach
+
+- **Fast startup**: < 2 seconds from tap to usable
+- **Smooth animations**: 60fps throughout the app
+- **Efficient API usage**: Smart caching and batching
+
+## Development Process
+
+### 1. MVP Development (2 weeks)
+
+- Basic location detection
+- Simple Kakao API integration
+- Minimal UI with core functionality
+
+### 2. Feature Enhancement (3 weeks)
+
+- Multi-zone search algorithm
+- Map integration
+- Sharing functionality
+- History tracking
+
+### 3. Polish & Testing (2 weeks)
+
+- Performance optimization
+- Google Ads integration
+- Edge case handling
+- Icon and splash screen design
+
+### 4. Store Submission (1 week)
+
+- Google Play Console setup
+- Screenshots and store listing
+- Privacy policy and terms
+- Beta testing with friends
+
+## Play Store Success Metrics
+
+After 3 months on the store:
+
+| Metric              | Value       |
+| ------------------- | ----------- |
+| **Downloads**       | 100+        |
+| **Rating**          | 4.2/5       |
+| **Retention**       | 23% (Day 7) |
+| **Crash-free Rate** | 99.1%       |
+| **Average Session** | 2.3 minutes |
+
+## Monetization Results
+
+Google Ads integration yielded modest but encouraging results:
+
+- **Monthly Revenue**: ~$15-25
+- **eCPM**: $2.30 average
+- **Fill Rate**: 87%
+
+Not enough to quit my day job, but proof that mobile monetization works!
+
+## Lessons Learned
+
+### 1. Start Simple, Iterate Fast
+
+The MVP took 2 weeks to build and gave immediate user feedback. Don't over-engineer the first version.
+
+### 2. API Limitations Spark Innovation
+
+The Kakao API limit forced me to create a better search algorithm. Constraints breed creativity.
+
+### 3. App Store Optimization Matters
+
+Screenshots, keywords, and descriptions significantly impact discoverability.
+
+### 4. User Feedback Is Gold
+
+The highest-rated feature (sharing) came from user suggestions, not my original plan.
+
+### 5. Performance > Features
+
+Users prefer a fast app with fewer features over a slow app with many features.
+
+## What's Next?
+
+Currently working on Version 2.0:
+
+- **AI-powered recommendations** based on user preferences
+- **Social features** for sharing favorite spots with friends
+- **Review integration** to show ratings directly in app
+- **iOS version** to reach broader audience
+
+## Technical Deep-Dive: Random Selection Algorithm
+
+The core of the app is smart randomization. Can't just use `Math.random()` - need to consider distance, ratings, and user preferences:
+
+```typescript
+interface WeightedSelection {
+  restaurant: Restaurant;
+  weight: number;
+}
+
+const calculateWeight = (restaurant: Restaurant, userLocation: Location) => {
+  const distanceWeight = Math.max(0, 1 - restaurant.distance / MAX_DISTANCE);
+  const ratingWeight = restaurant.rating / 5;
+  const categoryWeight = userPreferences.includes(restaurant.category)
+    ? 1.2
+    : 1;
+
+  return distanceWeight * 0.4 + ratingWeight * 0.4 + categoryWeight * 0.2;
+};
+
+const selectRandomRestaurant = (restaurants: Restaurant[]): Restaurant => {
+  const weightedOptions: WeightedSelection[] = restaurants.map(
+    (restaurant) => ({
+      restaurant,
+      weight: calculateWeight(restaurant, userLocation),
+    })
+  );
+
+  const totalWeight = weightedOptions.reduce(
+    (sum, option) => sum + option.weight,
+    0
+  );
+  let randomValue = Math.random() * totalWeight;
+
+  for (const option of weightedOptions) {
+    randomValue -= option.weight;
+    if (randomValue <= 0) {
+      return option.restaurant;
+    }
+  }
+
+  return weightedOptions[0].restaurant; // Fallback
+};
+```
+
+## Conclusion
+
+Building and shipping '오늘 뭐 먹지' taught me that **execution matters more than the idea**. The concept was simple, but the devil was in the details - API limitations, performance optimization, user experience design, and store optimization.
+
+The app continues to help people discover great local food, and seeing those 100+ downloads and positive reviews never gets old.
+
+**Sometimes the best projects come from solving your own daily problems.**
+
+---
+
+_Want to try the app? Search "오늘 뭐 먹지" on Google Play Store, or check out the source code on my GitHub!_
