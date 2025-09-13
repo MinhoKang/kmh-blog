@@ -5,7 +5,7 @@ interface SkillListProps {
 
 export function SkillList({ title, skills }: SkillListProps) {
   return (
-    <div>
+    <div className="flex flex-col gap-y-2">
       <h3 className="text-sm font-medium font-heading text-neutral-500 dark:text-neutral-500 mb-3 tracking-widest uppercase">
         {title}
       </h3>
