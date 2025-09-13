@@ -1,12 +1,11 @@
 interface AboutSectionProps {
   title: string;
   children: React.ReactNode;
-  delay?: string;
 }
 
-export function AboutSection({ title, children, delay }: AboutSectionProps) {
+export function AboutSection({ title, children }: AboutSectionProps) {
   return (
-    <section className={`animate-fade-in flex flex-col gap-y-3 ${delay || ""}`}>
+    <section className="flex flex-col gap-y-3">
       <h2 className="text-xl font-semibold font-heading text-charcoal-gray dark:text-light-text mb-6 tracking-wide">
         {title}
       </h2>

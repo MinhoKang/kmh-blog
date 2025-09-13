@@ -23,7 +23,7 @@ export default function AboutPage() {
       <div className="grid md:grid-cols-2 gap-16 mb-20">
         {/* 왼쪽 컬럼 */}
         <div className="gap-y-12 flex flex-col">
-          <AboutSection title="경력" delay="delay-200">
+          <AboutSection title="경력">
             <div className="flex flex-col gap-y-6 text-base font-normal font-body text-neutral-600 dark:text-neutral-400 leading-relaxed tracking-wide">
               {CAREER_EXPERIENCE.map((career, index) => (
                 <div
@@ -98,7 +98,7 @@ export default function AboutPage() {
       </div>
 
       {/* 연락처 섹션 */}
-      <section className="border-t border-neutral-200 dark:border-neutral-800 pt-8 animate-fade-in delay-400 flex flex-col gap-y-2">
+      <section className="border-t border-neutral-200 dark:border-neutral-800 pt-8 flex flex-col gap-y-2">
         <h2 className="text-xl font-semibold font-heading text-charcoal-gray dark:text-light-text mb-8 tracking-wide">
           연락하기
         </h2>

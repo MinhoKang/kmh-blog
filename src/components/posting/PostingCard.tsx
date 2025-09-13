@@ -21,10 +21,7 @@ interface PostingCardProps {
 
 export function PostingCard({ posting, index }: PostingCardProps) {
   return (
-    <article
-      className="group animate-fade-in"
-      style={{ animationDelay: `${300 + index * 150}ms` }}
-    >
+    <article className="group">
       <div className="border-b border-neutral-200 dark:border-neutral-800 pb-16 last:border-b-0">
         {/* 이미지 (있는 경우) */}
         {posting.image && (

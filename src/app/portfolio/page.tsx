@@ -61,7 +61,7 @@ export default async function PortfolioPage() {
       <PageHeader title="Portfolio" />
 
       {/* 프로젝트 목록 */}
-      <section className="animate-fade-in delay-200">
+      <section>
         {projects.length !== 0 && (
           <div className="space-y-32">
             {projects.map((project, index) => (
