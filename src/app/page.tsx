@@ -19,6 +19,8 @@ export default function Home() {
     return () => clearTimeout(timer);
   }, []);
 
+  console.log("test");
+
   // 하이드레이션 전에는 애니메이션 없이 표시
   if (!mounted) {
     return (
