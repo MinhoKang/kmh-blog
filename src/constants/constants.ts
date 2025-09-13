@@ -88,7 +88,7 @@ export const TESTING_TOOLS = ["Jest", "React Testing Library", "MSW", "Sentry"];
 
 export const DEV_TOOLS = ["GitHub", "Cursor", "Jira", "Confluence", "Slack"];
 
-export const COMMUNICATION_TOOLS = ["Axios", "ky", "Socket.io"];
+export const API_TOOLS = ["Axios", "ky", "Socket.io"];
 
 export const FOCUS_AREAS = [
   "실시간 웹 애플리케이션",

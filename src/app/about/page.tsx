@@ -10,7 +10,7 @@ import {
   STATE_MANAGEMENT,
   TESTING_TOOLS,
   DEV_TOOLS,
-  COMMUNICATION_TOOLS,
+  API_TOOLS,
 } from "@/constants/constants";
 
 export default function AboutPage() {
@@ -70,7 +70,7 @@ export default function AboutPage() {
             <div className="gap-y-6 flex flex-col">
               <SkillList title="프론트엔드 & 모바일" skills={FRONTEND_SKILLS} />
               <SkillList title="상태 관리" skills={STATE_MANAGEMENT} />
-              <SkillList title="통신" skills={COMMUNICATION_TOOLS} />
+              <SkillList title="통신" skills={API_TOOLS} />
               <SkillList title="테스팅 & 품질관리" skills={TESTING_TOOLS} />
               <SkillList title="개발 도구" skills={DEV_TOOLS} />
             </div>
