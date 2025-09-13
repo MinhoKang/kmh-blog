@@ -1,6 +1,7 @@
 import { AboutSection } from "@/components/about/AboutSection";
 import { SkillList } from "@/components/about/SkillList";
 import { ContactInfo } from "@/components/about/ContactInfo";
+import { PageHeader } from "@/components/common/PageHeader";
 import {
   CONTACT_INFO,
   CAREER_EXPERIENCE,
@@ -16,17 +17,7 @@ export default function AboutPage() {
   return (
     <div className="max-w-4xl flex-col gap-8 flex h-full">
       {/* 헤더 */}
-      <section className="mb-28">
-        <div className="animate-fade-in">
-          <h1 className="text-4xl md:text-6xl font-bold font-heading text-charcoal-gray dark:text-light-text mb-6 tracking-tighter leading-tight">
-            About
-          </h1>
-          <div className="w-16 h-px bg-neutral-300 dark:bg-neutral-700 mb-8"></div>
-          <p className="text-xl font-normal font-body text-neutral-600 dark:text-neutral-400 max-w-3xl tracking-wide leading-relaxed">
-            안녕하세요. 저는 강민호입니다.
-          </p>
-        </div>
-      </section>
+      <PageHeader title="About" />
 
       {/* 메인 콘텐츠 */}
       <div className="grid md:grid-cols-2 gap-16 mb-20">

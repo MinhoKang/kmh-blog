@@ -38,9 +38,9 @@ export function PostingCard({ posting, index }: PostingCardProps) {
           </div>
         )}
 
-        <div className="grid md:grid-cols-2 gap-12">
-          {/* 왼쪽: 포스팅 정보 */}
-          <div>
+        <div className="w-full">
+          {/* 포스팅 정보 */}
+          <div className="w-full flex flex-col gap-y-2">
             <div className="mb-4">
               <time className="text-sm font-light text-neutral-500 dark:text-neutral-500 tracking-widest uppercase">
                 {posting.date}
@@ -64,7 +64,7 @@ export function PostingCard({ posting, index }: PostingCardProps) {
 
             {/* 태그 */}
             {posting.tags && posting.tags.length > 0 && (
-              <div className="mb-8">
+              <div className="flex flex-col gap-y-1">
                 <h3 className="text-sm font-light text-neutral-500 dark:text-neutral-500 mb-3 tracking-widest uppercase">
                   Tags
                 </h3>
@@ -85,7 +85,7 @@ export function PostingCard({ posting, index }: PostingCardProps) {
             <div className="flex gap-6">
               <Link
                 href={`/${posting.type === "project" ? "portfolio" : "posts"}/${posting.slug}`}
-                className="inline-flex items-center text-sm font-light text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors duration-300 tracking-wide group/link"
+                className="inline-flex items-center text-sm font-light text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors duration-300 tracking-wide group/link gap-x-1"
               >
                 {posting.type === "project" ? "View Details" : "Read More"}
                 <svg
@@ -139,9 +139,6 @@ export function PostingCard({ posting, index }: PostingCardProps) {
               )}
             </div>
           </div>
-
-          {/* 오른쪽: 추가 정보나 여백 */}
-          <div className="hidden md:block">{/* 여백 또는 추가 정보 */}</div>
         </div>
       </div>
     </article>
