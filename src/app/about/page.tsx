@@ -38,8 +38,8 @@ export default function AboutPage() {
 
   const contactInfo = [
     {
-      href: "mailto:hello@kmh.dev",
-      label: "hello@kmh.dev",
+      href: "mailto:rkdalsgh0106@naver.com",
+      label: "rkdalsgh0106@naver.com",
       type: "Email",
     },
     {
@@ -48,8 +48,8 @@ export default function AboutPage() {
       type: "GitHub",
     },
     {
-      href: "https://linkedin.com/in/kmh",
-      label: "linkedin.com/in/kmh",
+      href: "https://www.linkedin.com/in/%EB%AF%BC%ED%98%B8-%EA%B0%95-8838502a7/?trk=opento_sprofile_topcard",
+      label: "linkedin.com/in/minhokang",
       type: "LinkedIn",
     },
   ];
