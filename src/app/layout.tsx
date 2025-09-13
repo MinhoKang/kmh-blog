@@ -35,9 +35,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko" className="scroll-smooth" suppressHydrationWarning>
+    <html lang="ko" className="scroll-smooth dark" suppressHydrationWarning>
       <body
-        className={`${inter.variable} ${jetbrainsMono.variable} font-sans antialiased bg-white text-black dark:bg-black dark:text-white transition-colors duration-300`}
+        className={`${inter.variable} ${jetbrainsMono.variable} font-sans antialiased bg-white text-charcoal-gray dark:bg-black dark:text-light-text transition-colors duration-300`}
       >
         <ThemeProvider
           attribute="class"
