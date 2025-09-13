@@ -1,0 +1,214 @@
+---
+title: "NOWZ 학생 관리 프로그램 상태 관리 개선"
+description: "기존 Recoil 기반 상태 관리를 Tanstack-Query로 이전하고 Chart.js를 활용한 학생 분석 레포트 시스템을 구축했다."
+startDate: "2024-03"
+tags:
+  [
+    "React",
+    "Vite",
+    "Tanstack-Query",
+    "Chart.js",
+    "State Management",
+    "TypeScript",
+  ]
+category: "portfolio"
+featured: true
+---
+
+## 프로젝트 개요
+
+기존 **Recoil 기반으로 구축된 학생 관리 프로그램**의 상태 관리 시스템을 **Tanstack-Query로 전면 이전**하고, Chart.js를 활용한 **학생 분석 레포트 시스템**을 새롭게 구축한 프로젝트다.
+
+대시보드, 수업 관리, 과제 관리, 학생 분석 레포트, 일정 관리 등 **종합적인 학생 관리 기능**을 제공하는 시스템이다.
+
+---
+
+## 주요 성과
+
+<table>
+  <thead>
+    <tr>
+      <th>구분</th>
+      <th>성과</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <strong>상태 관리 개선</strong>
+      </td>
+      <td>Recoil → Tanstack-Query 전면 이전</td>
+    </tr>
+    <tr>
+      <td>
+        <strong>신규 기능 개발</strong>
+      </td>
+      <td>Chart.js 기반 학생 분석 레포트 시스템</td>
+    </tr>
+    <tr>
+      <td>
+        <strong>시스템 안정성</strong>
+      </td>
+      <td>버그 수정 및 지속적 유지보수</td>
+    </tr>
+    <tr>
+      <td>
+        <strong>성능 최적화</strong>
+      </td>
+      <td>서버 상태와 클라이언트 상태 분리</td>
+    </tr>
+    <tr>
+      <td>
+        <strong>개발 효율성</strong>
+      </td>
+      <td>캐싱 및 동기화 자동화</td>
+    </tr>
+  </tbody>
+</table>
+
+### 기술 스택 구성
+
+<table>
+  <thead>
+    <tr>
+      <th>영역</th>
+      <th>기존 기술</th>
+      <th>개선 후</th>
+      <th>개선 효과</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <strong>프레임워크</strong>
+      </td>
+      <td>React 18 + Vite</td>
+      <td>React 18 + Vite</td>
+      <td>빠른 개발 환경 유지</td>
+    </tr>
+    <tr>
+      <td>
+        <strong>상태 관리</strong>
+      </td>
+      <td>Recoil</td>
+      <td>Tanstack-Query + Recoil</td>
+      <td>서버/클라이언트 상태 분리</td>
+    </tr>
+    <tr>
+      <td>
+        <strong>데이터 시각화</strong>
+      </td>
+      <td>-</td>
+      <td>Chart.js</td>
+      <td>분석 레포트 기능 추가</td>
+    </tr>
+    <tr>
+      <td>
+        <strong>스타일링</strong>
+      </td>
+      <td>Tailwind</td>
+      <td>Tailwind</td>
+      <td>일관된 디자인 시스템</td>
+    </tr>
+    <tr>
+      <td>
+        <strong>폼 관리</strong>
+      </td>
+      <td>React Hook Form + Zod</td>
+      <td>React Hook Form + Zod</td>
+      <td>타입 안전한 폼 처리</td>
+    </tr>
+  </tbody>
+</table>
+
+---
+
+## 핵심 기능
+
+### 1. 상태 관리 시스템 개선
+
+**기존 Recoil로 관리되던 전역 상태**를 Tanstack-Query 기반으로 전면 재구축했다.
+
+**개선 내용**:
+
+- 서버 상태와 클라이언트 상태의 명확한 분리
+- 자동 캐싱 및 동기화 메커니즘 도입
+- API 호출 최적화 및 중복 요청 제거
+- 에러 처리 및 로딩 상태 표준화
+
+### 2. 학생 분석 레포트 시스템
+
+**Chart.js를 활용**하여 학생들의 학습 데이터를 시각화하는 분석 레포트 페이지를 개발했다.
+
+<table>
+  <thead>
+    <tr>
+      <th>차트 유형</th>
+      <th>분석 내용</th>
+      <th>활용 목적</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <strong>선형 차트</strong>
+      </td>
+      <td>학습 성과 추이 분석</td>
+      <td>시간별 성장 패턴 파악</td>
+    </tr>
+    <tr>
+      <td>
+        <strong>막대 차트</strong>
+      </td>
+      <td>과목별 성취도 비교</td>
+      <td>강점/약점 과목 식별</td>
+    </tr>
+    <tr>
+      <td>
+        <strong>원형 차트</strong>
+      </td>
+      <td>과제 완료율 분석</td>
+      <td>학습 참여도 측정</td>
+    </tr>
+    <tr>
+      <td>
+        <strong>히트맵</strong>
+      </td>
+      <td>출석률 시각화</td>
+      <td>학습 패턴 분석</td>
+    </tr>
+  </tbody>
+</table>
+
+### 3. 종합 학생 관리 기능
+
+**대시보드 중심**의 통합 관리 시스템을 구축했다.
+
+**주요 기능**:
+
+- **대시보드**: 핵심 지표 및 알림 통합 관리
+- **수업 관리**: 수업 일정 및 커리큘럼 관리
+- **과제 관리**: 과제 생성, 제출, 평가 시스템
+- **일정 관리**: 개인별/그룹별 일정 관리
+- **학생 분석**: 성과 분석 및 레포트 생성
+
+---
+
+## 기술적 도전과 해결
+
+### 1. Recoil에서 Tanstack-Query로의 상태 관리 이전
+
+**문제**: 기존 Recoil 기반 전역 상태 관리의 한계점
+
+**상황 분석**:
+
+- 서버 상태와 클라이언트 상태가 혼재되어 관리 복잡성 증가
+- API 캐싱 및 동기화 로직의 수동 구현 필요
+- 네트워크 상태에 따른 에러 처리 일관성 부족
+
+**해결책**:
+
+<table>
+  <thead>
+    <tr>
+      <th>
