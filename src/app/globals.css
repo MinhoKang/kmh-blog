@@ -510,3 +510,59 @@ html.dark li code {
 .prose-wrapper > * + * {
   @apply mt-6;
 }
+
+/* === rehype-pretty-code 스타일 === */
+@layer base {
+  /* === light mode (default) === */
+  :root {
+    /* === Code block - 코드블록 배경색 및 코드 조각 색을 설정한 shiki 테마에 맞게 === */
+    figure[data-rehype-pretty-code-figure] {
+      @apply border-neutral-300;
+    }
+
+    figure[data-rehype-pretty-code-figure] pre {
+      @apply bg-neutral-50;
+    }
+
+    code[data-theme*=" "],
+    code[data-theme*=" "] span {
+      color: var(--shiki-light);
+    }
+  }
+
+  /* === dark mode === */
+  .dark {
+    /* === Code block - 코드블록 배경색 및 코드 조각 색을 설정한 shiki 테마에 맞게 === */
+    figure[data-rehype-pretty-code-figure] {
+      @apply border-neutral-700;
+    }
+
+    figure[data-rehype-pretty-code-figure] pre {
+      @apply bg-neutral-900;
+    }
+
+    code[data-theme*=" "],
+    code[data-theme*=" "] span {
+      color: var(--shiki-dark);
+    }
+  }
+}
+
+/* === Code block - basic structure (= 코드블록 간격, 라인별 간격, 폰트 크기 정도) === */
+figure[data-rehype-pretty-code-figure] {
+  @apply mb-6 overflow-clip rounded-lg border border-neutral-300 dark:border-neutral-700;
+}
+
+figure[data-rehype-pretty-code-figure] pre {
+  overflow-x: auto;
+  scrollbar-width: none;
+  @apply py-4;
+}
+
+figure[data-rehype-pretty-code-figure] pre::-webkit-scrollbar {
+  scrollbar-width: none;
+}
+
+figure[data-rehype-pretty-code-figure] pre [data-line] {
+  @apply px-4 text-sm leading-relaxed;
+}

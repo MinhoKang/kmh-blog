@@ -1,5 +1,31 @@
 import { ComponentProps } from "react";
 import { MDXRemote } from "next-mdx-remote/rsc";
+import rehypePrettyCode, { type Options } from "rehype-pretty-code";
+
+// rehype-pretty-code 옵션 설정
+const prettyCodeOptions: Options = {
+  keepBackground: true,
+  theme: {
+    dark: "github-dark",
+    light: "github-light",
+  },
+};
+
+// 인라인 코드 컴포넌트 (코드블록이 아닌 경우만)
+const InlineCode = (props: ComponentProps<"code">) => {
+  // 코드블록인 경우 (pre 태그 안에 있는 경우)는 rehype-pretty-code가 처리
+  if (props.className?.includes("language-")) {
+    return <code {...props} />;
+  }
+
+  // 인라인 코드인 경우만 커스텀 스타일 적용
+  return (
+    <code
+      className="bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 px-2 py-1 rounded text-sm font-mono"
+      {...props}
+    />
+  );
+};
 
 const components = {
   h1: (props: ComponentProps<"h1">) => (
@@ -47,12 +73,7 @@ const components = {
       className="border-l-4 border-neutral-300 dark:border-neutral-600 pl-6 mb-8 mt-8 italic text-neutral-600 dark:text-neutral-400"
     />
   ),
-  pre: (props: ComponentProps<"pre">) => (
-    <pre {...props} className="mb-8 mt-8" />
-  ),
-  code: (props: ComponentProps<"code">) => (
-    <code {...props} className="text-sm overflow-x-auto" />
-  ),
+  code: InlineCode,
   strong: (props: ComponentProps<"strong">) => (
     <strong
       {...props}
@@ -66,7 +87,15 @@ export const CustomMdxRemote = ({
 }: ComponentProps<typeof MDXRemote>) => {
   return (
     <div className="prose-wrapper text-base leading-relaxed text-neutral-700 dark:text-neutral-300">
-      <MDXRemote {...props} components={components} />
+      <MDXRemote
+        {...props}
+        components={components}
+        options={{
+          mdxOptions: {
+            rehypePlugins: [[rehypePrettyCode, prettyCodeOptions]],
+          },
+        }}
+      />
     </div>
   );
 };
