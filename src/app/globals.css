@@ -512,15 +512,15 @@ html.dark li code {
 }
 
 .prose h1 {
-  @apply text-3xl md:text-4xl font-bold mb-8 mt-12 first:mt-0 text-neutral-900 dark:text-neutral-100;
+  @apply text-3xl md:text-4xl font-extrabold mb-8 mt-12 first:mt-0 text-neutral-900 dark:text-neutral-100;
 }
 
 .prose h2 {
-  @apply text-2xl md:text-3xl font-semibold mb-6 mt-12 text-neutral-900 dark:text-neutral-100;
+  @apply text-2xl md:text-3xl font-extrabold mb-6 mt-12 text-neutral-900 dark:text-neutral-100;
 }
 
 .prose h3 {
-  @apply text-xl md:text-2xl font-semibold mb-5 mt-10 text-neutral-900 dark:text-neutral-100;
+  @apply text-xl md:text-2xl font-bold mb-5 mt-10 text-neutral-900 dark:text-neutral-100;
 }
 
 .prose h4 {

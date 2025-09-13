@@ -4,6 +4,7 @@ import matter from "gray-matter";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { formatDateRange } from "@/lib/date-utils";
 
 interface Props {
   params: Promise<{
@@ -29,7 +30,9 @@ async function getProject(slug: string) {
     link: data.link,
     github: data.github,
     image: data.image,
-    date: data.date || "2024-01-01",
+    startDate: data.startDate,
+    endDate: data.endDate,
+    date: formatDateRange(data.startDate, data.endDate),
     content,
   };
 }
@@ -86,7 +89,7 @@ export default async function ProjectPage({ params }: Props) {
           <div className="md:col-span-2">
             <div className="mb-4">
               <time className="text-sm font-light text-neutral-500 dark:text-neutral-500 tracking-widest uppercase">
-                {new Date(project.date).getFullYear()}
+                {project.date}
               </time>
             </div>
 

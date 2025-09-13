@@ -40,7 +40,7 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
           <div>
             <div className="mb-4">
               <time className="text-sm font-light text-neutral-500 dark:text-neutral-500 tracking-widest uppercase">
-                {new Date(project.date).getFullYear()}
+                {project.date}
               </time>
             </div>
 

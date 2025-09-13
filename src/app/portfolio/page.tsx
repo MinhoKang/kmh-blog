@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
 import { ProjectCard } from "@/components/projects/ProjectCard";
+import { formatDateRange, sortProjectsByStartDate } from "@/lib/date-utils";
 
 interface Project {
   slug: string;
@@ -11,6 +12,8 @@ interface Project {
   link?: string;
   github?: string;
   image?: string;
+  startDate?: string;
+  endDate?: string;
   date: string;
 }
 
@@ -38,11 +41,14 @@ function getAllProjects(): Project[] {
         link: data.link,
         github: data.github,
         image: data.image,
-        date: data.date || "2024-01-01",
+        startDate: data.startDate,
+        endDate: data.endDate,
+        date: formatDateRange(data.startDate, data.endDate),
       };
     });
 
-  return allProjectsData.sort((a, b) => (a.date < b.date ? 1 : -1));
+  // startDate 기준으로 정렬 (최신순 - 오래된 것이 아래로)
+  return allProjectsData.sort(sortProjectsByStartDate);
 }
 
 export default async function PortfolioPage() {
