@@ -19,8 +19,8 @@ export function PostCard({ post, index }: PostCardProps) {
       className="group animate-fade-in"
       style={{ animationDelay: `${300 + index * 100}ms` }}
     >
-      <Link href={`/writes/${post.slug}`} className="block">
-        <div className="border-b border-neutral-200 dark:border-neutral-800 pb-12 transition-all duration-300 group-hover:border-neutral-400 dark:group-hover:border-neutral-600">
+      <Link href={`/posts/${post.slug}`} className="block">
+        <div className="flex flex-col gap-y-4 border-b border-neutral-200 dark:border-neutral-800 pb-8 transition-all duration-300 group-hover:border-neutral-400 dark:group-hover:border-neutral-600">
           {/* 날짜 */}
           <div className="mb-4">
             <time className="text-sm font-light text-neutral-500 dark:text-neutral-500 tracking-widest uppercase">

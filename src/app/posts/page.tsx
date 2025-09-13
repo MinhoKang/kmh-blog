@@ -39,18 +39,19 @@ function getAllPosts(): Post[] {
   return allPostsData.sort((a, b) => (a.date < b.date ? 1 : -1));
 }
 
-export default function WritesPage() {
+export default function postsPage() {
   const posts = getAllPosts();
 
   return (
-    <div className="max-w-4xl">
+    <div className="max-w-4xl flex-col gap-8 flex h-full">
       {/* 헤더 섹션 */}
-      <section className="mb-24">
-        <div className="animate-fade-in">
+      <section className="">
+        <div className="animate-fade-in flex flex-col gap-y-2">
           <h1 className="text-4xl md:text-6xl font-extralight text-neutral-900 dark:text-neutral-50 mb-6 tracking-tighter leading-tight">
-            Writes
+            Posts
           </h1>
-          <p className="text-lg font-light text-neutral-600 dark:text-neutral-400 max-w-2xl tracking-wide leading-relaxed">
+          <div className="w-16 h-px bg-neutral-300 dark:bg-neutral-700 mb-8"></div>
+          <p className="text-xl font-light text-neutral-600 dark:text-neutral-400 max-w-3xl tracking-wide leading-relaxed">
             Thoughts, ideas, and insights on technology, design, and life. A
             collection of words that matter.
           </p>

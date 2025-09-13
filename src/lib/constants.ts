@@ -20,15 +20,15 @@ export const CONTACT_INFO = [
 ];
 
 export const NAVIGATION_ITEMS = [
-  { href: "/writes", label: "Writes" },
+  { href: "/posts", label: "Posts" },
   { href: "/portfolio", label: "Portfolio" },
   { href: "/about", label: "About" },
 ];
 
 export const NAVIGATION_CARDS = [
   {
-    href: "/writes",
-    label: "View Writes",
+    href: "/posts",
+    label: "View Posts",
     desc: "Thoughts & Ideas",
   },
   {

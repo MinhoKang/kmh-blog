@@ -45,14 +45,14 @@ function getAllProjects(): Project[] {
   return allProjectsData.sort((a, b) => (a.date < b.date ? 1 : -1));
 }
 
-export default function PortfolioPage() {
+export default async function PortfolioPage() {
   const projects = getAllProjects();
 
   return (
-    <div className="max-w-6xl">
+    <div className="max-w-6xl flex-col gap-8 flex h-full">
       {/* 헤더 섹션 */}
-      <section className="mb-28">
-        <div className="animate-fade-in">
+      <section className="">
+        <div className="animate-fade-in flex flex-col gap-y-2">
           <h1 className="text-4xl md:text-6xl font-extralight text-neutral-900 dark:text-neutral-50 mb-6 tracking-tighter leading-tight">
             Portfolio
           </h1>

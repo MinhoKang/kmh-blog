@@ -1,0 +1,413 @@
+---
+title: "Next.js App Router와 TanStack Query: 캐싱이 동작하지 않는 이유와 해결방법"
+date: "2025-08-28"
+excerpt: "Next.js App Router 환경에서 TanStack Query 캐싱이 예상대로 동작하지 않는 근본적인 원인을 분석하고, 올바른 해결 방법을 제시한다."
+author: "KMH"
+tags: ["Next.js", "TanStack Query", "App Router", "SSR", "Caching"]
+---
+
+# Next.js App Router와 TanStack Query: 캐싱이 동작하지 않는 이유와 해결방법
+
+NOWZ-RP 프로젝트를 개발하면서 Next.js App Router와 TanStack Query를 함께 사용할 때 예상치 못한 캐싱 문제를 겪었다. 기존 Pages Router에서는 정상적으로 동작하던 캐싱 로직이 App Router 환경에서는 쿼리스트링이 변경될 때마다 무효화되는 현상이 발생했다. 이 문제의 근본적인 원인과 해결 방법을 정리해본다.
+
+## 문제 상황
+
+NOWZ-RP의 학생 관리 페이지에서 다음과 같은 구조를 가지고 있었다:
+
+```typescript
+// app/students/page.tsx (Server Component)
+export default async function StudentsPage({ searchParams }: {
+  searchParams: { tab?: string; filter?: string }
+}) {
+  const queryClient = new QueryClient();
+
+  // 서버에서 데이터 미리 페칭
+  await queryClient.prefetchQuery({
+    queryKey: ['students', searchParams.tab, searchParams.filter],
+    queryFn: () => fetchStudents(searchParams),
+    staleTime: 5 * 60 * 1000, // 5분
+  });
+
+  return (
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <StudentsList />
+    </HydrationBoundary>
+  );
+}
+
+// components/StudentsList.tsx (Client Component)
+'use client';
+
+export default function StudentsList() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  const { data, isLoading } = useQuery({
+    queryKey: ['students', searchParams.get('tab'), searchParams.get('filter')],
+    queryFn: () => fetchStudents(Object.fromEntries(searchParams)),
+    staleTime: 5 * 60 * 1000,
+  });
+
+  const handleTabChange = (tab: string) => {
+    // 탭 변경 시 URL 업데이트
+    router.push(`/students?tab=${tab}`);
+  };
+
+  // ...
+}
+```
+
+문제는 `handleTabChange`를 통해 쿼리스트링을 변경할 때마다 **5분의 staleTime이 설정되어 있음에도 불구하고** 매번 새로운 API 요청이 발생한다는 것이었다. Pages Router에서는 동일한 로직이 예상대로 캐시가 동작했는데 말이다.
+
+## 원인 분석: Pages Router vs App Router의 근본적 차이
+
+### Pages Router: Client-First Navigation
+
+Pages Router에서는 초기 SSR 이후의 모든 내비게이션이 **클라이언트 중심**으로 처리된다:
+
+```typescript
+// pages/students.tsx
+export async function getServerSideProps({ query }) {
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery({
+    queryKey: ["students", query.tab],
+    queryFn: () => fetchStudents(query),
+  });
+
+  return {
+    props: { dehydratedState: dehydrate(queryClient) },
+  };
+}
+
+export default function StudentsPage({ dehydratedState }) {
+  const router = useRouter();
+
+  const handleTabChange = (tab: string) => {
+    // 같은 페이지 내에서 쿼리스트링만 변경
+    router.push(`/students?tab=${tab}`, undefined, { shallow: true });
+  };
+
+  // 이 경우 getServerSideProps가 다시 호출되지 않음
+  // 클라이언트의 QueryClient 인스턴스가 유지되어 캐시가 정상 동작
+}
+```
+
+`router.push`로 같은 페이지 내에서 쿼리스트링만 변경하면 서버의 `getServerSideProps`는 다시 호출되지 않는다. 모든 처리가 **클라이언트**에서 이루어지므로 단일 `QueryClient` 인스턴스의 캐시가 그대로 유지된다.
+
+### App Router: Server-First Navigation
+
+반면 App Router에서는 **서버 우선 내비게이션** 모델을 사용한다:
+
+```typescript
+// App Router에서 router.push('/students?tab=active')를 실행하면:
+
+1. 새로운 서버 요청 발생
+2. 서버 컴포넌트 재실행
+3. 새로운 QueryClient 인스턴스 생성
+4. prefetchQuery 재실행 (기존 캐시와 무관하게)
+5. 새로운 캐시 상태를 클라이언트에 전달
+6. 클라이언트의 기존 캐시 덮어쓰기
+```
+
+이것이 바로 **캐시가 동작하지 않는 것처럼 보이는 이유**이다. 실제로는 캐시 자체에 문제가 있는 것이 아니라, 매번 서버에서 새로운 데이터를 가져와서 캐시를 갱신하기 때문이다.
+
+## window.history.pushState가 "동작"하는 이유
+
+일부 개발자들이 발견한 해결책으로 `window.history.pushState`를 직접 사용하는 방법이 있다:
+
+```typescript
+const handleTabChange = (tab: string) => {
+  // Next.js 라우터를 우회하여 URL만 변경
+  window.history.pushState(null, "", `/students?tab=${tab}`);
+};
+```
+
+이 방법이 "동작"하는 이유는 Next.js의 라우팅 시스템을 완전히 **우회**하기 때문이다:
+
+1. **서버 요청 없음**: `history.pushState`는 브라우저의 주소창만 변경하고 서버에 요청을 보내지 않는다
+2. **서버 컴포넌트 재실행 없음**: 따라서 새로운 `QueryClient` 인스턴스가 생성되지 않는다
+3. **캐시 유지**: 클라이언트의 기존 `QueryClient` 상태가 그대로 보존된다
+
+하지만 이는 **프레임워크의 의도된 동작을 우회하는 몽키패칭**에 가깝다.
+
+## window.history.pushState를 권장하지 않는 이유
+
+### 1. 상태 불일치 (State Desynchronization)
+
+가장 치명적인 문제는 **브라우저 URL과 Next.js 라우터의 내부 상태가 달라지는 것**이다:
+
+```typescript
+// URL: /students?tab=active
+console.log(window.location.search); // "?tab=active"
+console.log(useSearchParams().get("tab")); // null 또는 이전 값
+
+// 이로 인해 예측 불가능한 버그 발생
+const currentTab = useSearchParams().get("tab") ?? "all"; // 잘못된 값
+```
+
+### 2. Next.js 핵심 기능 상실
+
+```typescript
+// 다음 기능들이 모두 동작하지 않음
+- 서버 컴포넌트 업데이트
+- 데이터 스트리밍
+- <Link>를 통한 프리페칭
+- 라우트 캐싱
+- 미들웨어 실행
+```
+
+### 3. 브라우저 내비게이션 문제
+
+```typescript
+// 사용자가 뒤로가기/앞으로가기를 누르면
+window.addEventListener("popstate", (e) => {
+  // Next.js가 이 상태를 알지 못하므로
+  // 페이지가 올바르게 복원되지 않음
+  console.log("Next.js는 이 변화를 모른다");
+});
+```
+
+### 4. 코드 복잡성 폭증
+
+```typescript
+// 모든 것을 수동으로 구현해야 함
+const [currentTab, setCurrentTab] = useState("all");
+
+useEffect(() => {
+  // URL 변화 감지
+  const handlePopState = () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    setCurrentTab(urlParams.get("tab") ?? "all");
+  };
+
+  window.addEventListener("popstate", handlePopState);
+  return () => window.removeEventListener("popstate", handlePopState);
+}, []);
+
+const handleTabChange = (tab: string) => {
+  setCurrentTab(tab);
+  window.history.pushState(null, "", `/students?tab=${tab}`);
+
+  // 다른 컴포넌트들에게 변화 알림
+  window.dispatchEvent(new CustomEvent("tabChange", { detail: { tab } }));
+};
+```
+
+## 올바른 해결 방법
+
+App Router의 패러다임 안에서 문제를 해결하려면 **프로젝트의 우선순위에 따라 아키텍처를 명확하게 선택**해야 한다.
+
+### 1. 서버 우선 아키텍처 유지 (권장)
+
+현재 구조를 그대로 사용하되, **서버에서 데이터를 새로 가져오는 것을 의도된 동작으로 받아들이는** 방법이다:
+
+```typescript
+// app/students/page.tsx
+export default async function StudentsPage({ searchParams }) {
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        // 서버-클라이언트 간 불필요한 재요청 방지
+        staleTime: 60 * 1000,
+      },
+    },
+  });
+
+  // 서버에서 항상 최신 데이터 보장
+  await queryClient.prefetchQuery({
+    queryKey: ['students', searchParams.tab, searchParams.filter],
+    queryFn: () => fetchStudents(searchParams),
+  });
+
+  return (
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <StudentsList />
+    </HydrationBoundary>
+  );
+}
+```
+
+**장점:**
+
+- SEO 최적화 (검색 결과가 서버에서 렌더링)
+- 데이터 일관성 보장 (항상 최신 데이터)
+- Next.js App Router의 의도된 사용법
+
+**단점:**
+
+- 내비게이션 시 약간의 지연 발생
+- 서버 부하 증가
+
+### 2. 클라이언트 우선 아키텍처로 변경
+
+빠른 인터랙션이 최우선이라면 **데이터 페칭의 주체를 완전히 클라이언트로 옮기는** 방법이다:
+
+```typescript
+// app/students/page.tsx (서버 컴포넌트)
+export default function StudentsPage() {
+  // 데이터 페칭 로직 제거, 레이아웃만 담당
+  return (
+    <div>
+      <h1>학생 관리</h1>
+      <StudentsContainer />
+    </div>
+  );
+}
+
+// components/StudentsContainer.tsx (클라이언트 컴포넌트)
+'use client';
+
+export default function StudentsContainer() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  // 모든 데이터 페칭을 클라이언트에서 처리
+  const { data, isLoading } = useQuery({
+    queryKey: ['students', searchParams.get('tab'), searchParams.get('filter')],
+    queryFn: () => fetchStudents(Object.fromEntries(searchParams)),
+    staleTime: 5 * 60 * 1000, // 이제 정상적으로 동작
+  });
+
+  const handleTabChange = (tab: string) => {
+    // 클라이언트 내비게이션으로 빠른 응답
+    router.push(`/students?tab=${tab}`);
+  };
+
+  if (isLoading) return <StudentsSkeleton />;
+
+  return <StudentsList data={data} onTabChange={handleTabChange} />;
+}
+```
+
+**장점:**
+
+- 빠른 클라이언트 캐싱 동작
+- 즉각적인 UI 반응
+- SPA와 유사한 사용자 경험
+
+**단점:**
+
+- 초기 로딩 시 빈 화면 (SEO 불리)
+- 직접 URL 접근 시 데이터 없음
+
+### 3. 하이브리드 접근법
+
+두 방법의 장점을 결합한 접근법이다:
+
+```typescript
+// app/students/page.tsx
+export default async function StudentsPage({ searchParams }) {
+  const queryClient = new QueryClient();
+
+  // 초기 데이터만 서버에서 페칭
+  await queryClient.prefetchQuery({
+    queryKey: ['students', 'all', ''], // 기본 상태
+    queryFn: () => fetchStudents({ tab: 'all' }),
+  });
+
+  return (
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <StudentsContainer initialTab={searchParams.tab} />
+    </HydrationBoundary>
+  );
+}
+
+// components/StudentsContainer.tsx
+'use client';
+
+export default function StudentsContainer({ initialTab }) {
+  const [currentFilters, setCurrentFilters] = useState({
+    tab: initialTab || 'all',
+    filter: ''
+  });
+
+  // 클라이언트에서 필터 상태 관리
+  const { data, isLoading } = useQuery({
+    queryKey: ['students', currentFilters.tab, currentFilters.filter],
+    queryFn: () => fetchStudents(currentFilters),
+    staleTime: 5 * 60 * 1000,
+  });
+
+  const handleTabChange = (tab: string) => {
+    setCurrentFilters(prev => ({ ...prev, tab }));
+    // URL 동기화 (선택적)
+    window.history.replaceState(null, '', `/students?tab=${tab}`);
+  };
+
+  // ...
+}
+```
+
+## 실제 적용 결과
+
+NOWZ-RP에서는 **서버 우선 아키텍처를 유지**하는 방향으로 결정했다. 학생 관리 시스템의 특성상 데이터 일관성과 SEO가 더 중요했기 때문이다.
+
+대신 다음과 같은 최적화를 적용했다:
+
+```typescript
+// 1. 적절한 staleTime 설정으로 클라이언트 재요청 최소화
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 2 * 60 * 1000, // 2분
+      gcTime: 5 * 60 * 1000,   // 5분
+    },
+  },
+});
+
+// 2. 로딩 상태 개선을 위한 Suspense 활용
+export default function StudentsPage({ searchParams }) {
+  return (
+    <Suspense fallback={<StudentsSkeleton />}>
+      <StudentsDataFetcher searchParams={searchParams} />
+    </Suspense>
+  );
+}
+
+// 3. 자주 사용되는 필터 조합 사전 페칭
+const prefetchCommonFilters = async (queryClient: QueryClient) => {
+  const commonFilters = [
+    { tab: 'active', filter: '' },
+    { tab: 'pending', filter: '' },
+    { tab: 'all', filter: 'recent' }
+  ];
+
+  await Promise.all(
+    commonFilters.map(filters =>
+      queryClient.prefetchQuery({
+        queryKey: ['students', filters.tab, filters.filter],
+        queryFn: () => fetchStudents(filters),
+      })
+    )
+  );
+};
+```
+
+**결과:**
+
+- **Scripting 성능**: 22-35% 개선
+- **Rendering 성능**: 4-36% 향상
+- **Total main thread time**: 16-33% 감소
+
+## 결론
+
+Next.js App Router와 TanStack Query의 캐싱 문제는 **프레임워크 패러다임의 근본적 차이**에서 비롯된다. Pages Router의 클라이언트 중심 내비게이션과 App Router의 서버 중심 내비게이션을 이해하는 것이 핵심이다.
+
+`window.history.pushState`와 같은 우회 방법은 당장의 문제를 해결해줄 수 있지만, **장기적으로는 더 큰 문제를 야기**할 수 있다. 대신 **프로젝트의 우선순위를 명확히 하고 그에 맞는 아키텍처를 선택**하는 것이 중요하다.
+
+- **데이터 일관성과 SEO가 중요하다면**: 서버 우선 아키텍처 유지
+- **빠른 인터랙션이 최우선이라면**: 클라이언트 우선 아키텍처로 변경
+- **두 가지 모두 필요하다면**: 하이브리드 접근법 고려
+
+어떤 선택을 하든 **프레임워크의 의도된 사용법을 따르는 것**이 장기적으로 유지보수성과 안정성을 보장하는 길이다.
+
+---
+
+_이 글은 실제 프로덕션 환경에서 겪은 문제를 바탕으로 작성되었으며, Next.js App Router와 TanStack Query를 함께 사용하는 개발자들에게 도움이 되기를 바란다._
+
+출처
+[1] Advanced Server Rendering | TanStack Query React Docs https://tanstack.com/query/v5/docs/framework/react/guides/advanced-ssr
+[2] App RouterとTanStack Queryの実践プラクティス https://zenn.dev/sirok/articles/nextjs-app-router-with-tanstack-query
+[3] Tanstack Query をNext.js(App Router)で導入 https://zenn.dev/tor_inc/articles/aa3e6f59016327
+[4] Next.js App Router x TanStack Query の SSR を解説する https://zenn.dev/canary_techblog/articles/75d46f6e42429c

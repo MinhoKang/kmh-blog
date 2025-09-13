@@ -40,11 +40,11 @@ export default async function PostPage({ params }: Props) {
   }
 
   return (
-    <div className="max-w-4xl">
+    <div className="max-w-4xl flex-col gap-8 flex h-full">
       {/* 뒤로가기 */}
       <div className="mb-12 animate-fade-in">
         <Link
-          href="/writes"
+          href="/posts"
           className="inline-flex items-center text-sm font-light text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors duration-300 tracking-wide group"
         >
           <svg
@@ -60,7 +60,7 @@ export default async function PostPage({ params }: Props) {
               d="M7 16l-4-4m0 0l4-4m-4 4h18"
             />
           </svg>
-          Back to Writes
+          Back to posts
         </Link>
       </div>
 
@@ -118,7 +118,7 @@ export default async function PostPage({ params }: Props) {
       <footer className="border-t border-neutral-200 dark:border-neutral-800 mt-20 pt-12 animate-fade-in delay-400">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
           <Link
-            href="/writes"
+            href="/posts"
             className="inline-flex items-center text-base font-light text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors duration-300 tracking-wide group"
           >
             <svg
@@ -134,7 +134,7 @@ export default async function PostPage({ params }: Props) {
                 d="M7 16l-4-4m0 0l4-4m-4 4h18"
               />
             </svg>
-            More Writes
+            More posts
           </Link>
 
           <div className="flex gap-6">
