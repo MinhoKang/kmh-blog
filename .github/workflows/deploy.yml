@@ -32,12 +32,5 @@ jobs:
       - name: Build application
         run: npm run build
 
-      - name: Deploy to Vercel
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        uses: vercel/action-deploy@v1
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.ORG_ID }}
-          vercel-project-id: ${{ secrets.PROJECT_ID }}
-          vercel-args: "--prod"
+       # Vercel deployment handled by Vercel GitHub Integration
+       # No manual deployment needed - Vercel automatically deploys on push to main
