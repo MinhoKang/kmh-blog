@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { HERO_CONTENT } from "@/lib/constants";
+import { HERO_CONTENT } from "@/constants/constants";
 
 export function HeroSection() {
   const [isLoaded, setIsLoaded] = useState(false);

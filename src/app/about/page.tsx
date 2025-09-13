@@ -11,7 +11,7 @@ import {
   TESTING_TOOLS,
   DEV_TOOLS,
   COMMUNICATION_TOOLS,
-} from "@/lib/constants";
+} from "@/constants/constants";
 
 export default function AboutPage() {
   return (

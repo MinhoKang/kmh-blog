@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { NAVIGATION_CARDS } from "@/lib/constants";
+import { NAVIGATION_CARDS } from "@/constants/constants";
 
 export function NavigationCards() {
   const [isLoaded, setIsLoaded] = useState(false);

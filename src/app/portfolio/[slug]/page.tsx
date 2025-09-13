@@ -48,7 +48,7 @@ export default async function ProjectPage({ params }: Props) {
   return (
     <div className="max-w-6xl flex flex-col gap-y-8">
       {/* 뒤로가기 */}
-      <div className="mb-12 animate-fade-in">
+      <div className="mb-12">
         <Link
           href="/portfolio"
           className="inline-flex items-center text-sm font-light text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors duration-300 tracking-wide group"
@@ -187,14 +187,14 @@ export default async function ProjectPage({ params }: Props) {
       </header>
 
       {/* 프로젝트 상세 내용 */}
-      <main className="animate-fade-in delay-300">
+      <main className="">
         <div className="prose prose-lg prose-neutral dark:prose-invert max-w-none">
           <MDXRemote source={project.content} />
         </div>
       </main>
 
       {/* 하단 내비게이션 */}
-      <footer className="border-t border-neutral-200 dark:border-neutral-800 mt-20 pt-12 animate-fade-in delay-400">
+      <footer className="border-t border-neutral-200 dark:border-neutral-800 mt-20 pt-12">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
           <Link
             href="/portfolio"

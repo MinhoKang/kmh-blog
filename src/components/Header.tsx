@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { ThemeToggle } from "./ThemeToggle";
-import { NAVIGATION_ITEMS } from "@/lib/constants";
+import { NAVIGATION_ITEMS } from "@/constants/constants";
 
 interface HeaderProps {
   variant?: "home" | "page";
