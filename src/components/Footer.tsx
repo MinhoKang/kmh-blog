@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+
 import { CONTACT_INFO } from "@/constants/constants";
 
 interface FooterProps {

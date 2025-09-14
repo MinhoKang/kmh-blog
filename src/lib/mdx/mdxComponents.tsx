@@ -1,6 +1,7 @@
-import { InlineCode } from "@/components/mdx/InlineCode";
-import ImageContainer from "@/components/mdx/ImageContainer";
 import { ComponentProps } from "react";
+
+import ImageContainer from "@/components/mdx/ImageContainer";
+import { InlineCode } from "@/components/mdx/InlineCode";
 
 export const components = {
   h1: (props: ComponentProps<"h1">) => (

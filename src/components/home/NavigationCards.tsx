@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useState, useEffect } from "react";
+
 import { NAVIGATION_CARDS } from "@/constants/constants";
 
 export function NavigationCards() {

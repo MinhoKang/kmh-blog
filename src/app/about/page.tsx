@@ -1,6 +1,8 @@
+import type { Metadata } from "next";
+
 import { AboutSection } from "@/components/about/AboutSection";
-import { SkillList } from "@/components/about/SkillList";
 import { ContactInfo } from "@/components/about/ContactInfo";
+import { SkillList } from "@/components/about/SkillList";
 import { PageHeader } from "@/components/common/PageHeader";
 import {
   CONTACT_INFO,
@@ -12,7 +14,6 @@ import {
   DEV_TOOLS,
   API_TOOLS,
 } from "@/constants/constants";
-import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "About | KMH-BLOG",

@@ -12,12 +12,52 @@ const compat = new FlatCompat({
 const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
   {
+    plugins: {
+      import: (await import("eslint-plugin-import")).default,
+    },
+    rules: {
+      // Unused imports and variables
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        {
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+          caughtErrorsIgnorePattern: "^_",
+        },
+      ],
+      "no-unused-vars": "off", // TypeScript version 사용
+
+      // Import 관련 규칙
+      "import/no-unused-modules": "error",
+      "import/no-duplicates": "error",
+      "import/order": [
+        "error",
+        {
+          groups: [
+            "builtin",
+            "external",
+            "internal",
+            "parent",
+            "sibling",
+            "index",
+          ],
+          "newlines-between": "always",
+          alphabetize: {
+            order: "asc",
+            caseInsensitive: true,
+          },
+        },
+      ],
+    },
     ignores: [
       "node_modules/**",
       ".next/**",
       "out/**",
       "build/**",
       "next-env.d.ts",
+      "*.config.js",
+      "*.config.mjs",
+      "*.config.ts",
     ],
   },
 ];

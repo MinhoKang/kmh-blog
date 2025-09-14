@@ -1,7 +1,7 @@
+import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { HeroSection } from "@/components/home/HeroSection";
 import { NavigationCards } from "@/components/home/NavigationCards";
-import { Footer } from "@/components/Footer";
 
 export default function Home() {
   return (

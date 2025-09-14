@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
+
 import "./globals.css";
-import { ThemeProvider } from "@/components/ThemeProvider";
 import { ConditionalLayout } from "@/components/ConditionalLayout";
+import { ThemeProvider } from "@/components/ThemeProvider";
 
 const inter = Inter({
   subsets: ["latin"],

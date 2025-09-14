@@ -1,8 +1,9 @@
 import { compileMDX } from "next-mdx-remote/rsc";
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypePrettyCode, { type Options } from "rehype-pretty-code";
 import rehypeSlug from "rehype-slug";
-import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import remarkGfm from "remark-gfm";
+
 import { components } from "@/lib/mdx/mdxComponents";
 
 // rehype-pretty-code 옵션 설정

@@ -19,7 +19,7 @@ interface PostingCardProps {
   index: number;
 }
 
-export function PostingCard({ posting, index }: PostingCardProps) {
+export function PostingCard({ posting, index: _index }: PostingCardProps) {
   return (
     <article className="group">
       <div className="border-b border-neutral-200 dark:border-neutral-800 pb-16 last:border-b-0">

@@ -1,8 +1,10 @@
 import fs from "fs";
 import path from "path";
+
 import matter from "gray-matter";
-import { PostingCard } from "@/components/posting/PostingCard";
+
 import { PageHeader } from "@/components/common/PageHeader";
+import { PostingCard } from "@/components/posting/PostingCard";
 import { formatDateRange, sortProjectsByStartDate } from "@/lib/date-utils";
 
 interface Project {

@@ -1,11 +1,13 @@
 import fs from "fs";
 import path from "path";
+
 import matter from "gray-matter";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { formatDateRange } from "@/lib/date-utils";
+
 import { TableOfContents } from "@/components/common/TableOfContents";
 import { CustomMdxRemote } from "@/components/mdx/CustomMdxRemote";
+import { formatDateRange } from "@/lib/date-utils";
 
 interface Props {
   params: Promise<{

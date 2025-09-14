@@ -1,11 +1,13 @@
 import fs from "fs";
 import path from "path";
+
 import matter from "gray-matter";
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { CustomMdxRemote } from "@/components/mdx/CustomMdxRemote";
+
 import { TableOfContents } from "@/components/common/TableOfContents";
-import type { Metadata } from "next";
+import { CustomMdxRemote } from "@/components/mdx/CustomMdxRemote";
 
 interface Props {
   params: Promise<{

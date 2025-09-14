@@ -1,10 +1,12 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
-import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { ThemeToggle } from "./ThemeToggle";
+import { usePathname } from "next/navigation";
+import { useState, useEffect, useRef, useCallback } from "react";
+
 import { NAVIGATION_ITEMS } from "@/constants/constants";
+
+import { ThemeToggle } from "./ThemeToggle";
 
 interface HeaderProps {
   variant?: "home" | "page";
