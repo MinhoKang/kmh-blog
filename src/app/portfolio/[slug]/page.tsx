@@ -46,6 +46,8 @@ export default async function ProjectPage({ params }: Props) {
     notFound();
   }
 
+  const isLinkExist = project.link || project.github;
+
   return (
     <div className="max-w-6xl flex flex-col gap-y-8 relative">
       {/* 뒤로가기 */}
@@ -94,7 +96,7 @@ export default async function ProjectPage({ params }: Props) {
               </time>
             </div>
 
-            <h1 className="md:text-5xl lg:text-6xl text-neutral-900 dark:text-neutral-50 mb-6 tracking-tighter leading-tight">
+            <h1 className="text-5xl lg:text-6xl text-neutral-900 dark:text-neutral-50 mb-6 tracking-tighter leading-tight">
               {project.title}
             </h1>
 
@@ -109,77 +111,78 @@ export default async function ProjectPage({ params }: Props) {
           <div className="flex flex-col gap-y-8">
             {/* 기술 스택 */}
             {project.tags.length > 0 && (
-              <div>
-                <h2 className="text-sm text-neutral-500 dark:text-neutral-500 mb-4 tracking-widest uppercase">
-                  Technologies
+              <div className="flex flex-col gap-y-2">
+                <h2 className="text-md text-neutral-500 dark:text-neutral-500 mb-4 tracking-widest uppercase">
+                  Tags
                 </h2>
-                <div className="space-y-2">
-                  {project.tags.map((tech: string) => (
+                <div className="flex flex-col gap-y-2">
+                  {project.tags.map((tag: string) => (
                     <div
-                      key={tech}
-                      className="text-base font-light text-neutral-700 dark:text-neutral-300 tracking-wide"
+                      key={tag}
+                      className="text-base font-light text-neutral-700 dark:text-neutral-300 tracking-wide dark:bg-neutral-800 bg-neutral-100 rounded-md px-2 py-1 w-fit"
                     >
-                      {tech}
+                      {tag}
                     </div>
                   ))}
                 </div>
               </div>
             )}
 
-            {/* 링크들 */}
-            <div>
-              <h2 className="text-neutral-500 dark:text-neutral-500 mb-4 tracking-widest uppercase">
-                Links
-              </h2>
-              <div className="flex flex-col gap-y-3">
-                {project.link && (
-                  <a
-                    href={project.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center text-base font-light text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors duration-300 tracking-wide group"
-                  >
-                    Live Site
-                    <svg
-                      className="w-4 h-4 ml-2 transition-transform duration-300 group-hover:-translate-y-1"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
+            {isLinkExist && (
+              <div>
+                <h2 className="text-neutral-500 dark:text-neutral-500 mb-4 tracking-widest uppercase">
+                  Links
+                </h2>
+                <div className="flex flex-col gap-y-3">
+                  {project.link && (
+                    <a
+                      href={project.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center text-base font-light text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors duration-300 tracking-wide group"
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={1.5}
-                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                      />
-                    </svg>
-                  </a>
-                )}
-                {project.github && (
-                  <a
-                    href={project.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="items-center text-base font-light text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors duration-300 tracking-wide block"
-                  >
-                    GitHub Repository
-                    <svg
-                      className="w-4 h-4 ml-2"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
+                      Live Site
+                      <svg
+                        className="w-4 h-4 ml-2 transition-transform duration-300 group-hover:-translate-y-1"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={1.5}
+                          d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                        />
+                      </svg>
+                    </a>
+                  )}
+                  {project.github && (
+                    <a
+                      href={project.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="items-center text-base font-light text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors duration-300 tracking-wide block"
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={1.5}
-                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                      />
-                    </svg>
-                  </a>
-                )}
+                      GitHub Repository
+                      <svg
+                        className="w-4 h-4 ml-2"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={1.5}
+                          d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                        />
+                      </svg>
+                    </a>
+                  )}
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
 
