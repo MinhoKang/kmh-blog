@@ -1,6 +1,8 @@
 import { ComponentProps } from "react";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import rehypePrettyCode, { type Options } from "rehype-pretty-code";
+import rehypeSlug from "rehype-slug";
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
 
 // rehype-pretty-code 옵션 설정
 const prettyCodeOptions: Options = {
@@ -92,7 +94,19 @@ export const CustomMdxRemote = ({
         components={components}
         options={{
           mdxOptions: {
-            rehypePlugins: [[rehypePrettyCode, prettyCodeOptions]],
+            rehypePlugins: [
+              rehypeSlug,
+              [
+                rehypeAutolinkHeadings,
+                {
+                  behavior: "wrap",
+                  properties: {
+                    className: ["heading-link"],
+                  },
+                },
+              ],
+              [rehypePrettyCode, prettyCodeOptions],
+            ],
           },
         }}
       />

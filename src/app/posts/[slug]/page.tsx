@@ -4,6 +4,7 @@ import matter from "gray-matter";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CustomMdxRemote } from "@/components/mdx/CustomMdxRemote";
+import { TableOfContents } from "@/components/common/TableOfContents";
 
 interface Props {
   params: Promise<{
@@ -40,7 +41,7 @@ export default async function PostPage({ params }: Props) {
   }
 
   return (
-    <div className="max-w-4xl flex-col gap-8 flex h-full">
+    <div className="max-w-4xl flex-col gap-8 flex h-full relative">
       {/* 뒤로가기 */}
       <div className="mb-12 animate-fade-in">
         <Link
@@ -108,10 +109,15 @@ export default async function PostPage({ params }: Props) {
       </header>
 
       {/* 포스트 내용 */}
-      <article className="animate-fade-in delay-300">
-        <div className="prose prose-lg prose-neutral dark:prose-invert max-w-none">
-          <CustomMdxRemote source={post.content} />
+      <article className="animate-fade-in delay-300 flex gap-8">
+        <div className="flex-1">
+          <div className="prose prose-lg prose-neutral dark:prose-invert max-w-none">
+            <CustomMdxRemote source={post.content} />
+          </div>
         </div>
+
+        {/* TOC - 데스크톱에서만 표시 */}
+        <TableOfContents />
       </article>
 
       {/* 하단 내비게이션 */}

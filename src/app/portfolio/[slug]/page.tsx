@@ -5,6 +5,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { formatDateRange } from "@/lib/date-utils";
 import { CustomMdxRemote } from "@/components/mdx/CustomMdxRemote";
+import { TableOfContents } from "@/components/common/TableOfContents";
 
 interface Props {
   params: Promise<{
@@ -46,7 +47,7 @@ export default async function ProjectPage({ params }: Props) {
   }
 
   return (
-    <div className="max-w-6xl flex flex-col gap-y-8">
+    <div className="max-w-6xl flex flex-col gap-y-8 relative">
       {/* 뒤로가기 */}
       <div className="mb-12">
         <Link
@@ -187,10 +188,15 @@ export default async function ProjectPage({ params }: Props) {
       </header>
 
       {/* 프로젝트 상세 내용 */}
-      <main className="">
-        <div className="prose prose-lg prose-neutral dark:prose-invert max-w-none">
-          <CustomMdxRemote source={project.content} />
+      <main className="flex gap-8">
+        <div className="flex-1">
+          <div className="prose prose-lg prose-neutral dark:prose-invert max-w-none">
+            <CustomMdxRemote source={project.content} />
+          </div>
         </div>
+
+        {/* TOC - 데스크톱에서만 표시 */}
+        <TableOfContents />
       </main>
 
       {/* 하단 내비게이션 */}
