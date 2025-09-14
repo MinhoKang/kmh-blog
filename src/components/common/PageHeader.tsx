@@ -3,7 +3,7 @@ interface PageHeaderProps {
   description?: string;
 }
 
-export function PageHeader({ title, description }: PageHeaderProps) {
+export const PageHeader = ({ title, description }: PageHeaderProps) => {
   return (
     <section className="">
       <div className="flex flex-col gap-y-2">
@@ -19,4 +19,4 @@ export function PageHeader({ title, description }: PageHeaderProps) {
       </div>
     </section>
   );
-}
+};

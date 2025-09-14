@@ -6,8 +6,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { TableOfContents } from "@/components/common/TableOfContents";
-import { CustomMdxRemote } from "@/components/mdx/CustomMdxRemote";
+import { TableOfContents } from "@/components/common";
+import { CustomMdxRemote } from "@/components/mdx";
 import { getReadingTimeFromMdx } from "@/lib/readingTime";
 
 interface Props {

@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { AboutSection } from "@/components/about/AboutSection";
 import { ContactInfo } from "@/components/about/ContactInfo";
 import { SkillList } from "@/components/about/SkillList";
-import { PageHeader } from "@/components/common/PageHeader";
+import { PageHeader } from "@/components/common";
 import {
   CONTACT_INFO,
   CAREER_EXPERIENCE,

@@ -3,7 +3,7 @@ import path from "path";
 
 import matter from "gray-matter";
 
-import { PageHeader } from "@/components/common/PageHeader";
+import { PageHeader } from "@/components/common";
 import { PostingCard } from "@/components/posting/PostingCard";
 import { formatDateRange, sortProjectsByStartDate } from "@/lib/date-utils";
 import { getReadingTimeFromMdx } from "@/lib/readingTime";

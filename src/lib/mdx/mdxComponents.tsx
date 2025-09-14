@@ -1,7 +1,6 @@
 import { ComponentProps } from "react";
 
-import ImageContainer from "@/components/mdx/ImageContainer";
-import { InlineCode } from "@/components/mdx/InlineCode";
+import { ImageContainer, InlineCode, ProblemBox } from "@/components/mdx";
 
 export const components = {
   h1: (props: ComponentProps<"h1">) => (
@@ -57,4 +56,5 @@ export const components = {
     />
   ),
   ImageContainer,
+  ProblemBox,
 };

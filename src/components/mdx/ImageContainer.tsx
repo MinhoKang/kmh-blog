@@ -15,12 +15,12 @@ interface ImageContainerProps {
   imageHeight?: number; // Next.js Image height
 }
 
-export default function ImageContainer({
+export const ImageContainer = ({
   images,
   className = "",
   imageWidth = 800,
   imageHeight = 600,
-}: ImageContainerProps) {
+}: ImageContainerProps) => {
   return (
     <div className={`flex flex-wrap sm:flex-row gap-4 mb-8 ${className}`}>
       {images.map((image, index) => {
@@ -51,4 +51,4 @@ export default function ImageContainer({
       })}
     </div>
   );
-}
+};
