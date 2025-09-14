@@ -6,6 +6,9 @@ const nextConfig: NextConfig = {
   experimental: {
     mdxRs: true,
   },
+  images: {
+    qualities: [25, 50, 75, 100],
+  },
 };
 
 const withMDX = createMDX({
