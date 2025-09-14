@@ -94,7 +94,7 @@ export default async function ProjectPage({ params }: Props) {
               </time>
             </div>
 
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-extralight text-neutral-900 dark:text-neutral-50 mb-6 tracking-tighter leading-tight">
+            <h1 className="md:text-5xl lg:text-6xl text-neutral-900 dark:text-neutral-50 mb-6 tracking-tighter leading-tight">
               {project.title}
             </h1>
 
@@ -110,7 +110,7 @@ export default async function ProjectPage({ params }: Props) {
             {/* 기술 스택 */}
             {project.tags.length > 0 && (
               <div>
-                <h2 className="text-sm font-light text-neutral-500 dark:text-neutral-500 mb-4 tracking-widest uppercase">
+                <h2 className="text-sm text-neutral-500 dark:text-neutral-500 mb-4 tracking-widest uppercase">
                   Technologies
                 </h2>
                 <div className="space-y-2">
@@ -128,10 +128,10 @@ export default async function ProjectPage({ params }: Props) {
 
             {/* 링크들 */}
             <div>
-              <h2 className="text-sm font-light text-neutral-500 dark:text-neutral-500 mb-4 tracking-widest uppercase">
+              <h2 className="text-neutral-500 dark:text-neutral-500 mb-4 tracking-widest uppercase">
                 Links
               </h2>
-              <div className="space-y-3">
+              <div className="flex flex-col gap-y-3">
                 {project.link && (
                   <a
                     href={project.link}

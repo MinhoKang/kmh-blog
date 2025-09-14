@@ -6,25 +6,25 @@ export const components = {
   h1: (props: ComponentProps<"h1">) => (
     <h1
       {...props}
-      className="text-3xl md:text-4xl font-extrabold mb-8 mt-12 first:mt-0 text-neutral-900 dark:text-neutral-100"
+      className="md:text-4xl mb-8 mt-12 first:mt-0 text-neutral-900 dark:text-neutral-100 font-heading"
     />
   ),
   h2: (props: ComponentProps<"h2">) => (
     <h2
       {...props}
-      className="text-2xl md:text-3xl font-extrabold mb-6 mt-6 text-neutral-900 dark:text-neutral-100"
+      className="text-2xl md:text-3xl font-extrabold mb-6 mt-6 text-neutral-900 dark:text-neutral-100 font-heading"
     />
   ),
   h3: (props: ComponentProps<"h3">) => (
     <h3
       {...props}
-      className="text-xl md:text-2xl font-bold mb-5 mt-10 text-neutral-900 dark:text-neutral-100"
+      className="text-xl md:text-2xl font-bold mb-5 mt-10 text-neutral-900 dark:text-neutral-100 font-heading"
     />
   ),
   h4: (props: ComponentProps<"h4">) => (
     <h4
       {...props}
-      className="text-lg md:text-xl font-semibold mb-4 mt-8 text-neutral-900 dark:text-neutral-100"
+      className="text-lg md:text-xl font-semibold mb-4 mt-8 text-neutral-900 dark:text-neutral-100 font-heading"
     />
   ),
   p: (props: ComponentProps<"p">) => (
