@@ -40,6 +40,7 @@ export async function getProject(slug: string) {
     date: formatDateRange(data.startDate, data.endDate),
     content,
     readingTime,
+    published: data.published !== false, // 기본값은 true, 명시적으로 false인 경우만 제외
   };
 }
 
@@ -47,7 +48,7 @@ export default async function ProjectPage({ params }: Props) {
   const resolvedParams = await params;
   const project = await getProject(resolvedParams.slug);
 
-  if (!project) {
+  if (!project || !project.published) {
     notFound();
   }
 
@@ -79,7 +80,7 @@ export default async function ProjectPage({ params }: Props) {
       </div>
 
       {/* 프로젝트 헤더 */}
-      <header className="mb-16 animate-fade-in delay-200 flex flex-col gap-y-4">
+      <header className="mb-16 slide-up-fade flex flex-col gap-y-4">
         {/* 프로젝트 이미지 */}
         {project.image && (
           <div className="mb-12 overflow-hidden bg-neutral-100 dark:bg-neutral-800 aspect-[16/9]">

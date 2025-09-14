@@ -74,6 +74,7 @@ async function getPost(slug: string) {
     tags: data.tags || [],
     content,
     readingTime,
+    published: data.published !== false, // 기본값은 true, 명시적으로 false인 경우만 제외
   };
 }
 
@@ -81,7 +82,7 @@ export default async function PostPage({ params }: Props) {
   const resolvedParams = await params;
   const post = await getPost(resolvedParams.slug);
 
-  if (!post) {
+  if (!post || !post.published) {
     notFound();
   }
 
@@ -111,7 +112,7 @@ export default async function PostPage({ params }: Props) {
       </div>
 
       {/* 포스트 헤더 */}
-      <header className="mb-16 animate-fade-in delay-200">
+      <header className="mb-16 slide-up-fade">
         {/* 날짜 */}
         <div className="mb-6 flex items-center gap-4">
           <time className="text-sm font-light text-neutral-500 dark:text-neutral-500 tracking-widest uppercase">

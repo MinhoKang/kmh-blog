@@ -1,18 +1,11 @@
 ---
-title: "NOWZ 학생 관리 프로그램 상태 관리 개선"
-description: "기존 Recoil 기반 상태 관리를 Tanstack-Query로 이전하고 Chart.js를 활용한 학생 분석 레포트 시스템을 구축했다."
+title: "NOWZ"
+description: "Zwon Center Q의 학생 관리 프로그램"
 startDate: "2024-03"
-tags:
-  [
-    "React",
-    "Vite",
-    "Tanstack-Query",
-    "Chart.js",
-    "State Management",
-    "TypeScript",
-  ]
+tags: ["React", "Vite", "Tanstack-Query", "Chart.js", "State Management", "TypeScript", "Recoil"]
 category: "portfolio"
 featured: true
+published: true
 ---
 
 ## 프로젝트 개요
@@ -25,101 +18,23 @@ featured: true
 
 ## 주요 성과
 
-<table>
-  <thead>
-    <tr>
-      <th>구분</th>
-      <th>성과</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-        <strong>상태 관리 개선</strong>
-      </td>
-      <td>Recoil → Tanstack-Query 전면 이전</td>
-    </tr>
-    <tr>
-      <td>
-        <strong>신규 기능 개발</strong>
-      </td>
-      <td>Chart.js 기반 학생 분석 레포트 시스템</td>
-    </tr>
-    <tr>
-      <td>
-        <strong>시스템 안정성</strong>
-      </td>
-      <td>버그 수정 및 지속적 유지보수</td>
-    </tr>
-    <tr>
-      <td>
-        <strong>성능 최적화</strong>
-      </td>
-      <td>서버 상태와 클라이언트 상태 분리</td>
-    </tr>
-    <tr>
-      <td>
-        <strong>개발 효율성</strong>
-      </td>
-      <td>캐싱 및 동기화 자동화</td>
-    </tr>
-  </tbody>
-</table>
+| 구분               | 성과                                  |
+| ------------------ | ------------------------------------- |
+| **상태 관리 개선** | Recoil → Tanstack-Query 전면 이전     |
+| **신규 기능 개발** | Chart.js 기반 학생 분석 레포트 시스템 |
+| **시스템 안정성**  | 버그 수정 및 지속적 유지보수          |
+| **성능 최적화**    | 서버 상태와 클라이언트 상태 분리      |
+| **개발 효율성**    | 캐싱 및 동기화 자동화                 |
 
 ### 기술 스택 구성
 
-<table>
-  <thead>
-    <tr>
-      <th>영역</th>
-      <th>기존 기술</th>
-      <th>개선 후</th>
-      <th>개선 효과</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-        <strong>프레임워크</strong>
-      </td>
-      <td>React 18 + Vite</td>
-      <td>React 18 + Vite</td>
-      <td>빠른 개발 환경 유지</td>
-    </tr>
-    <tr>
-      <td>
-        <strong>상태 관리</strong>
-      </td>
-      <td>Recoil</td>
-      <td>Tanstack-Query + Recoil</td>
-      <td>서버/클라이언트 상태 분리</td>
-    </tr>
-    <tr>
-      <td>
-        <strong>데이터 시각화</strong>
-      </td>
-      <td>-</td>
-      <td>Chart.js</td>
-      <td>분석 레포트 기능 추가</td>
-    </tr>
-    <tr>
-      <td>
-        <strong>스타일링</strong>
-      </td>
-      <td>Tailwind</td>
-      <td>Tailwind</td>
-      <td>일관된 디자인 시스템</td>
-    </tr>
-    <tr>
-      <td>
-        <strong>폼 관리</strong>
-      </td>
-      <td>React Hook Form + Zod</td>
-      <td>React Hook Form + Zod</td>
-      <td>타입 안전한 폼 처리</td>
-    </tr>
-  </tbody>
-</table>
+| 영역              | 기존 기술             | 개선 후                 | 개선 효과                 |
+| ----------------- | --------------------- | ----------------------- | ------------------------- |
+| **프레임워크**    | React 18 + Vite       | React 18 + Vite         | 빠른 개발 환경 유지       |
+| **상태 관리**     | Recoil                | Tanstack-Query + Recoil | 서버/클라이언트 상태 분리 |
+| **데이터 시각화** | -                     | Chart.js                | 분석 레포트 기능 추가     |
+| **스타일링**      | Tailwind              | Tailwind                | 일관된 디자인 시스템      |
+| **폼 관리**       | React Hook Form + Zod | React Hook Form + Zod   | 타입 안전한 폼 처리       |
 
 ---
 
@@ -140,45 +55,12 @@ featured: true
 
 **Chart.js를 활용**하여 학생들의 학습 데이터를 시각화하는 분석 레포트 페이지를 개발했다.
 
-<table>
-  <thead>
-    <tr>
-      <th>차트 유형</th>
-      <th>분석 내용</th>
-      <th>활용 목적</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-        <strong>선형 차트</strong>
-      </td>
-      <td>학습 성과 추이 분석</td>
-      <td>시간별 성장 패턴 파악</td>
-    </tr>
-    <tr>
-      <td>
-        <strong>막대 차트</strong>
-      </td>
-      <td>과목별 성취도 비교</td>
-      <td>강점/약점 과목 식별</td>
-    </tr>
-    <tr>
-      <td>
-        <strong>원형 차트</strong>
-      </td>
-      <td>과제 완료율 분석</td>
-      <td>학습 참여도 측정</td>
-    </tr>
-    <tr>
-      <td>
-        <strong>히트맵</strong>
-      </td>
-      <td>출석률 시각화</td>
-      <td>학습 패턴 분석</td>
-    </tr>
-  </tbody>
-</table>
+| 차트 유형     | 분석 내용           | 활용 목적             |
+| ------------- | ------------------- | --------------------- |
+| **선형 차트** | 학습 성과 추이 분석 | 시간별 성장 패턴 파악 |
+| **막대 차트** | 과목별 성취도 비교  | 강점/약점 과목 식별   |
+| **원형 차트** | 과제 완료율 분석    | 학습 참여도 측정      |
+| **히트맵**    | 출석률 시각화       | 학습 패턴 분석        |
 
 ### 3. 종합 학생 관리 기능
 
@@ -208,45 +90,12 @@ featured: true
 
 **해결책**:
 
-<table>
-  <thead>
-    <tr>
-      <th>해결 방법</th>
-      <th>구현 내용</th>
-      <th>효과</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-        <strong>서버 상태 분리</strong>
-      </td>
-      <td>Tanstack-Query로 API 상태 관리</td>
-      <td>자동 캐싱 및 동기화</td>
-    </tr>
-    <tr>
-      <td>
-        <strong>클라이언트 상태 유지</strong>
-      </td>
-      <td>Recoil로 UI 상태 관리</td>
-      <td>기존 로직 호환성 유지</td>
-    </tr>
-    <tr>
-      <td>
-        <strong>에러 처리 표준화</strong>
-      </td>
-      <td>Query Error Boundary 구현</td>
-      <td>일관된 에러 처리</td>
-    </tr>
-    <tr>
-      <td>
-        <strong>로딩 상태 최적화</strong>
-      </td>
-      <td>Suspense와 함께 사용</td>
-      <td>사용자 경험 향상</td>
-    </tr>
-  </tbody>
-</table>
+| 해결 방법                | 구현 내용                      | 효과                  |
+| ------------------------ | ------------------------------ | --------------------- |
+| **서버 상태 분리**       | Tanstack-Query로 API 상태 관리 | 자동 캐싱 및 동기화   |
+| **클라이언트 상태 유지** | Recoil로 UI 상태 관리          | 기존 로직 호환성 유지 |
+| **에러 처리 표준화**     | Query Error Boundary 구현      | 일관된 에러 처리      |
+| **로딩 상태 최적화**     | Suspense와 함께 사용           | 사용자 경험 향상      |
 
 ### 2. Chart.js 데이터 시각화 구현
 
@@ -254,38 +103,11 @@ featured: true
 
 **해결책**:
 
-<table>
-  <thead>
-    <tr>
-      <th>차트 유형</th>
-      <th>데이터 소스</th>
-      <th>시각화 효과</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-        <strong>성과 추이 차트</strong>
-      </td>
-      <td>과제 점수, 시험 성적</td>
-      <td>학습 진도 파악</td>
-    </tr>
-    <tr>
-      <td>
-        <strong>출석률 히트맵</strong>
-      </td>
-      <td>출석 데이터</td>
-      <td>학습 패턴 분석</td>
-    </tr>
-    <tr>
-      <td>
-        <strong>과목별 비교</strong>
-      </td>
-      <td>과목별 성취도</td>
-      <td>강약점 식별</td>
-    </tr>
-  </tbody>
-</table>
+| 차트 유형          | 데이터 소스          | 시각화 효과    |
+| ------------------ | -------------------- | -------------- |
+| **성과 추이 차트** | 과제 점수, 시험 성적 | 학습 진도 파악 |
+| **출석률 히트맵**  | 출석 데이터          | 학습 패턴 분석 |
+| **과목별 비교**    | 과목별 성취도        | 강약점 식별    |
 
 ---
 
@@ -293,77 +115,21 @@ featured: true
 
 ### 개발 성과
 
-<table>
-  <thead>
-    <tr>
-      <th>지표</th>
-      <th>성과</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-        <strong>상태 관리 개선</strong>
-      </td>
-      <td>Recoil → Tanstack-Query 전면 이전</td>
-    </tr>
-    <tr>
-      <td>
-        <strong>신규 기능</strong>
-      </td>
-      <td>Chart.js 기반 분석 레포트 시스템</td>
-    </tr>
-    <tr>
-      <td>
-        <strong>성능 최적화</strong>
-      </td>
-      <td>API 호출 최적화 및 캐싱</td>
-    </tr>
-    <tr>
-      <td>
-        <strong>사용자 경험</strong>
-      </td>
-      <td>로딩 상태 및 에러 처리 개선</td>
-    </tr>
-  </tbody>
-</table>
+| 지표               | 성과                              |
+| ------------------ | --------------------------------- |
+| **상태 관리 개선** | Recoil → Tanstack-Query 전면 이전 |
+| **신규 기능**      | Chart.js 기반 분석 레포트 시스템  |
+| **성능 최적화**    | API 호출 최적화 및 캐싱           |
+| **사용자 경험**    | 로딩 상태 및 에러 처리 개선       |
 
 ### 개인 역량 성장
 
-<table>
-  <thead>
-    <tr>
-      <th>영역</th>
-      <th>성장 내용</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-        <strong>상태 관리</strong>
-      </td>
-      <td>Tanstack-Query 마스터 및 서버/클라이언트 상태 분리</td>
-    </tr>
-    <tr>
-      <td>
-        <strong>데이터 시각화</strong>
-      </td>
-      <td>Chart.js를 활용한 복잡한 차트 구현</td>
-    </tr>
-    <tr>
-      <td>
-        <strong>시스템 아키텍처</strong>
-      </td>
-      <td>기존 시스템의 점진적 개선 및 마이그레이션</td>
-    </tr>
-    <tr>
-      <td>
-        <strong>성능 최적화</strong>
-      </td>
-      <td>API 최적화 및 캐싱 전략 수립</td>
-    </tr>
-  </tbody>
-</table>
+| 영역                | 성장 내용                                          |
+| ------------------- | -------------------------------------------------- |
+| **상태 관리**       | Tanstack-Query 마스터 및 서버/클라이언트 상태 분리 |
+| **데이터 시각화**   | Chart.js를 활용한 복잡한 차트 구현                 |
+| **시스템 아키텍처** | 기존 시스템의 점진적 개선 및 마이그레이션          |
+| **성능 최적화**     | API 최적화 및 캐싱 전략 수립                       |
 
 ---
 

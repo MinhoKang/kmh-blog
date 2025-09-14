@@ -609,3 +609,19 @@ figure[data-rehype-pretty-code-figure] pre [data-line] {
 .prose-wrapper .heading-link {
   text-decoration: none !important;
 }
+
+/* 부드러운 슬라이드 업 애니메이션 */
+@keyframes slideUpFade {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.slide-up-fade {
+  animation: slideUpFade 0.8s ease-out forwards;
+}

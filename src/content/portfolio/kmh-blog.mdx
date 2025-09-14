@@ -5,6 +5,7 @@ startDate: "2025-09"
 tags: ["Next.js", "TypeScript", "Tailwind v4", "MDX", "Blog"]
 category: "portfolio"
 featured: true
+published: true
 ---
 
 ## 프로젝트 개요
@@ -124,10 +125,7 @@ featured: true
 
 ```typescript
 // date-utils.ts
-export const formatDateRange = (
-  startDate?: string,
-  endDate?: string
-): string => {
+export const formatDateRange = (startDate?: string, endDate?: string): string => {
   if (!startDate && !endDate) return "2024-01-01";
   if (!startDate) return endDate!;
   if (!endDate) return startDate!;

@@ -45,11 +45,14 @@ function getAllPosts(): Post[] {
         date: formatDateRange(data.startDate, data.endDate),
         tags: data.tags || [],
         readingTime: readingTime,
+        published: data.published !== false, // 기본값은 true, 명시적으로 false인 경우만 제외
       };
     });
 
-  // startDate 기준으로 정렬 (최신순 - 오래된 것이 아래로)
-  return allPostsData.sort(sortProjectsByStartDate);
+  // published가 true인 것만 필터링하고 startDate 기준으로 정렬 (최신순 - 오래된 것이 아래로)
+  return allPostsData
+    .filter((post) => post.published)
+    .sort(sortProjectsByStartDate);
 }
 
 export default function PostsPage() {

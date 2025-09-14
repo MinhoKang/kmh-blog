@@ -21,8 +21,7 @@ interface Project {
   date: string;
   readingTime?: string;
 }
-
-function getAllProjects(): Project[] {
+const getAllProjects = (): Project[] => {
   const projectsDirectory = path.join(process.cwd(), "src/content/portfolio");
 
   if (!fs.existsSync(projectsDirectory)) {
@@ -51,12 +50,15 @@ function getAllProjects(): Project[] {
         endDate: data.endDate,
         date: formatDateRange(data.startDate, data.endDate),
         readingTime: readingTime,
+        published: data.published !== false, // 기본값은 true, 명시적으로 false인 경우만 제외
       };
     });
 
-  // startDate 기준으로 정렬 (최신순 - 오래된 것이 아래로)
-  return allProjectsData.sort(sortProjectsByStartDate);
-}
+  // published가 true인 것만 필터링하고 startDate 기준으로 정렬 (최신순 - 오래된 것이 아래로)
+  return allProjectsData
+    .filter((project) => project.published)
+    .sort(sortProjectsByStartDate);
+};
 
 export default async function PortfolioPage() {
   const projects = getAllProjects();
