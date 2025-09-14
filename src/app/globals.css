@@ -564,3 +564,8 @@ figure[data-rehype-pretty-code-figure] pre::-webkit-scrollbar {
 figure[data-rehype-pretty-code-figure] pre [data-line] {
   @apply px-4 text-sm leading-relaxed;
 }
+
+/* rehype-autolink-headings 때문인 경우 */
+.prose-wrapper .heading-link {
+  text-decoration: none !important;
+}

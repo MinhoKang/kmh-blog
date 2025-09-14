@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { ThemeToggle } from "./ThemeToggle";
@@ -11,8 +11,33 @@ interface HeaderProps {
 }
 
 export function Header({ variant = "page" }: HeaderProps) {
+  const ticking = useRef(false);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
   const pathname = usePathname();
+  const lastScrollY = useRef(0);
+
+  const updateHeader = useCallback(() => {
+    const currentScrollY = window.scrollY;
+
+    if (currentScrollY < 100) {
+      setIsHeaderVisible(true);
+    } else if (currentScrollY > lastScrollY.current) {
+      setIsHeaderVisible(false);
+    } else {
+      setIsHeaderVisible(true);
+    }
+
+    lastScrollY.current = currentScrollY;
+    ticking.current = false;
+  }, []);
+
+  const requestTick = useCallback(() => {
+    if (!ticking.current) {
+      requestAnimationFrame(updateHeader);
+      ticking.current = true;
+    }
+  }, [updateHeader]);
 
   useEffect(() => {
     if (variant === "home") {
@@ -25,14 +50,22 @@ export function Header({ variant = "page" }: HeaderProps) {
     }
   }, [variant]);
 
+  // 스크롤 이벤트 리스너
+  useEffect(() => {
+    window.addEventListener("scroll", requestTick, { passive: true });
+    return () => window.removeEventListener("scroll", requestTick);
+  }, [requestTick]);
+
   const isHomePage = variant === "home";
 
   return (
     <header
-      className={`z-50 backdrop-blur-sm ${
+      className={`z-50 backdrop-blur-sm transition-transform duration-500 ease-in-out ${
         isHomePage
           ? "fixed top-0 left-0 right-0"
-          : "sticky top-0 bg-ghost-white/80 dark:bg-charcoal-gray/80 border-b border-neutral-200 dark:border-neutral-800"
+          : `fixed top-0 left-0 right-0 bg-ghost-white/80 dark:bg-charcoal-gray/80 border-b border-neutral-200 dark:border-neutral-800 ${
+              isHeaderVisible ? "translate-y-0" : "-translate-y-full"
+            }`
       }`}
     >
       <div className={`grid-minimal !py-5 ${isHomePage ? "py-10" : "py-8"}`}>
