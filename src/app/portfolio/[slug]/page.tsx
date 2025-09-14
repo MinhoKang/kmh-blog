@@ -120,11 +120,11 @@ export default async function ProjectPage({ params }: Props) {
           <div className="flex flex-col gap-y-8">
             {/* 기술 스택 */}
             {project.tags.length > 0 && (
-              <div className="flex flex-col gap-y-2">
+              <div className="flex flex-wrap gap-2">
                 <h2 className="text-md text-neutral-500 dark:text-neutral-500 mb-4 tracking-widest uppercase">
                   Tags
                 </h2>
-                <div className="flex flex-col gap-y-2">
+                <div className="flex flex-wrap gap-2">
                   {project.tags.map((tag: string) => (
                     <div
                       key={tag}

@@ -82,15 +82,15 @@ export const TableOfContents = ({ className = "" }: TableOfContentsProps) => {
       <div className={`hidden lg:block ${className}`}>
         <div className="sticky top-24 w-64">
           <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg p-6 shadow-sm">
-            <h3 className="text-sm font-medium text-neutral-900 dark:text-neutral-100 mb-4 tracking-wide">
+            <h3 className="text-md font-medium text-neutral-900 dark:text-neutral-100 tracking-wide">
               목차
             </h3>
-            <nav className="space-y-1">
+            <nav className="flex flex-col gap-y-1">
               {tocItems.map((item) => (
                 <button
                   key={item.id}
                   onClick={() => scrollToHeading(item.id)}
-                  className={`block w-full text-left text-sm transition-colors duration-200 hover:text-neutral-900 dark:hover:text-neutral-100 ${
+                  className={`cursor-pointer block w-full text-left text-sm transition-colors duration-200 hover:text-neutral-900 dark:hover:text-neutral-100 ${
                     activeId === item.id
                       ? "text-neutral-900 dark:text-neutral-100 font-medium"
                       : "text-neutral-600 dark:text-neutral-400"
@@ -151,12 +151,12 @@ export const TableOfContents = ({ className = "" }: TableOfContentsProps) => {
               ref={tocRef}
               className="fixed bottom-20 right-6 w-80 max-w-[calc(100vw-3rem)] bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg shadow-xl z-50 max-h-96 overflow-y-auto"
             >
-              <div className="p-4 border-b border-neutral-200 dark:border-neutral-800">
+              <div className="p-4 border-b border-neutral-200 dark:border-neutral-800 mb-2">
                 <h3 className="text-sm font-medium text-neutral-900 dark:text-neutral-100 tracking-wide">
                   목차
                 </h3>
               </div>
-              <nav className="p-4 space-y-1">
+              <nav className="flex flex-col gap-y-1 p-4">
                 {tocItems.map((item) => (
                   <button
                     key={item.id}
