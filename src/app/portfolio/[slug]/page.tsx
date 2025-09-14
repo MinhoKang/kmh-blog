@@ -8,9 +8,9 @@ import { TableOfContents } from "@/components/common/TableOfContents";
 import { CustomMdxRemote } from "@/components/mdx/CustomMdxRemote";
 
 interface Props {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 export async function getProject(slug: string) {
@@ -39,7 +39,8 @@ export async function getProject(slug: string) {
 }
 
 export default async function ProjectPage({ params }: Props) {
-  const project = await getProject(params.slug);
+  const resolvedParams = await params;
+  const project = await getProject(resolvedParams.slug);
 
   if (!project) {
     notFound();
