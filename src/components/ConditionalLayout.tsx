@@ -23,8 +23,10 @@ export function ConditionalLayout({ children }: ConditionalLayoutProps) {
     <div className="min-h-screen bg-ghost-white dark:bg-charcoal-gray transition-colors duration-500 flex flex-col">
       <Header variant="page" />
 
-      {/* 메인 콘텐츠 */}
-      <main className="grid-minimal !py-5 flex-1 min-h-0">{children}</main>
+      {/* 메인 콘텐츠 - 헤더 높이만큼 padding-top 추가 */}
+      <main className="grid-minimal !py-5 flex-1 min-h-0 !pt-20">
+        {children}
+      </main>
 
       <Footer variant="page" />
     </div>
