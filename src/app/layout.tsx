@@ -22,7 +22,14 @@ export const metadata: Metadata = {
   keywords: ["블로그", "포트폴리오", "개발", "Next.js", "TypeScript", "React"],
   authors: [{ name: "KMH" }],
 
-  // ... (icons는 그대로 두셔도 좋습니다)
+  icons: {
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon.ico", type: "image/x-icon", sizes: "16x16" },
+    ],
+    shortcut: "/favicon.svg",
+    apple: "/favicon.svg",
+  },
 
   openGraph: {
     title: "KMH의 개발 블로그", // 👈 공유될 때 보일 제목
