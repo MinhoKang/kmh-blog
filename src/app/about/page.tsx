@@ -12,6 +12,32 @@ import {
   DEV_TOOLS,
   API_TOOLS,
 } from "@/constants/constants";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "About | KMH-BLOG",
+  description: "저의 경력, 기술 스택, 개발 철학에 대해 소개하는 페이지입니다.",
+  openGraph: {
+    title: "About | KMH-BLOG",
+    description:
+      "저의 경력, 기술 스택, 개발 철학에 대해 소개하는 페이지입니다.",
+    url: "/about", // 👈 metadataBase 덕분에 자동으로 절대 경로로 변환됩니다.
+    images: [
+      {
+        url: "/og-image.jpeg", // 👈 이 페이지를 위한 별도 이미지가 없으므로 기본 공유 이미지를 사용합니다.
+        width: 1200,
+        height: 630,
+        alt: "KMH 블로그 소개",
+      },
+    ],
+  },
+  twitter: {
+    title: "About | KMH-BLOG",
+    description:
+      "저의 경력, 기술 스택, 개발 철학에 대해 소개하는 페이지입니다.",
+    images: ["/og-image.jpeg"],
+  },
+};
 
 export default function AboutPage() {
   return (

@@ -524,8 +524,8 @@ html.dark li code {
       @apply bg-neutral-50;
     }
 
-    code[data-theme],
-    code[data-theme] span {
+    code[data-theme*=" "],
+    code[data-theme*=" "] span {
       color: var(--shiki-light);
     }
   }
@@ -541,8 +541,8 @@ html.dark li code {
       @apply bg-neutral-900;
     }
 
-    code[data-theme],
-    code[data-theme] span {
+    code[data-theme*=" "],
+    code[data-theme*=" "] span {
       color: var(--shiki-dark);
     }
   }
