@@ -13,62 +13,42 @@ const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-jetbrains-mono",
 });
-
 export const metadata: Metadata = {
-  title: "KMH-BLOG",
-  description: "KMH-BLOG",
-  keywords: [
-    "blog",
-    "portfolio",
-    "development",
-    "writing",
-    "Next.js",
-    "TypeScript",
-    "Tailwind CSS",
-  ],
+  // 👈 metadataBase를 추가하여 절대 경로 문제를 해결합니다.
+  metadataBase: new URL("https://kmh-blog.vercel.app"),
+
+  title: "KMH의 개발 블로그", // 👈 더 구체적인 제목
+  description: "코딩, 개발 지식과 포트폴리오를 공유하는 공간입니다.", // 👈 더 구체적인 설명
+  keywords: ["블로그", "포트폴리오", "개발", "Next.js", "TypeScript", "React"],
   authors: [{ name: "KMH" }],
-  icons: {
-    icon: [
-      { url: "/favicon.svg", type: "image/svg+xml" },
-      { url: "/favicon.ico", type: "image/x-icon", sizes: "16x16" },
-    ],
-    shortcut: "/favicon.svg",
-    apple: "/favicon.svg",
-  },
+
+  // ... (icons는 그대로 두셔도 좋습니다)
+
   openGraph: {
-    title: "KMH-BLOG",
-    description: "KMH-BLOG",
+    title: "KMH의 개발 블로그", // 👈 공유될 때 보일 제목
+    description: "코딩, 개발 지식과 포트폴리오를 공유하는 공간입니다.",
     url: "https://kmh-blog.vercel.app",
     siteName: "KMH-BLOG",
+    // 👈 og-image.png 라는 새로운 공유용 이미지를 사용합니다. (2단계에서 생성)
     images: [
       {
-        url: "/favicon.svg",
-        width: 64,
-        height: 64,
-        alt: "KMH-BLOG",
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "KMH 블로그 대표 이미지",
       },
     ],
     locale: "ko_KR",
     type: "website",
   },
   twitter: {
-    card: "summary",
-    title: "KMH-BLOG",
-    description:
-      "Personal blog and portfolio by KMH - Next.js, TypeScript, Tailwind CSS를 활용한 현대적인 웹사이트",
-    images: ["/favicon.svg"],
+    card: "summary_large_image", // 👈 큰 이미지 카드로 변경
+    title: "KMH의 개발 블로그",
+    description: "코딩, 개발 지식과 포트폴리오를 공유하는 공간입니다.",
+    images: ["/og-image.png"], // 👈 트위터용 이미지도 동일하게 설정
   },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-    },
-  },
+
+  // ... (robots는 그대로 두셔도 좋습니다)
 };
 
 export default function RootLayout({
