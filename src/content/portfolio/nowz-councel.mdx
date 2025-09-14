@@ -1,6 +1,6 @@
 ---
 title: "ZWON 상담 관리 프로그램"
-description: "React 19 + Vite 기반으로 개발한 상담팀 전용 관리 시스템으로 상담 예약부터 기록 관리까지 통합 솔루션을 제공한다."
+description: "React 19 + Vite 기반으로 개발한 상담팀 전용 관리 시스템으로 상담 예약부터 기록 관리까지 통합 솔루션을 제공"
 startDate: "2025-04"
 endDate: ""
 tags: ["React", "Vite", "TypeScript", "Tailwind", "Tanstack-Query"]
@@ -11,182 +11,60 @@ published: true
 
 ## 프로젝트 개요
 
-상담팀이 사용하는 **통합 상담 관리 프로그램**을 React 19 + Vite 기반으로 개발했다.
-
-상담 예약, 변경, 취소부터 상담 기록 관리까지 **상담 업무의 전 과정을 디지털화**한 시스템이다.
-
----
-
-## 주요 성과
-
-<table>
-  <thead>
-    <tr>
-      <th>구분</th>
-      <th>성과</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-        <strong>개발 기간</strong>
-      </td>
-      <td>2개월 (2025.04 ~ 2025.05)</td>
-    </tr>
-    <tr>
-      <td>
-        <strong>출시</strong>
-      </td>
-      <td>2025년 8월 성공적 출시</td>
-    </tr>
-    <tr>
-      <td>
-        <strong>개발 범위</strong>
-      </td>
-      <td>상담 관리 프로그램 전체 개발</td>
-    </tr>
-    <tr>
-      <td>
-        <strong>재사용 컴포넌트</strong>
-      </td>
-      <td>Table 컴포넌트 NOWZ-RP 프로젝트 재활용</td>
-    </tr>
-    <tr>
-      <td>
-        <strong>코드 품질</strong>
-      </td>
-      <td>Husky 기반 커밋 전 타입 검사 적용</td>
-    </tr>
-  </tbody>
-</table>
-
-### 기술 스택 구성
-
-<table>
-  <thead>
-    <tr>
-      <th>영역</th>
-      <th>기술</th>
-      <th>선택 이유</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-        <strong>프레임워크</strong>
-      </td>
-      <td>React 19 + Vite</td>
-      <td>최신 React 기능 + 빠른 빌드 속도</td>
-    </tr>
-    <tr>
-      <td>
-        <strong>언어</strong>
-      </td>
-      <td>TypeScript</td>
-      <td>타입 안전성 및 개발 생산성</td>
-    </tr>
-    <tr>
-      <td>
-        <strong>상태 관리</strong>
-      </td>
-      <td>Tanstack-Query</td>
-      <td>서버 상태 관리 최적화</td>
-    </tr>
-    <tr>
-      <td>
-        <strong>스타일링</strong>
-      </td>
-      <td>Tailwind + clsx</td>
-      <td>효율적인 스타일링 시스템</td>
-    </tr>
-    <tr>
-      <td>
-        <strong>폼 관리</strong>
-      </td>
-      <td>React Hook Form + Zod</td>
-      <td>성능 최적화된 폼 검증</td>
-    </tr>
-    <tr>
-      <td>
-        <strong>HTTP 통신</strong>
-      </td>
-      <td>ky</td>
-      <td>현대적인 fetch 래퍼</td>
-    </tr>
-  </tbody>
-</table>
+> 상담팀이 사용하는 **통합 상담 관리 프로그램**을 React 19 + Vite 기반으로 개발.
+>
+> 상담 예약, 변경, 취소부터 상담 기록 관리까지 **상담 업무의 전 과정을 디지털화**한 시스템.
+>
+> 현재 **지속적 개발 및 유지 보수** 중
 
 ---
 
-## 핵심 기능
+## 기술 스택
 
-### 1. 상담 예약 관리 시스템
+- **프레임워크**: React 19 + Vite
+- **언어**: TypeScript
+- **상태 관리**: tanstack-query
+- **스타일링**: tailwind, clsx
+- **폼 유효성 검사**: react-hook-form + zod
+- **통신**: ky
 
-**개발 기간**: 2025.04 ~ 2025.05
+---
 
-상담사와 고객 간의 **예약, 변경, 취소**를 체계적으로 관리하는 시스템을 구현했다.
+## 내가 한 역할
 
-**주요 기능**:
+### 1. 상담 관리 프로그램 전체 개발
 
-- 상담 예약 생성 및 수정
-- 실시간 상담사 일정 조회
-- 예약 변경 및 취소 처리
-- 상담 기록 작성 및 관리
-- 고객별 상담 이력 추적
+1. **개발 기능**
+   - 상담 예약, 변경, 취소, 상담 기록 관리
 
-### 2. 재사용 가능한 Table 컴포넌트
+2. **개발 기간**
+   - 2025년 4월 ~ 2025년 5월
+3. 해결한 문제
 
-**개발 기간**: 2025.04
+<ProblemBox
+  title="문제 1: 복잡한 테이블 구조의 중복 사용"
+  situation="복잡한 테이블 구조가 여러 곳에서 사용되어 코드 중복 및 유지보수 어려움 발생"
+  solution="커스텀 Table 컴포넌트 개발하여 재사용, 커스텀 가능한 컬럼, 해당 Table 컴포넌트는 NOWZ-RP에서 재사용"
+/>
 
-복잡한 테이블 구조의 **코드 중복 문제를 해결**하기 위한 범용 Table 컴포넌트를 개발했다.
+### 2. 모달 컴포넌트 개발
 
-<table>
-  <thead>
-    <tr>
-      <th>기능</th>
-      <th>구현 내용</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-        <strong>커스텀 컬럼</strong>
-      </td>
-      <td>동적 컬럼 설정 및 렌더링</td>
-    </tr>
-    <tr>
-      <td>
-        <strong>정렬 기능</strong>
-      </td>
-      <td>클릭으로 오름차순/내림차순 정렬</td>
-    </tr>
-    <tr>
-      <td>
-        <strong>필터링</strong>
-      </td>
-      <td>컬럼별 검색 및 필터링</td>
-    </tr>
-    <tr>
-      <td>
-        <strong>페이지네이션</strong>
-      </td>
-      <td>대용량 데이터 효율적 처리</td>
-    </tr>
-    <tr>
-      <td>
-        <strong>재사용성</strong>
-      </td>
-      <td>NOWZ-RP 프로젝트에서 재활용</td>
-    </tr>
-  </tbody>
-</table>
+1. **개발 기능**
+   - **floating ui** 라이브러리를 활용하여 모달 컴포넌트 개발
 
-### 3. Floating UI 기반 모달 시스템
+2. **개발 기간**
+   - 2025년 4월
 
-**개발 기간**: 2025.04
+### 3. 커밋 전 타입 검사
 
-사용자 경험을 향상시키는 **고도화된 모달 컴포넌트**를 개발했다.
+1. **개발 기능**
+   - **husky**를 활용하여 커밋 전 타입 검사
 
-**주요 특징**:
+2. **개발 기간**
+   - 2025년 4월
 
-- Floating UI 라이브러리
+---
+
+## 개발 예정
+
+1. **클로바 노트**와 같이 상담 녹음 내용 수정 기능
