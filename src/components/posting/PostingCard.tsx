@@ -12,6 +12,7 @@ interface Posting {
   endDate?: string;
   date: string;
   type: "project" | "post";
+  readingTime?: string;
 }
 
 interface PostingCardProps {
@@ -38,10 +39,15 @@ export function PostingCard({ posting, index: _index }: PostingCardProps) {
         <div className="w-full">
           {/* 포스팅 정보 */}
           <div className="w-full flex flex-col gap-y-2">
-            <div className="mb-4">
+            <div className="mb-4 flex items-center gap-4">
               <time className="text-sm font-light text-neutral-500 dark:text-neutral-500 tracking-widest uppercase">
                 {posting.date}
               </time>
+              {posting.readingTime && (
+                <span className="text-sm font-light text-neutral-500 dark:text-neutral-500 tracking-widest uppercase">
+                  {posting.readingTime}
+                </span>
+              )}
             </div>
 
             <h2 className="text-2xl md:text-3xl font-light text-neutral-900 dark:text-neutral-100 mb-4 tracking-tight leading-tight">

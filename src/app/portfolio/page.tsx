@@ -6,6 +6,7 @@ import matter from "gray-matter";
 import { PageHeader } from "@/components/common/PageHeader";
 import { PostingCard } from "@/components/posting/PostingCard";
 import { formatDateRange, sortProjectsByStartDate } from "@/lib/date-utils";
+import { getReadingTimeFromMdx } from "@/lib/readingTime";
 
 interface Project {
   slug: string;
@@ -18,6 +19,7 @@ interface Project {
   startDate?: string;
   endDate?: string;
   date: string;
+  readingTime?: string;
 }
 
 function getAllProjects(): Project[] {
@@ -35,6 +37,7 @@ function getAllProjects(): Project[] {
       const fullPath = path.join(projectsDirectory, fileName);
       const fileContents = fs.readFileSync(fullPath, "utf8");
       const { data } = matter(fileContents);
+      const readingTime = getReadingTimeFromMdx(fileContents);
 
       return {
         slug,
@@ -47,6 +50,7 @@ function getAllProjects(): Project[] {
         startDate: data.startDate,
         endDate: data.endDate,
         date: formatDateRange(data.startDate, data.endDate),
+        readingTime: readingTime,
       };
     });
 

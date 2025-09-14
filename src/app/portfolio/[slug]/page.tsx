@@ -8,6 +8,7 @@ import { notFound } from "next/navigation";
 import { TableOfContents } from "@/components/common/TableOfContents";
 import { CustomMdxRemote } from "@/components/mdx/CustomMdxRemote";
 import { formatDateRange } from "@/lib/date-utils";
+import { getReadingTimeFromMdx } from "@/lib/readingTime";
 
 interface Props {
   params: Promise<{
@@ -25,6 +26,7 @@ export async function getProject(slug: string) {
 
   const fileContents = fs.readFileSync(fullPath, "utf8");
   const { data, content } = matter(fileContents);
+  const readingTime = getReadingTimeFromMdx(fileContents);
 
   return {
     title: data.title || slug,
@@ -37,6 +39,7 @@ export async function getProject(slug: string) {
     endDate: data.endDate,
     date: formatDateRange(data.startDate, data.endDate),
     content,
+    readingTime,
   };
 }
 
@@ -92,10 +95,13 @@ export default async function ProjectPage({ params }: Props) {
         <div className="grid md:grid-cols-3 gap-12">
           {/* 왼쪽: 메인 정보 */}
           <div className="md:col-span-2">
-            <div className="mb-4">
+            <div className="mb-4 flex items-center gap-4">
               <time className="text-sm font-light text-neutral-500 dark:text-neutral-500 tracking-widest uppercase">
                 {project.date}
               </time>
+              <span className="text-sm font-light text-neutral-500 dark:text-neutral-500 tracking-widest uppercase">
+                {project.readingTime}
+              </span>
             </div>
 
             <h1 className="text-5xl lg:text-6xl text-neutral-900 dark:text-neutral-50 mb-6 tracking-tighter leading-tight">

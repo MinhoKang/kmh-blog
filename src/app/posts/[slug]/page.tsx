@@ -8,6 +8,7 @@ import { notFound } from "next/navigation";
 
 import { TableOfContents } from "@/components/common/TableOfContents";
 import { CustomMdxRemote } from "@/components/mdx/CustomMdxRemote";
+import { getReadingTimeFromMdx } from "@/lib/readingTime";
 
 interface Props {
   params: Promise<{
@@ -64,6 +65,7 @@ async function getPost(slug: string) {
 
   const fileContents = fs.readFileSync(fullPath, "utf8");
   const { data, content } = matter(fileContents);
+  const readingTime = getReadingTimeFromMdx(fileContents);
 
   return {
     title: data.title || slug,
@@ -71,6 +73,7 @@ async function getPost(slug: string) {
     date: data.date || "2024-01-01",
     tags: data.tags || [],
     content,
+    readingTime,
   };
 }
 
@@ -110,7 +113,7 @@ export default async function PostPage({ params }: Props) {
       {/* 포스트 헤더 */}
       <header className="mb-16 animate-fade-in delay-200">
         {/* 날짜 */}
-        <div className="mb-6">
+        <div className="mb-6 flex items-center gap-4">
           <time className="text-sm font-light text-neutral-500 dark:text-neutral-500 tracking-widest uppercase">
             {new Date(post.date).toLocaleDateString("en-US", {
               year: "numeric",
@@ -118,6 +121,9 @@ export default async function PostPage({ params }: Props) {
               day: "numeric",
             })}
           </time>
+          <span className="text-sm font-light text-neutral-500 dark:text-neutral-500 tracking-widest uppercase">
+            {post.readingTime}
+          </span>
         </div>
 
         {/* 제목 */}
