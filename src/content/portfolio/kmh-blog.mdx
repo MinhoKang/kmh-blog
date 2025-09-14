@@ -306,6 +306,141 @@ export const formatDateRange = (
 - **날짜 범위**: "2024-10 ~ 2025-08"
 - **진행 중**: "2024-12" (endDate 없음)
 
+### 4. TOC (Table of Contents) 구현 실패과 해결
+
+**문제**: 목차 클릭 시 해당 섹션으로 이동하지 않는 문제
+
+**초기 구현 시도**:
+
+처음에는 간단한 TOC를 구현했지만, 목차를 클릭해도 해당 헤딩으로 스크롤되지 않는 문제가 발생했다.
+
+**문제 분석**:
+
+<div className="overflow-x-auto mb-8">
+  <table className="min-w-full">
+    <thead>
+      <tr>
+        <th className="text-left py-2 pr-4">문제점</th>
+        <th className="text-left py-2 pr-4">원인</th>
+        <th className="text-left py-2">영향</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td className="py-2 pr-4">
+          <strong>헤딩 ID 부재</strong>
+        </td>
+        <td className="py-2 pr-4">MDX에서 헤딩에 자동 ID가 생성되지 않음</td>
+        <td className="py-2">스크롤 타겟이 없어서 이동 불가</td>
+      </tr>
+      <tr>
+        <td className="py-2 pr-4">
+          <strong>스크롤 오프셋 미고려</strong>
+        </td>
+        <td className="py-2 pr-4">고정 헤더 높이를 고려하지 않음</td>
+        <td className="py-2">헤더에 가려져서 정확한 위치 이동 실패</td>
+      </tr>
+      <tr>
+        <td className="py-2 pr-4">
+          <strong>반응형 대응 부족</strong>
+        </td>
+        <td className="py-2 pr-4">모바일과 데스크톱에서 다른 UX 필요</td>
+        <td className="py-2">모바일에서 사용성 저하</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+**해결 과정**:
+
+**1단계: rehype 플러그인 설정**
+
+```typescript
+// CustomMdxRemote.tsx
+import rehypeSlug from "rehype-slug";
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
+
+// MDX 옵션에 플러그인 추가
+options={{
+  mdxOptions: {
+    rehypePlugins: [
+      rehypeSlug, // 헤딩에 자동 ID 생성
+      [
+        rehypeAutolinkHeadings,
+        {
+          behavior: "wrap",
+          properties: {
+            className: ["heading-link"],
+          },
+        },
+      ],
+    ],
+  },
+}}
+```
+
+**2단계: TOC 컴포넌트 구현**
+
+```typescript
+// TableOfContents.tsx
+const scrollToHeading = (id: string) => {
+  const element = document.getElementById(id);
+  if (element) {
+    const offsetTop = element.offsetTop - 80; // 헤더 높이 고려
+    window.scrollTo({
+      top: offsetTop,
+      behavior: "smooth",
+    });
+  }
+  setIsOpen(false); // 모바일에서 클릭 후 닫기
+};
+```
+
+**3단계: 반응형 TOC 구현**
+
+<div className="overflow-x-auto mb-8">
+  <table className="min-w-full">
+    <thead>
+      <tr>
+        <th className="text-left py-2 pr-4">화면 크기</th>
+        <th className="text-left py-2 pr-4">TOC 형태</th>
+        <th className="text-left py-2">특징</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td className="py-2 pr-4">
+          <strong>데스크톱 (md 이상)</strong>
+        </td>
+        <td className="py-2 pr-4">오른쪽 고정 사이드바</td>
+        <td className="py-2">스크롤을 따라다니는 sticky 위치</td>
+      </tr>
+      <tr>
+        <td className="py-2 pr-4">
+          <strong>모바일 (md 미만)</strong>
+        </td>
+        <td className="py-2 pr-4">우하단 플로팅 버튼</td>
+        <td className="py-2">팝업 형태로 TOC 표시</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+**최종 구현 결과**:
+
+- **자동 ID 생성**: `rehype-slug`로 모든 헤딩에 고유 ID 자동 생성
+- **부드러운 스크롤**: `behavior: "smooth"`로 자연스러운 이동
+- **헤더 오프셋**: 80px 오프셋으로 정확한 위치 이동
+- **실시간 하이라이트**: 스크롤 위치에 따른 현재 섹션 표시
+- **반응형 UX**: 데스크톱은 사이드바, 모바일은 팝업
+
+**학습한 점**:
+
+- **rehype 플러그인 활용**: MDX 생태계의 강력한 플러그인 시스템
+- **스크롤 위치 계산**: `getBoundingClientRect()`와 `offsetTop` 활용
+- **반응형 컴포넌트**: 화면 크기별 다른 UX 제공의 중요성
+- **사용자 경험 고려**: 단순한 기능 구현을 넘어선 UX 설계
+
 ---
 
 ## 결과 및 성과
@@ -365,6 +500,8 @@ export const formatDateRange = (
 - **MDX 콘텐츠 관리**: 마크다운과 JSX를 결합한 동적 콘텐츠 시스템
 - **TypeScript 활용**: 타입 안전성을 통한 개발 생산성 향상
 - **Tailwind CSS**: 유틸리티 퍼스트 CSS로 빠른 스타일링
+- **rehype 플러그인**: MDX 생태계의 강력한 플러그인 시스템 활용
+- **스크롤 계산**: DOM API를 활용한 정확한 스크롤 위치 제어
 
 ### 프로젝트 관리
 
@@ -377,6 +514,7 @@ export const formatDateRange = (
 - **MDX 테이블 렌더링**: HTML 테이블 직접 작성으로 안정성 확보
 - **반응형 이미지**: flex 방향 변경으로 모바일 최적화
 - **날짜 범위 처리**: 유연한 날짜 포맷팅 시스템 구축
+- **TOC 구현**: rehype 플러그인과 스크롤 계산을 통한 완전한 목차 시스템
 
 ---
 
