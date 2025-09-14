@@ -50,7 +50,7 @@ export function PostingCard({ posting, index: _index }: PostingCardProps) {
               )}
             </div>
 
-            <h2 className="text-2xl md:text-3xl font-light text-neutral-900 dark:text-neutral-100 mb-4 tracking-tight leading-tight">
+            <h2 className="text-2xl md:text-3xl font-medium text-neutral-900 dark:text-neutral-100 mb-4 tracking-tight leading-tight">
               <Link
                 href={`/${posting.type === "project" ? "portfolio" : "posts"}/${posting.slug}`}
                 className="hover:text-neutral-600 dark:hover:text-neutral-300 transition-colors duration-300"
@@ -60,7 +60,7 @@ export function PostingCard({ posting, index: _index }: PostingCardProps) {
             </h2>
 
             {posting.description && (
-              <p className="text-base font-light text-neutral-600 dark:text-neutral-400 leading-relaxed tracking-wide mb-6">
+              <p className="text-base font-medium text-neutral-600 dark:text-neutral-400 leading-relaxed tracking-wide mb-6">
                 {posting.description}
               </p>
             )}
@@ -68,7 +68,7 @@ export function PostingCard({ posting, index: _index }: PostingCardProps) {
             {/* 태그 */}
             {posting.tags && posting.tags.length > 0 && (
               <div className="flex flex-col gap-y-1">
-                <h3 className="text-sm font-light text-neutral-500 dark:text-neutral-500 mb-3 tracking-widest uppercase">
+                <h3 className="text-sm font-medium text-neutral-500 dark:text-neutral-500 mb-3 tracking-widest uppercase">
                   Tags
                 </h3>
                 <div className="flex flex-wrap gap-2">

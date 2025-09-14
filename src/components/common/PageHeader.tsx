@@ -7,7 +7,7 @@ export function PageHeader({ title, description }: PageHeaderProps) {
   return (
     <section className="">
       <div className="flex flex-col gap-y-2">
-        <h1 className="text-4xl md:text-6xl font-extralight text-neutral-900 dark:text-neutral-50 mb-6 tracking-tighter leading-tight">
+        <h1 className="text-4xl md:text-6xl font-bold text-neutral-900 dark:text-neutral-50 mb-6 tracking-tighter leading-tight">
           {title}
         </h1>
         <div className="w-full h-px bg-neutral-300 dark:bg-neutral-700 mb-8" />

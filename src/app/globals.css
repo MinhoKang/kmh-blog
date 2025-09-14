@@ -464,7 +464,6 @@ pre {
   overflow-x: hidden; /* 작은 화면에서 가로 스크롤 숨김 */
   max-width: 100%; /* 가로 최대폭 100% 제한 */
   white-space: pre-wrap; /* 줄 바꿈 허용 */
-  word-break: break-word; /* 단어 중간에서 줄바꿈 가능 */
   overflow-wrap: break-word;
 }
 
