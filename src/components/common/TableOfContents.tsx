@@ -79,7 +79,7 @@ export const TableOfContents = ({ className = "" }: TableOfContentsProps) => {
   return (
     <>
       {/* 데스크톱 버전 - 오른쪽 고정 */}
-      <div className={`hidden md:block ${className}`}>
+      <div className={`hidden lg:block ${className}`}>
         <div className="sticky top-24 w-64">
           <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg p-6 shadow-sm">
             <h3 className="text-sm font-medium text-neutral-900 dark:text-neutral-100 mb-4 tracking-wide">
@@ -113,7 +113,7 @@ export const TableOfContents = ({ className = "" }: TableOfContentsProps) => {
       </div>
 
       {/* 모바일 버전 - 플로팅 버튼 */}
-      <div className="md:hidden fixed bottom-6 right-6 z-50">
+      <div className="lg:hidden fixed bottom-6 right-6 z-50">
         {/* TOC 토글 버튼 */}
         <button
           onClick={() => setIsOpen(!isOpen)}
