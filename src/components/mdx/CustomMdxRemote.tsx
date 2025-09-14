@@ -1,11 +1,12 @@
 import { ComponentProps } from "react";
-import { MDXRemote } from "next-mdx-remote/rsc";
+import { compileMDX, MDXRemote } from "next-mdx-remote/rsc";
 import rehypePrettyCode, { type Options } from "rehype-pretty-code";
 import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
+import remarkGfm from "remark-gfm";
 
 // rehype-pretty-code 옵션 설정
-const prettyCodeOptions: Options = {
+export const prettyCodeOptions: Options = {
   keepBackground: true,
   theme: {
     dark: "github-dark",
@@ -14,7 +15,7 @@ const prettyCodeOptions: Options = {
 };
 
 // 인라인 코드 컴포넌트 (코드블록이 아닌 경우만)
-const InlineCode = (props: ComponentProps<"code">) => {
+export const InlineCode = (props: ComponentProps<"code">) => {
   // 코드블록인 경우 (pre 태그 안에 있는 경우)는 rehype-pretty-code가 처리
   if (props.className?.includes("language-")) {
     return <code {...props} />;
@@ -29,7 +30,7 @@ const InlineCode = (props: ComponentProps<"code">) => {
   );
 };
 
-const components = {
+export const components = {
   h1: (props: ComponentProps<"h1">) => (
     <h1
       {...props}
@@ -84,12 +85,39 @@ const components = {
   ),
 };
 
-export const CustomMdxRemote = ({
+export const CustomMdxRemote = async ({
+  source,
   ...props
 }: ComponentProps<typeof MDXRemote>) => {
+  const { content } = await compileMDX({
+    source,
+    components,
+    options: {
+      parseFrontmatter: true,
+      mdxOptions: {
+        remarkPlugins: [remarkGfm],
+        // 👇 기존 CustomMdxRemote에 있던 rehype 플러그인들을 그대로 가져옵니다.
+        rehypePlugins: [
+          rehypeSlug,
+          [
+            rehypeAutolinkHeadings,
+            {
+              behavior: "wrap",
+              properties: {
+                className: ["heading-link"],
+              },
+            },
+          ],
+          [rehypePrettyCode, prettyCodeOptions],
+        ],
+      },
+    },
+  });
+
   return (
     <div className="prose-wrapper text-base leading-relaxed text-neutral-700 dark:text-neutral-300">
       <MDXRemote
+        source={source}
         {...props}
         components={components}
         options={{
@@ -107,6 +135,7 @@ export const CustomMdxRemote = ({
               ],
               [rehypePrettyCode, prettyCodeOptions],
             ],
+            remarkPlugins: [remarkGfm],
           },
         }}
       />

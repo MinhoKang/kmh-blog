@@ -4,13 +4,13 @@ import matter from "gray-matter";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { formatDateRange } from "@/lib/date-utils";
-import { CustomMdxRemote } from "@/components/mdx/CustomMdxRemote";
 import { TableOfContents } from "@/components/common/TableOfContents";
+import { CustomMdxRemote } from "@/components/mdx/CustomMdxRemote";
 
 interface Props {
-  params: Promise<{
+  params: {
     slug: string;
-  }>;
+  };
 }
 
 export async function getProject(slug: string) {
@@ -39,8 +39,7 @@ export async function getProject(slug: string) {
 }
 
 export default async function ProjectPage({ params }: Props) {
-  const resolvedParams = await params;
-  const project = await getProject(resolvedParams.slug);
+  const project = await getProject(params.slug);
 
   if (!project) {
     notFound();
