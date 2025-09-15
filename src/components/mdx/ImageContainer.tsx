@@ -33,6 +33,7 @@ export const ImageContainer = ({
     zoom,
     position,
     isDragging,
+    isLoading,
     imageRef,
     openModal,
     closeModal,
@@ -46,6 +47,7 @@ export const ImageContainer = ({
     handleTouchStart,
     handleTouchMove,
     handleTouchEnd,
+    handleImageLoad,
   } = useImageModal();
 
   return (
@@ -156,13 +158,21 @@ export const ImageContainer = ({
               >
                 <Image
                   src={selectedImage}
-                  alt="확대된 이미지"
+                  alt={selectedImage}
                   width={1200}
                   height={800}
                   className="max-w-full max-h-full object-contain rounded-lg select-none"
                   quality={100}
                   draggable={false}
+                  onLoad={handleImageLoad}
                 />
+
+                {/* 로딩 스피너 */}
+                {isLoading && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-lg">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white"></div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
