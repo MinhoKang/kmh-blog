@@ -1,43 +1,36 @@
 ---
 title: "KMH Blog - 블로그 개발기"
-description: "Next.js 15, TypeScript, Tailwind v4로 mdx기반 블로그 개발하기"
+description: "Next.js 15, TypeScript, Tailwind v4로 mdx기반 블로그 개발"
 startDate: "2025-09"
 tags: ["Next.js", "TypeScript", "Tailwind v4", "MDX", "Blog"]
 category: "portfolio"
 featured: true
-published: false
+published: true
 ---
 
-## 프로젝트 개요
+# 프로젝트 개요
 
-**개인 포트폴리오와 블로그 기능을 통합한 웹사이트**를 Next.js 15와 TypeScript, Tailwind v4로 개발했다.
+**개인 포트폴리오와 블로그 기능을 통합한 웹사이트**를 Next.js 15와 TypeScript, Tailwind v4로 개발
 
-포트폴리오 프로젝트 소개, 기술 블로그, 개인 소개 등 **다양한 콘텐츠를 체계적으로 관리**할 수 있는 현대적인 웹사이트다.
+## 프로젝트 정보
 
----
-
-## 주요 성과
-
-| 구분              | 성과                                |
+| 구분              | 내용                                |
 | ----------------- | ----------------------------------- |
-| **개발 기간**     | 2024년 12월 (약 2주)                |
+| **개발 기간**     | 2025년 9월                          |
 | **프로젝트 성격** | 개인 포트폴리오 웹사이트            |
-| **배포**          | Vercel을 통한 자동 배포             |
-| **콘텐츠 관리**   | MDX 기반 마크다운 콘텐츠 시스템     |
+| **배포**          | Vercel                              |
+| **콘텐츠 관리**   | MDX 기반 마크다운                   |
 | **사용자 경험**   | 다크모드, 반응형 디자인, 애니메이션 |
 
-### 기술 스택 구성
+## 기술 스택
 
-| 영역           | 기술                    | 용도                           |
-| -------------- | ----------------------- | ------------------------------ |
-| **프레임워크** | Next.js 14 (App Router) | React 기반 풀스택 프레임워크   |
-| **언어**       | TypeScript              | 타입 안전성 확보               |
-| **스타일링**   | Tailwind CSS            | 유틸리티 퍼스트 CSS 프레임워크 |
-| **콘텐츠**     | MDX + next-mdx-remote   | 마크다운 기반 콘텐츠 관리      |
-| **메타데이터** | gray-matter             | Frontmatter 파싱               |
-| **배포**       | Vercel                  | 자동 배포 및 호스팅            |
-
----
+| 영역           | 기술                                                                                                           |
+| -------------- | -------------------------------------------------------------------------------------------------------------- |
+| **프레임워크** | Next.js 15.5.3 (App Router) + React 19.1.0                                                                     |
+| **언어**       | TypeScript                                                                                                     |
+| **스타일링**   | Tailwind CSS 4.1.13                                                                                            |
+| **콘텐츠**     | MDX + next-mdx-remote + gray-matter + rehype-pretty-code + rehype-slug + rehype-autolink-headings + remark-gfm |
+| **배포**       | Husky + Vercel                                                                                                 |
 
 ## 핵심 기능
 
@@ -47,437 +40,203 @@ published: false
 
 **주요 기능**:
 
-- **포트폴리오 프로젝트**: 프로젝트 상세 정보 및 이미지
+- **포트폴리오**: 프로젝트 상세 정보 및 이미지
 - **기술 블로그**: 마크다운 기반 글 작성
 - **개인 소개**: About 페이지
 - **동적 라우팅**: `[slug]` 기반 페이지 생성
 
 ### 2. 반응형 디자인 시스템
 
-**모든 디바이스에서 최적화된 사용자 경험**을 제공한다.
+반응형 디자인 시스템 구현
 
-| 화면 크기    | 레이아웃     | 특징                     |
-| ------------ | ------------ | ------------------------ |
-| **모바일**   | 1열 레이아웃 | 터치 친화적, 세로 스크롤 |
-| **태블릿**   | 2열 그리드   | 균형잡힌 레이아웃        |
-| **데스크톱** | 3열 그리드   | 최대 정보 밀도           |
+#### PC
+
+<ImageContainer
+  fixedHeight={true}
+  heightClass="h-80"
+  images={[
+    {
+      src: "/images/portfolio/Kmh-blog/home-light.JPG",
+      alt: "grade card 스크린샷 1",
+    },
+    {
+      src: "/images/portfolio/Kmh-blog/portfolio-light.JPG",
+      alt: "grade card 스크린샷 2",
+    },
+    {
+      src: "/images/portfolio/Kmh-blog/post-light.JPG",
+      alt: "grade card 스크린샷 3",
+    },
+    {
+      src: "/images/portfolio/Kmh-blog/about-light.JPG",
+      alt: "예상 흐름도 스크린샷 1",
+    },
+  ]}
+/>
+
+#### Mobile (iPhone 14 pro max)
+
+<ImageContainer
+  fixedHeight={true}
+  heightClass="h-80"
+  images={[
+    {
+      src: "/images/portfolio/Kmh-blog/home-light-m.JPG",
+      alt: "grade card 스크린샷 1",
+    },
+    {
+      src: "/images/portfolio/Kmh-blog/portfolio-light-m.JPG",
+      alt: "grade card 스크린샷 2",
+    },
+    {
+      src: "/images/portfolio/Kmh-blog/post-light-m.JPG",
+      alt: "grade card 스크린샷 3",
+    },
+    {
+      src: "/images/portfolio/Kmh-blog/about-light-m.JPG",
+      alt: "예상 흐름도 스크린샷 1",
+    },
+  ]}
+/>
 
 ### 3. 다크모드 지원
-
-**시스템 설정 기반 자동 다크모드**와 수동 토글 기능을 구현했다.
 
 **구현 방식**:
 
 - **Tailwind CSS**: `dark:` 접두사 활용
-- **시스템 감지**: `prefers-color-scheme` 미디어 쿼리
-- **상태 관리**: React Context API
-- **지속성**: localStorage 저장
 
-### 4. 컴포넌트 기반 아키텍처
+(라이트모드는 위의 사진과 동일)
 
-**재사용 가능한 컴포넌트**로 코드 중복을 최소화했다.
+#### PC
 
-**주요 컴포넌트**:
+<ImageContainer
+  fixedHeight={true}
+  heightClass="h-80"
+  images={[
+    {
+      src: "/images/portfolio/Kmh-blog/home-dark.JPG",
+      alt: "grade card 스크린샷 1",
+    },
+    {
+      src: "/images/portfolio/Kmh-blog/portfolio-dark.JPG",
+      alt: "grade card 스크린샷 2",
+    },
+    {
+      src: "/images/portfolio/Kmh-blog/post-dark.JPG",
+      alt: "grade card 스크린샷 3",
+    },
+    {
+      src: "/images/portfolio/Kmh-blog/about-dark.JPG",
+      alt: "예상 흐름도 스크린샷 1",
+    },
+  ]}
+/>
 
-- **PageHeader**: 페이지 헤더 통합 관리
-- **PostingCard**: 포트폴리오/블로그 카드 통합
-- **AboutSection**: About 페이지 섹션
-- **SkillList**: 기술 스택 표시
+#### Mobile (iPhone 14 pro max)
 
----
+<ImageContainer
+  fixedHeight={true}
+  heightClass="h-80"
+  images={[
+    {
+      src: "/images/portfolio/Kmh-blog/home-dark-m.JPG",
+      alt: "grade card 스크린샷 1",
+    },
+    {
+      src: "/images/portfolio/Kmh-blog/portfolio-dark-m.JPG",
+      alt: "grade card 스크린샷 2",
+    },
+    {
+      src: "/images/portfolio/Kmh-blog/post-dark-m.JPG",
+      alt: "grade card 스크린샷 3",
+    },
+    {
+      src: "/images/portfolio/Kmh-blog/about-dark-m.JPG",
+      alt: "예상 흐름도 스크린샷 1",
+    },
+  ]}
+/>
+
+### 4. 이미지 뷰어
+
+- **react-zoom-pan-pinch** 라이브러리 사용
+
+<ImageContainer
+  fixedHeight={true}
+  heightClass="h-80"
+  images={[
+    {
+      src: "/images/portfolio/Kmh-blog/image-viewer.JPG",
+      alt: "grade card 스크린샷 1",
+    },
+  ]}
+/>
 
 ## 기술적 도전과 해결
 
-### 1. MDX 테이블 렌더링 문제
+### 1. 반응형 이미지 레이아웃 최적화
 
-**문제**: MDX에서 HTML 테이블이 제대로 렌더링되지 않는 문제
+**문제**:
 
-**상황 분석**:
-
-- 마크다운 테이블 문법이 MDX에서 제대로 파싱되지 않음
-- `next-mdx-remote`의 기본 설정으로는 복잡한 테이블 지원 한계
-- 빌드 시 MDX 컴파일 에러 발생
+- 모바일에서 이미지가 화면을 벗어나 가로 스크롤 발생
+- mdx에서 작성한 코드블럭이 레이아웃을 벗어나는 것이 원인(rehype-autolink-headings 기본 설정이 오버라이딩)
 
 **해결책**:
 
-| 해결 방법               | 구현 내용                                     | 효과                   |
-| ----------------------- | --------------------------------------------- | ---------------------- |
-| **HTML 테이블 변환**    | 마크다운 테이블을 HTML 태그로 직접 작성       | 안정적인 테이블 렌더링 |
-| **커스텀 MDX 컴포넌트** | table, thead, tbody, tr, th, td 컴포넌트 정의 | 일관된 테이블 스타일링 |
-| **Tailwind Typography** | @tailwindcss/typography 플러그인 활용         | 자동 테이블 스타일링   |
+- global.css에 다음 코드 삽입
 
-### 2. 반응형 이미지 레이아웃 최적화
+```css
+// /global.css
 
-**문제**: 모바일에서 이미지가 화면을 벗어나 가로 스크롤 발생
+pre {
+  border-radius: 0.5rem;
+  padding: 1rem;
+  overflow-x: hidden;
+  max-width: 100%;
+  white-space: pre-wrap; /* 줄 바꿈 허용 */
+  overflow-wrap: break-word;
+}
+```
+
+### 2. 다크모드 설정시 빌드 에러
+
+**문제**: 다크모드 설정시 빌드 에러 발생(HookWebpackError: Cannot read properties of undefined (reading '0'))
 
 **해결책**:
 
-| 화면 크기    | 레이아웃             | 이미지 크기        |
-| ------------ | -------------------- | ------------------ |
-| **모바일**   | flex-col (세로 배치) | w-full (전체 너비) |
-| **데스크톱** | flex-row (가로 배치) | w-80 (고정 너비)   |
+- [Next.js GitHub Discussion](https://github.com/vercel/next.js/discussions/76050)에서 해결책을 찾을 수 있었음
 
-### 3. 날짜 범위 처리 시스템
+```css
+// /global.css
 
-**문제**: 프로젝트 기간을 단일 날짜가 아닌 범위로 표시해야 하는 요구사항
-
-**해결책**:
-
-```typescript
-// date-utils.ts
-export const formatDateRange = (startDate?: string, endDate?: string): string => {
-  if (!startDate && !endDate) return "2024-01-01";
-  if (!startDate) return endDate!;
-  if (!endDate) return startDate!;
-  return `${startDate} ~ ${endDate}`;
-};
+code[data-theme*=" "],
+    code[data-theme*=" "] span {
+  color: var(--shiki-light);
+}
+code[data-theme*=" "],
+code[data-theme*=" "] span {
+  color: var(--shiki-dark);
+}
 ```
 
-**적용 결과**:
+**`*= " "`** 을 제거하면 빌드 성공
 
-- **단일 날짜**: "2024-12"
-- **날짜 범위**: "2024-10 ~ 2025-08"
-- **진행 중**: "2024-12" (endDate 없음)
+rehype-pretty-code 라이브러리에서 다크모드일 때 코드블럭 스타일을 설정하는 코드인데, 빌드할 때 cssnano(CSS를 최적화하는 PostCSS 플러그인)에서 오류가 발생.
 
-### 4. 이미지 뷰어 줌/드래그 시스템 구현
-
-**문제**: MDX 콘텐츠의 이미지를 클릭했을 때 확대해서 볼 수 있는 기능 필요
-
-**요구사항**:
-
-- 이미지 클릭 시 모달로 확대 표시
-- 줌 인/아웃 기능 (50% ~ 300%)
-- 드래그로 이미지 이동
-- 마우스 휠로 줌 조절
-- 100% 줌 시 자동 중앙 정렬
-
-**구현 과정**:
-
-**1단계: 상태 관리 설계**
-
-```typescript
-// ImageContainer.tsx
-const [selectedImage, setSelectedImage] = useState<string | null>(null); // 선택된 이미지
-const [zoom, setZoom] = useState(1); // 줌 레벨 (0.5~3)
-const [position, setPosition] = useState({ x: 0, y: 0 }); // 이미지 위치
-const [isDragging, setIsDragging] = useState(false); // 드래그 상태
-const [dragStart, setDragStart] = useState({ x: 0, y: 0 }); // 드래그 시작점
-```
-
-**2단계: 줌 로직 구현**
-
-```typescript
-// 줌 인/아웃 함수
-const handleZoomIn = () => {
-  setZoom((prev) => Math.min(prev + 0.5, 3)); // 0.5배씩 증가, 최대 3배
-};
-
-const handleZoomOut = () => {
-  setZoom((prev) => {
-    const newZoom = Math.max(prev - 0.5, 0.5); // 0.5배씩 감소, 최소 0.5배
-    if (newZoom === 1) {
-      setPosition({ x: 0, y: 0 }); // 100%가 되면 위치 리셋
-    }
-    return newZoom;
-  });
-};
-
-// 마우스 휠 줌
-const handleWheel = (e: React.WheelEvent) => {
-  e.preventDefault(); // 페이지 스크롤 방지
-  if (e.deltaY < 0) {
-    handleZoomIn(); // 휠 위로 = 줌 인
-  } else {
-    handleZoomOut(); // 휠 아래로 = 줌 아웃
-  }
-};
-
-// 자동 리셋 로직
-useEffect(() => {
-  if (zoom === 1) {
-    setPosition({ x: 0, y: 0 }); // 줌이 100%가 되면 무조건 중앙 정렬
-  }
-}, [zoom]);
-```
-
-**3단계: 드래그 로직 구현**
-
-```typescript
-// 드래그 시작 (Mouse Down)
-const handleMouseDown = (e: React.MouseEvent) => {
-  setIsDragging(true); // 드래그 상태 시작
-  setDragStart({
-    x: e.clientX - position.x, // 마우스 위치 - 현재 이미지 위치
-    y: e.clientY - position.y,
-  });
-};
-
-// 드래그 중 (Mouse Move)
-const handleMouseMove = (e: React.MouseEvent) => {
-  if (isDragging) {
-    setPosition({
-      x: e.clientX - dragStart.x, // 현재 마우스 - 시작점 = 이동 거리
-      y: e.clientY - dragStart.y,
-    });
-  }
-};
-
-// 드래그 종료 (Mouse Up)
-const handleMouseUp = () => {
-  setIsDragging(false); // 드래그 상태 종료
-};
-```
-
-**4단계: CSS Transform 적용**
-
-```typescript
-// Transform 공식
-style={{
-  transform: `scale(${zoom}) translate(${position.x / zoom}px, ${position.y / zoom}px)`,
-  transition: isDragging ? "none" : "transform 0.1s ease-out",
-  cursor: isDragging ? "grabbing" : "grab",
-}}
-```
-
-**핵심 로직 설명**:
-
-| 요소               | 설명                                | 구현 방식                         |
-| ------------------ | ----------------------------------- | --------------------------------- |
-| **줌 상태**        | 0.5배 ~ 3배 범위                    | `useState(1)` + Math.min/max 제한 |
-| **위치 관리**      | x, y 좌표로 이미지 위치             | `useState({ x: 0, y: 0 })`        |
-| **드래그 계산**    | 마우스 이동 거리 = 이미지 이동 거리 | `clientX - dragStart.x`           |
-| **Transform 보정** | 줌 레벨에 따른 이동 거리 보정       | `position.x / zoom`               |
-| **자동 리셋**      | 100% 줌 시 중앙 정렬                | `useEffect`로 zoom === 1 감지     |
-
-**왜 `position.x / zoom`을 사용하는가?**
-
-- **문제**: 줌이 2배일 때, `translate(100px, 0)`을 하면 실제로는 200px 이동됨
-- **해결**: `translate(100px / 2, 0)` = `translate(50px, 0)`으로 실제 100px 이동
-- **결과**: 모든 줌 레벨에서 일관된 드래그 경험 제공
-
-**5단계: 모바일 터치 지원 구현**
-
-```typescript
-// 터치 이벤트 핸들러들
-const getTouchDistance = (touches: React.TouchList): number => {
-  if (touches.length < 2) return 0;
-  const touch1 = touches[0];
-  const touch2 = touches[1];
-  return Math.sqrt(
-    Math.pow(touch2.clientX - touch1.clientX, 2) + Math.pow(touch2.clientY - touch1.clientY, 2)
-  );
-};
-
-// 단일 터치 드래그
-const handleTouchStart = (e: React.TouchEvent) => {
-  e.preventDefault();
-  const touches = e.touches;
-
-  if (touches.length === 1) {
-    // 단일 터치 - 드래그 시작
-    setIsDragging(true);
-    setDragStart({
-      x: touches[0].clientX - position.x,
-      y: touches[0].clientY - position.y,
-    });
-  } else if (touches.length === 2) {
-    // 두 손가락 터치 - 핀치 줌 시작
-    setIsDragging(false);
-    const distance = getTouchDistance(touches);
-    setLastTouchDistance(distance);
-  }
-};
-
-// 핀치 줌 처리
-const handleTouchMove = (e: React.TouchEvent) => {
-  e.preventDefault();
-  const touches = e.touches;
-
-  if (touches.length === 1 && isDragging) {
-    // 단일 터치 드래그
-    setPosition({
-      x: touches[0].clientX - dragStart.x,
-      y: touches[0].clientY - dragStart.y,
-    });
-  } else if (touches.length === 2 && lastTouchDistance) {
-    // 두 손가락 핀치 줌
-    const currentDistance = getTouchDistance(touches);
-    const scale = currentDistance / lastTouchDistance;
-
-    if (scale > 1.1) {
-      // 줌 인
-      setZoom((prev) => Math.min(prev + 0.1, 3));
-      setLastTouchDistance(currentDistance);
-    } else if (scale < 0.9) {
-      // 줌 아웃
-      setZoom((prev) => {
-        const newZoom = Math.max(prev - 0.1, 0.5);
-        if (newZoom === 1) {
-          setPosition({ x: 0, y: 0 });
-        }
-        return newZoom;
-      });
-      setLastTouchDistance(currentDistance);
-    }
-  }
-};
-```
-
-**모바일 터치 지원 특징**:
-
-| 터치 방식       | 동작           | 구현 방식                                  |
-| --------------- | -------------- | ------------------------------------------ |
-| **한 손가락**   | 드래그 이동    | `touches[0].clientX/Y` 좌표 추적           |
-| **두 손가락**   | 핀치 줌        | 터치 거리 계산으로 스케일 감지             |
-| **터치 최적화** | 기본 동작 방지 | `touchAction: 'none'` + `preventDefault()` |
-
-**최종 구현 결과**:
-
-- **모달 시스템**: 이미지 클릭 시 전체 화면 모달
-- **줌 컨트롤**: +/− 버튼, 마우스 휠, 핀치 줌, 리셋 버튼
-- **드래그 이동**: 모든 줌 레벨에서 자유로운 이미지 이동 (마우스 + 터치)
-- **자동 정렬**: 100% 줌 시 자동 중앙 정렬
-- **크로스 플랫폼**: 데스크톱(마우스) + 모바일(터치) 완벽 지원
-- **반응형**: 모든 화면 크기에서 최적화된 경험
+tailwind v3에서는 문제 없는 코드이지만, v4에서는 문제가 되었고, **`*= " "`을 제거해도 다크모드, 라이트모드 동작에는 문제 없었음.**
 
 **학습한 점**:
 
-- **Transform 계산**: CSS transform과 JavaScript 상태의 정확한 동기화
-- **이벤트 처리**: 마우스 이벤트의 preventDefault와 stopPropagation 활용
-- **터치 이벤트**: React.TouchList와 네이티브 TouchList의 차이점 이해
-- **핀치 줌 구현**: 두 손가락 터치 거리 계산을 통한 스케일 감지
-- **크로스 플랫폼**: 마우스와 터치 이벤트를 동시에 지원하는 방법
-- **상태 관리**: 복잡한 UI 상태를 체계적으로 관리하는 방법
-- **사용자 경험**: 직관적이고 자연스러운 인터랙션 설계
-
-### 5. TOC (Table of Contents) 구현 실패과 해결
-
-**문제**: 목차 클릭 시 해당 섹션으로 이동하지 않는 문제
-
-**초기 구현 시도**:
-
-처음에는 간단한 TOC를 구현했지만, 목차를 클릭해도 해당 헤딩으로 스크롤되지 않는 문제가 발생했다.
-
-**문제 분석**:
-
-| 문제점                   | 원인                                   | 영향                                  |
-| ------------------------ | -------------------------------------- | ------------------------------------- |
-| **헤딩 ID 부재**         | MDX에서 헤딩에 자동 ID가 생성되지 않음 | 스크롤 타겟이 없어서 이동 불가        |
-| **스크롤 오프셋 미고려** | 고정 헤더 높이를 고려하지 않음         | 헤더에 가려져서 정확한 위치 이동 실패 |
-| **반응형 대응 부족**     | 모바일과 데스크톱에서 다른 UX 필요     | 모바일에서 사용성 저하                |
-
-**해결 과정**:
-
-**1단계: rehype 플러그인 설정**
-
-```typescript
-// CustomMdxRemote.tsx
-import rehypeSlug from "rehype-slug";
-import rehypeAutolinkHeadings from "rehype-autolink-headings";
-
-// MDX 옵션에 플러그인 추가
-options={{
-  mdxOptions: {
-    rehypePlugins: [
-      rehypeSlug, // 헤딩에 자동 ID 생성
-      [
-        rehypeAutolinkHeadings,
-        {
-          behavior: "wrap",
-          properties: {
-            className: ["heading-link"],
-          },
-        },
-      ],
-    ],
-  },
-}}
-```
-
-**2단계: TOC 컴포넌트 구현**
-
-```typescript
-// TableOfContents.tsx
-const scrollToHeading = (id: string) => {
-  const element = document.getElementById(id);
-  if (element) {
-    const offsetTop = element.offsetTop - 80; // 헤더 높이 고려
-    window.scrollTo({
-      top: offsetTop,
-      behavior: "smooth",
-    });
-  }
-  setIsOpen(false); // 모바일에서 클릭 후 닫기
-};
-```
-
-**3단계: 반응형 TOC 구현**
-
-| 화면 크기              | TOC 형태             | 특징                            |
-| ---------------------- | -------------------- | ------------------------------- |
-| **데스크톱 (md 이상)** | 오른쪽 고정 사이드바 | 스크롤을 따라다니는 sticky 위치 |
-| **모바일 (md 미만)**   | 우하단 플로팅 버튼   | 팝업 형태로 TOC 표시            |
-
-**최종 구현 결과**:
-
-- **자동 ID 생성**: `rehype-slug`로 모든 헤딩에 고유 ID 자동 생성
-- **부드러운 스크롤**: `behavior: "smooth"`로 자연스러운 이동
-- **헤더 오프셋**: 80px 오프셋으로 정확한 위치 이동
-- **실시간 하이라이트**: 스크롤 위치에 따른 현재 섹션 표시
-- **반응형 UX**: 데스크톱은 사이드바, 모바일은 팝업
-
-**학습한 점**:
-
-- **rehype 플러그인 활용**: MDX 생태계의 강력한 플러그인 시스템
-- **스크롤 위치 계산**: `getBoundingClientRect()`와 `offsetTop` 활용
-- **반응형 컴포넌트**: 화면 크기별 다른 UX 제공의 중요성
-- **사용자 경험 고려**: 단순한 기능 구현을 넘어선 UX 설계
-
----
-
-## 결과 및 성과
-
-### 개발 성과
-
-| 지표              | 성과                            |
-| ----------------- | ------------------------------- |
-| **웹사이트 완성** | 포트폴리오 + 블로그 통합 사이트 |
-| **콘텐츠 관리**   | MDX 기반 마크다운 시스템        |
-| **반응형 디자인** | 모든 디바이스 최적화            |
-| **성능 최적화**   | Next.js 14 App Router 활용      |
-| **배포 자동화**   | Vercel 연동 자동 배포           |
-
-### 개인 역량 성장
-
----
+- cssnano 같은 CSS 압축 도구가 특정 CSS 선택자 문법(`*= " "`)을 파싱할 때 발생하는 에러 메커니즘 이해
+- Tailwind CSS v3과 v4 간의 PostCSS 처리 방식 차이점과 하위 호환성 문제 경험
 
 ## 학습한 점
 
-### 기술적 성장
-
-- **Next.js 14 App Router**: 최신 React 서버 컴포넌트와 클라이언트 컴포넌트 분리
-- **MDX 콘텐츠 관리**: 마크다운과 JSX를 결합한 동적 콘텐츠 시스템
-- **TypeScript 활용**: 타입 안전성을 통한 개발 생산성 향상
-- **Tailwind CSS**: 유틸리티 퍼스트 CSS로 빠른 스타일링
-- **rehype 플러그인**: MDX 생태계의 강력한 플러그인 시스템 활용
-- **스크롤 계산**: DOM API를 활용한 정확한 스크롤 위치 제어
-
-### 프로젝트 관리
-
-- **컴포넌트 재사용**: 중복 코드 제거와 유지보수성 향상
-- **반응형 디자인**: 모바일 퍼스트 접근법으로 모든 디바이스 최적화
-- **콘텐츠 구조화**: 일관된 포맷으로 포트폴리오와 블로그 통합 관리
-
-### 문제 해결
-
-- **MDX 테이블 렌더링**: HTML 테이블 직접 작성으로 안정성 확보
-- **반응형 이미지**: flex 방향 변경으로 모바일 최적화
-- **날짜 범위 처리**: 유연한 날짜 포맷팅 시스템 구축
-- **이미지 뷰어**: 줌/드래그 시스템으로 전문적인 이미지 탐색 경험 제공
-- **모바일 터치 지원**: 핀치 줌과 터치 드래그로 크로스 플랫폼 사용성 확보
-- **TOC 구현**: rehype 플러그인과 스크롤 계산을 통한 완전한 목차 시스템
-
----
+- **Tailwind CSS**: tailwind v4에 맞는 초기 설정 및 사용
+- **rehype 플러그인**: MDX 콘텐츠 제작 및 관리
+- **gray-matter**: mdx 파일의 front-matter 파싱
+- **반응형 화면**: 구현 및 최적화
+- **rehype-slug**: 라이브러리와 스크롤 계산을 통한 TOC 구현
 
 ## 향후 계획
 
@@ -489,18 +248,5 @@ const scrollToHeading = (id: string) => {
 
 ### 장기 목표
 
-- **CMS 연동**: Headless CMS를 통한 콘텐츠 관리 자동화
-- **다국어 지원**: i18n을 활용한 다국어 사이트
-- **PWA 기능**: 오프라인 지원, 푸시 알림 등
-
----
-
-## 결론
-
-KMH Blog 프로젝트를 통해 **현대적인 웹 개발 기술 스택**을 활용한 **완전한 포트폴리오 웹사이트**를 구축했다.
-
-**Next.js 14, TypeScript, Tailwind CSS**의 조합으로 **타입 안전성, 성능, 개발 경험**을 모두 확보했으며, **MDX 기반 콘텐츠 관리**로 **유연하고 확장 가능한** 시스템을 만들었다.
-
-특히 **반응형 디자인과 다크모드 지원**을 통해 **사용자 경험을 최우선**으로 고려했고, **컴포넌트 기반 아키텍처**로 **유지보수성과 재사용성**을 확보했다.
-
-이 프로젝트는 **개인 브랜딩과 기술 역량을 동시에 보여주는** 효과적인 도구가 되었으며, 앞으로도 **지속적인 개선과 확장**을 통해 더 나은 개발자로 성장하는 기반이 될 것이다.
+- **Supabase**: 서버 구축 및 데이터베이스 연동
+- **i18n**: 다국어 사이트 구현
