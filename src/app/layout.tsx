@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   // 👈 metadataBase를 추가하여 절대 경로 문제를 해결합니다.
   metadataBase: new URL("https://kmh-blog.vercel.app"),
 
-  title: "KMH의 개발 블로그", // 👈 더 구체적인 제목
+  title: "KMH's Blog", // 👈 더 구체적인 제목
   description: "코딩, 개발 지식과 포트폴리오를 공유하는 공간입니다.", // 👈 더 구체적인 설명
   keywords: ["블로그", "포트폴리오", "개발", "Next.js", "TypeScript", "React"],
   authors: [{ name: "KMH" }],
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
   },
 
   openGraph: {
-    title: "KMH의 개발 블로그", // 👈 공유될 때 보일 제목
+    title: "KMH's Blog", // 👈 공유될 때 보일 제목
     description: "코딩, 개발 지식과 포트폴리오를 공유하는 공간입니다.",
     url: "https://kmh-blog.vercel.app",
     siteName: "KMH-BLOG",
@@ -51,7 +51,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image", // 👈 큰 이미지 카드로 변경
-    title: "KMH의 개발 블로그",
+    title: "KMH's Blog",
     description: "코딩, 개발 지식과 포트폴리오를 공유하는 공간입니다.",
     images: ["/og-image.png"], // 👈 트위터용 이미지도 동일하게 설정
   },
