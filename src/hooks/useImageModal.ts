@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 
 interface UseImageModalReturn {
   selectedImage: string | null;
@@ -9,6 +9,7 @@ interface UseImageModalReturn {
   touchStart: { x: number; y: number } | null;
   lastTouchDistance: number | null;
   isLoading: boolean;
+  isModalOpen: boolean;
   imageRef: React.RefObject<HTMLDivElement | null>;
   openModal: (src: string) => void;
   closeModal: () => void;
@@ -38,6 +39,7 @@ export const useImageModal = (): UseImageModalReturn => {
     null
   );
   const [isLoading, setIsLoading] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const imageRef = useRef<HTMLDivElement>(null);
 
   const openModal = useCallback((src: string) => {
@@ -45,8 +47,7 @@ export const useImageModal = (): UseImageModalReturn => {
     setZoom(1);
     setPosition({ x: 0, y: 0 });
     setIsLoading(true);
-    // 배경 스크롤 방지
-    document.body.style.overflow = "hidden";
+    setIsModalOpen(true);
   }, []);
 
   const closeModal = useCallback(() => {
@@ -54,8 +55,7 @@ export const useImageModal = (): UseImageModalReturn => {
     setZoom(1);
     setPosition({ x: 0, y: 0 });
     setIsLoading(false);
-    // 배경 스크롤 복원
-    document.body.style.overflow = "unset";
+    setIsModalOpen(false);
   }, []);
 
   const handleZoomIn = useCallback(() => {
@@ -191,6 +191,19 @@ export const useImageModal = (): UseImageModalReturn => {
     setLastTouchDistance(null);
   }, []);
 
+  // Tailwind CSS 클래스로 body 스크롤 제어
+  useEffect(() => {
+    if (isModalOpen) {
+      document.body.classList.add("overflow-hidden");
+    } else {
+      document.body.classList.remove("overflow-hidden");
+    }
+
+    return () => {
+      document.body.classList.remove("overflow-hidden");
+    };
+  }, [isModalOpen]);
+
   return {
     selectedImage,
     zoom,
@@ -200,6 +213,7 @@ export const useImageModal = (): UseImageModalReturn => {
     touchStart,
     lastTouchDistance,
     isLoading,
+    isModalOpen,
     imageRef,
     openModal,
     closeModal,

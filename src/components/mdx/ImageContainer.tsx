@@ -3,6 +3,7 @@
 import Image from "next/image";
 
 import { useImageModal } from "@/hooks";
+import { cn } from "@/lib/utils";
 
 interface ImageData {
   src: string;
@@ -34,6 +35,7 @@ export const ImageContainer = ({
     position,
     isDragging,
     isLoading,
+    isModalOpen,
     imageRef,
     openModal,
     closeModal,
@@ -83,9 +85,12 @@ export const ImageContainer = ({
       </div>
 
       {/* 모달 */}
-      {selectedImage && (
+      {isModalOpen && selectedImage && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4"
+          className={cn(
+            "fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4",
+            "transition-opacity duration-200 ease-in-out"
+          )}
           onClick={closeModal}
         >
           <div className="relative max-w-6xl max-h-full overflow-hidden">
