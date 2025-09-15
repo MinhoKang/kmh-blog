@@ -157,7 +157,51 @@ published: true
   ]}
 />
 
-### 4.
+### 3. rehype-slug와 IntersectionObserver를 이용한 TOC 구현
+
+#### 1️⃣ rehype-slug 설정
+
+```typescript
+// CustomMdxRemote.tsx
+import rehypeSlug from "rehype-slug";
+
+const mdxOptions = {
+  mdxOptions: {
+    rehypePlugins: [
+      rehypeSlug, // 헤딩에 자동으로 ID 추가
+      rehypeAutolinkHeadings, // 헤딩에 링크 추가
+      // ... 다른 플러그인들
+    ],
+  },
+};
+```
+
+#### 2️⃣ IntersectionObserver 구현
+
+```typescript
+// TableOfContents.tsx
+useEffect(() => {
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const index = TAB_LIST.findIndex((tab) => tab.href === entry.target.id);
+          if (index !== -1) {
+            setNowMenu(index); // 현재 섹션 하이라이트
+          }
+        }
+      });
+    },
+    { threshold: 1 } // 100% 보일 때만 트리거
+  );
+
+  // 모든 헤딩 요소 관찰
+  const headings = document.querySelectorAll("h1, h2, h3, h4, h5, h6");
+  headings.forEach((heading) => observer.observe(heading));
+
+  return () => observer.disconnect();
+}, []);
+```
 
 - **react-zoom-pan-pinch** 라이브러리 사용
 
