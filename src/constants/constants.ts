@@ -44,7 +44,7 @@ export const NAVIGATION_CARDS = [
 ];
 
 export const HERO_CONTENT = {
-  title1: "KMH",
+  title1: "KMH's Blog",
   title2: "Blog",
   description:
     "I'm Kang Minho, a developer who thinks and develops from the customer's point of view.",

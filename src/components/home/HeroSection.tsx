@@ -20,7 +20,7 @@ export function HeroSection() {
         {/* 메인 타이틀 */}
         <div className="overflow-hidden">
           <h1
-            className={`cursor-default select-none text-6xl md:text-8xl lg:text-9xl font-bold font-heading text-charcoal-gray dark:text-light-text leading-none tracking-tighter transition-all duration-1200 delay-500 ${
+            className={`cursor-default select-none text-6xl md:text-8xl lg:text-9xl font-bold font-heading text-charcoal-gray dark:text-light-text leading-tight tracking-tighter transition-all duration-1200 delay-500 ${
               isLoaded
                 ? "opacity-100 translate-y-0"
                 : "opacity-0 translate-y-16"
