@@ -1,0 +1,31 @@
+/* 스크롤바 스타일링 */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-neutral-100);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-neutral-400);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-neutral-500);
+}
+
+/* 다크모드 스크롤바 */
+html.dark ::-webkit-scrollbar-track {
+  background: var(--color-neutral-800);
+}
+
+html.dark ::-webkit-scrollbar-thumb {
+  background: var(--color-neutral-600);
+}
+
+html.dark ::-webkit-scrollbar-thumb:hover {
+  background: var(--color-neutral-500);
+}

@@ -1,0 +1,33 @@
+/* 새로운 색상 유틸리티 클래스 */
+.bg-ghost-white {
+  background-color: var(--color-ghost-white);
+}
+
+.bg-charcoal-gray {
+  background-color: var(--color-charcoal-gray);
+}
+
+.text-charcoal-gray {
+  color: var(--color-charcoal-gray);
+}
+
+.text-light-text {
+  color: var(--color-light-text);
+}
+
+/* 다크모드 색상 */
+.dark .bg-ghost-white {
+  background-color: var(--color-charcoal-gray);
+}
+
+.dark .bg-charcoal-gray {
+  background-color: var(--color-ghost-white);
+}
+
+.dark .text-charcoal-gray {
+  color: var(--color-light-text);
+}
+
+.dark .text-light-text {
+  color: var(--color-charcoal-gray);
+}

@@ -1,0 +1,69 @@
+/* 기본 스타일 */
+* {
+  margin: 0;
+  box-sizing: border-box;
+}
+
+/* 특정 요소들만 패딩 리셋 */
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ul,
+ol,
+li,
+blockquote,
+pre,
+code {
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  color-scheme: light dark;
+}
+
+:root {
+  --background: var(--color-ghost-white);
+  --foreground: var(--color-charcoal-gray);
+}
+
+/* 시스템 다크모드 지원 */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: var(--color-charcoal-gray);
+    --foreground: var(--color-light-text);
+  }
+}
+
+html.dark {
+  --background: var(--color-charcoal-gray);
+  --foreground: var(--color-light-text);
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: var(--font-family-body);
+  line-height: 1.6;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  font-variation-settings: normal;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 포커스 스타일 */
+:focus-visible {
+  outline: 2px solid var(--color-neutral-400);
+  outline-offset: 2px;
+}
+
+/* 커스텀 그리드 시스템 */
+.grid-minimal {
+  @apply max-w-7xl mx-auto px-6 lg:px-8;
+}

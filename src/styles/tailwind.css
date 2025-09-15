@@ -1,0 +1,88 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+@plugin "@tailwindcss/typography";
+
+@theme {
+  /* 새로운 색상 팔레트 */
+  --color-ghost-white: rgba(248, 247, 244, 1);
+  --color-charcoal-gray: rgba(18, 18, 18, 1);
+  --color-light-text: rgba(224, 224, 224, 1);
+
+  /* 커스텀 색상 스케일 */
+  --color-neutral-25: #f8f7f4;
+  --color-neutral-50: #f0f0f0;
+  --color-neutral-100: #e0e0e0;
+  --color-neutral-200: #d0d0d0;
+  --color-neutral-300: #c0c0c0;
+  --color-neutral-400: #a0a0a0;
+  --color-neutral-500: #808080;
+  --color-neutral-600: #606060;
+  --color-neutral-700: #404040;
+  --color-neutral-800: #202020;
+  --color-neutral-900: #121212;
+  --color-neutral-950: #0a0a0a;
+
+  /* 폰트 패밀리 */
+  --font-family-heading: "Avenir Next", system-ui, -apple-system, sans-serif;
+  --font-family-body: "Roboto", system-ui, -apple-system, sans-serif;
+  --font-family-mono: "JetBrains Mono", "Menlo", monospace;
+
+  /* 커스텀 스페이싱 */
+  --spacing-18: 4.5rem;
+  --spacing-22: 5.5rem;
+  --spacing-26: 6.5rem;
+  --spacing-30: 7.5rem;
+  --spacing-34: 8.5rem;
+  --spacing-88: 22rem;
+  --spacing-92: 23rem;
+  --spacing-96: 24rem;
+  --spacing-100: 25rem;
+  --spacing-104: 26rem;
+  --spacing-108: 27rem;
+  --spacing-112: 28rem;
+  --spacing-128: 32rem;
+  --spacing-144: 36rem;
+
+  /* 커스텀 폰트 사이즈 */
+  --font-size-2xs: 0.625rem;
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 1.875rem;
+  --font-size-4xl: 2.25rem;
+  --font-size-5xl: 3rem;
+  --font-size-6xl: 3.75rem;
+  --font-size-7xl: 4.5rem;
+  --font-size-8xl: 6rem;
+  --font-size-9xl: 8rem;
+  --font-size-10xl: 10rem;
+
+  /* 커스텀 레터 스페이싱 */
+  --letter-spacing-tightest: -0.075em;
+  --letter-spacing-tighter: -0.05em;
+  --letter-spacing-tight: -0.025em;
+  --letter-spacing-normal: 0em;
+  --letter-spacing-wide: 0.025em;
+  --letter-spacing-wider: 0.05em;
+  --letter-spacing-widest: 0.1em;
+  --letter-spacing-ultra-wide: 0.25em;
+
+  /* 애니메이션 */
+  --animate-fade-in: fadeIn 0.8s ease-out forwards;
+  --animate-fade-in-up: fadeInUp 1s ease-out forwards;
+  --animate-slide-in: slideIn 0.6s ease-out forwards;
+  --animate-scale-in: scaleIn 0.5s ease-out forwards;
+  --animate-text-reveal: textReveal 0.8s ease-out forwards;
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-pulse-subtle: pulseSubtle 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  --animate-slide-up: slideUp 0.4s ease-out;
+  --animate-slide-down: slideDown 0.4s ease-out;
+
+  /* 트랜지션 타이밍 */
+  --transition-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-out-circ: cubic-bezier(0, 0.55, 0.45, 1);
+  --transition-out-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
