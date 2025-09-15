@@ -37,10 +37,10 @@ export const metadata: Metadata = {
     description: "코딩, 개발 지식과 포트폴리오를 공유하는 공간입니다.",
     url: "https://kmh-blog.vercel.app",
     siteName: "KMH-BLOG",
-    // 👈 og-image.png 라는 새로운 공유용 이미지를 사용합니다. (2단계에서 생성)
+    // 👈 og-image.jpeg 공유용 이미지를 사용합니다.
     images: [
       {
-        url: "/og-image.png",
+        url: "/og-image.jpeg",
         width: 1200,
         height: 630,
         alt: "KMH 블로그 대표 이미지",
@@ -53,7 +53,7 @@ export const metadata: Metadata = {
     card: "summary_large_image", // 👈 큰 이미지 카드로 변경
     title: "KMH's Blog",
     description: "코딩, 개발 지식과 포트폴리오를 공유하는 공간입니다.",
-    images: ["/og-image.png"], // 👈 트위터용 이미지도 동일하게 설정
+    images: ["/og-image.jpeg"], // 👈 트위터용 이미지도 동일하게 설정
   },
 
   // ... (robots는 그대로 두셔도 좋습니다)
