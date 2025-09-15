@@ -22,10 +22,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   // 프로젝트 데이터로 메타데이터 객체를 생성하여 반환합니다.
   return {
-    title: `${project.title} | KMH-BLOG`, // 페이지 제목
+    title: `${project.title} | KMH's Blog`, // 페이지 제목
     description: project.description, // 페이지 설명
     openGraph: {
-      title: `${project.title} | KMH-BLOG`, // 공유될 때의 제목
+      title: `${project.title} | KMH's Blog`, // 공유될 때의 제목
       description: project.description, // 공유될 때의 설명
       // 👈 프로젝트에 이미지가 있다면 그 이미지를, 없다면 기본 OG 이미지를 사용합니다.
       images: [
@@ -38,7 +38,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ],
     },
     twitter: {
-      title: `${project.title} | KMH-BLOG`,
+      title: `${project.title} | KMH's Blog`,
       description: project.description,
       images: [project.image || "/og-image.jpeg"],
     },

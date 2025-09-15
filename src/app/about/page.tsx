@@ -16,10 +16,10 @@ import {
 } from "@/constants/constants";
 
 export const metadata: Metadata = {
-  title: "About | KMH-BLOG",
+  title: "About | KMH's Blog",
   description: "저의 경력, 기술 스택, 개발 철학에 대해 소개하는 페이지입니다.",
   openGraph: {
-    title: "About | KMH-BLOG",
+    title: "About | KMH's Blog",
     description:
       "저의 경력, 기술 스택, 개발 철학에 대해 소개하는 페이지입니다.",
     url: "/about", // 👈 metadataBase 덕분에 자동으로 절대 경로로 변환됩니다.
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     ],
   },
   twitter: {
-    title: "About | KMH-BLOG",
+    title: "About | KMH's Blog",
     description:
       "저의 경력, 기술 스택, 개발 철학에 대해 소개하는 페이지입니다.",
     images: ["/og-image.jpeg"],

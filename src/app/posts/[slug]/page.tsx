@@ -28,10 +28,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   return {
-    title: `${post.title} | KMH-BLOG`,
+    title: `${post.title} | KMH's Blog`,
     description: post.description,
     openGraph: {
-      title: `${post.title} | KMH-BLOG`,
+      title: `${post.title} | KMH's Blog`,
       description: post.description,
       // 👈 게시글 타입의 콘텐츠임을 명시합니다.
       type: "article",
@@ -48,7 +48,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ],
     },
     twitter: {
-      title: `${post.title} | KMH-BLOG`,
+      title: `${post.title} | KMH's Blog`,
       description: post.description,
       images: ["/og-image.jpeg"],
     },
