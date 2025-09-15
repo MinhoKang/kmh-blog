@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useCallback } from "react";
 
 interface UseImageModalReturn {
   selectedImage: string | null;
@@ -63,14 +63,7 @@ export const useImageModal = (): UseImageModalReturn => {
   }, []);
 
   const handleZoomOut = useCallback(() => {
-    setZoom((prev) => {
-      const newZoom = Math.max(prev - 0.5, 0.5);
-      // 줌이 1이 되면 위치 리셋
-      if (newZoom === 1) {
-        setPosition({ x: 0, y: 0 });
-      }
-      return newZoom;
-    });
+    setZoom((prev) => Math.max(prev - 0.5, 0.5));
   }, []);
 
   const handleReset = useCallback(() => {
@@ -197,13 +190,6 @@ export const useImageModal = (): UseImageModalReturn => {
     setTouchStart(null);
     setLastTouchDistance(null);
   }, []);
-
-  // 줌이 1이 되면 위치 자동 리셋
-  useEffect(() => {
-    if (zoom === 1) {
-      setPosition({ x: 0, y: 0 });
-    }
-  }, [zoom]);
 
   return {
     selectedImage,
