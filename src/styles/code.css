@@ -6,6 +6,8 @@ pre {
   max-width: 100%; /* 가로 최대폭 100% 제한 */
   white-space: pre-wrap; /* 줄 바꿈 허용 */
   overflow-wrap: break-word;
+  background: var(--color-neutral-50);
+  border-color: var(--color-neutral-300);
 }
 
 html.dark pre {
