@@ -31,6 +31,12 @@ export const ImageContainer = ({
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+  const [touchStart, setTouchStart] = useState<{ x: number; y: number } | null>(
+    null
+  );
+  const [lastTouchDistance, setLastTouchDistance] = useState<number | null>(
+    null
+  );
   const imageRef = useRef<HTMLDivElement>(null);
 
   const openModal = (src: string) => {
@@ -97,6 +103,77 @@ export const ImageContainer = ({
     } else {
       handleZoomOut();
     }
+  };
+
+  // 터치 이벤트 핸들러들
+  const getTouchDistance = (touches: React.TouchList): number => {
+    if (touches.length < 2) return 0;
+    const touch1 = touches[0];
+    const touch2 = touches[1];
+    return Math.sqrt(
+      Math.pow(touch2.clientX - touch1.clientX, 2) +
+        Math.pow(touch2.clientY - touch1.clientY, 2)
+    );
+  };
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    e.preventDefault();
+    const touches = e.touches;
+
+    if (touches.length === 1) {
+      // 단일 터치 - 드래그 시작
+      setIsDragging(true);
+      setTouchStart({ x: touches[0].clientX, y: touches[0].clientY });
+      setDragStart({
+        x: touches[0].clientX - position.x,
+        y: touches[0].clientY - position.y,
+      });
+    } else if (touches.length === 2) {
+      // 두 손가락 터치 - 핀치 줌 시작
+      setIsDragging(false);
+      const distance = getTouchDistance(touches);
+      setLastTouchDistance(distance);
+    }
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    e.preventDefault();
+    const touches = e.touches;
+
+    if (touches.length === 1 && isDragging && touchStart) {
+      // 단일 터치 드래그
+      setPosition({
+        x: touches[0].clientX - dragStart.x,
+        y: touches[0].clientY - dragStart.y,
+      });
+    } else if (touches.length === 2 && lastTouchDistance) {
+      // 두 손가락 핀치 줌
+      const currentDistance = getTouchDistance(touches);
+      const scale = currentDistance / lastTouchDistance;
+
+      if (scale > 1.1) {
+        // 줌 인
+        setZoom((prev) => Math.min(prev + 0.1, 3));
+        setLastTouchDistance(currentDistance);
+      } else if (scale < 0.9) {
+        // 줌 아웃
+        setZoom((prev) => {
+          const newZoom = Math.max(prev - 0.1, 0.5);
+          if (newZoom === 1) {
+            setPosition({ x: 0, y: 0 });
+          }
+          return newZoom;
+        });
+        setLastTouchDistance(currentDistance);
+      }
+    }
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+    setTouchStart(null);
+    setLastTouchDistance(null);
   };
 
   // 줌이 1이 되면 위치 자동 리셋
@@ -193,7 +270,11 @@ export const ImageContainer = ({
             <div
               ref={imageRef}
               className="w-full h-full flex items-center justify-center overflow-hidden"
+              style={{ touchAction: "none" }}
               onWheel={handleWheel}
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
               onClick={(e) => e.stopPropagation()}
             >
               <div
