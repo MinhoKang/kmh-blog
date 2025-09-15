@@ -45,8 +45,8 @@ html.dark li code {
 }
 
 /* CustomMdxRemote wrapper 스타일 */
-.prose-wrapper > * + * {
-  @apply mt-6;
+.prose-wrapper {
+  @apply flex flex-col gap-y-6;
 }
 
 /* === rehype-pretty-code 스타일 === */

@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 
 import { useImageModal } from "@/hooks";
 import { cn } from "@/lib/utils";
@@ -31,30 +32,16 @@ export const ImageContainer = ({
 }: ImageContainerProps) => {
   const {
     selectedImage,
-    zoom,
-    position,
-    isDragging,
     isLoading,
     isModalOpen,
-    imageRef,
     openModal,
     closeModal,
-    handleZoomIn,
-    handleZoomOut,
-    handleReset,
-    handleMouseDown,
-    handleMouseMove,
-    handleMouseUp,
-    handleWheel,
-    handleTouchStart,
-    handleTouchMove,
-    handleTouchEnd,
     handleImageLoad,
   } = useImageModal();
 
   return (
     <>
-      <div className={`flex flex-wrap sm:flex-row gap-4 mb-8 ${className}`}>
+      <div className={`flex flex-wrap sm:flex-row gap-4 ${className}`}>
         {images.map((image, index) => {
           // width 속성에 따라 클래스 결정
           const getWidthClass = (width?: string) => {
@@ -88,98 +75,107 @@ export const ImageContainer = ({
       {isModalOpen && selectedImage && (
         <div
           className={cn(
-            "fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4",
+            "fixed inset-0 bg-black/90 flex items-center justify-center z-[9999] p-4",
             "transition-opacity duration-200 ease-in-out"
           )}
-          onClick={closeModal}
         >
-          <div className="relative max-w-6xl max-h-full overflow-hidden">
-            {/* 컨트롤 버튼들 */}
-            <div className="absolute top-4 right-4 flex gap-2 z-10">
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleZoomOut();
-                }}
-                className="bg-black bg-opacity-50 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-opacity-70"
-                disabled={zoom <= 0.5}
-              >
-                −
-              </button>
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleReset();
-                }}
-                className="bg-black bg-opacity-50 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-opacity-70 text-sm"
-              >
-                ⌂
-              </button>
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleZoomIn();
-                }}
-                className="bg-black bg-opacity-50 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-opacity-70"
-                disabled={zoom >= 3}
-              >
-                +
-              </button>
-              <button
-                onClick={closeModal}
-                className="bg-black bg-opacity-50 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-opacity-70"
-              >
-                ×
-              </button>
-            </div>
-
-            {/* 줌 레벨 표시 */}
-            <div className="absolute top-4 left-4 bg-black bg-opacity-50 text-white px-3 py-1 rounded-full text-sm z-10">
-              {Math.round(zoom * 100)}%
-            </div>
-
-            {/* 이미지 컨테이너 */}
-            <div
-              ref={imageRef}
-              className="w-full h-full flex items-center justify-center overflow-hidden"
-              style={{ touchAction: "none" }}
-              onWheel={handleWheel}
-              onTouchStart={handleTouchStart}
-              onTouchMove={handleTouchMove}
-              onTouchEnd={handleTouchEnd}
-              onClick={(e) => e.stopPropagation()}
+          <div className="relative max-w-6xl max-h-full overflow-hidden"></div>
+          {/* 닫기 버튼 */}
+          <div className="absolute top-4 right-4 z-10">
+            <button
+              onClick={closeModal}
+              className="bg-black bg-opacity-50 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-opacity-70"
             >
-              <div
-                className="relative"
-                style={{
-                  transform: `scale(${zoom}) translate(${position.x / zoom}px, ${position.y / zoom}px)`,
-                  transition: isDragging ? "none" : "transform 0.1s ease-out",
-                  cursor: isDragging ? "grabbing" : "grab",
-                }}
-                onMouseDown={handleMouseDown}
-                onMouseMove={handleMouseMove}
-                onMouseUp={handleMouseUp}
-                onMouseLeave={handleMouseUp}
-              >
-                <Image
-                  src={selectedImage}
-                  alt={selectedImage}
-                  width={1200}
-                  height={800}
-                  className="max-w-full max-h-full object-contain rounded-lg select-none"
-                  quality={100}
-                  draggable={false}
-                  onLoad={handleImageLoad}
-                />
+              ×
+            </button>
+          </div>
 
-                {/* 로딩 스피너 */}
-                {isLoading && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-lg">
-                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white"></div>
+          {/* 이미지 컨테이너 */}
+          <div
+            className="w-full h-full flex items-center justify-center overflow-hidden"
+            onClick={(e) => {
+              // 배경 클릭 시에만 모달 닫기
+              if (e.target === e.currentTarget) {
+                closeModal();
+              }
+            }}
+          >
+            <TransformWrapper
+              initialScale={1}
+              minScale={0.5}
+              maxScale={3}
+              centerOnInit={true}
+              wheel={{ step: 0.1 }}
+              pinch={{ step: 5 }}
+              doubleClick={{ disabled: false }}
+              panning={{ disabled: false }}
+              limitToBounds={false}
+            >
+              {({ zoomIn, zoomOut, resetTransform }) => (
+                <>
+                  {/* 줌 컨트롤 버튼들 */}
+                  <div className="absolute top-4 left-4 flex gap-2 z-10">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        zoomOut();
+                      }}
+                      className="bg-black bg-opacity-50 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-opacity-70"
+                      disabled={false}
+                    >
+                      −
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        resetTransform();
+                      }}
+                      className="bg-black bg-opacity-50 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-opacity-70 text-sm"
+                    >
+                      ⌂
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        zoomIn();
+                      }}
+                      className="bg-black bg-opacity-50 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-opacity-70"
+                      disabled={false}
+                    >
+                      +
+                    </button>
                   </div>
-                )}
-              </div>
-            </div>
+
+                  <TransformComponent
+                    wrapperClass="w-full h-full"
+                    contentClass="w-full h-full flex items-center justify-center"
+                  >
+                    <div
+                      className="relative"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <Image
+                        src={selectedImage}
+                        alt="확대된 이미지"
+                        width={1200}
+                        height={800}
+                        className="max-w-full max-h-full object-contain rounded-lg select-none"
+                        quality={100}
+                        draggable={false}
+                        onLoad={handleImageLoad}
+                      />
+
+                      {/* 로딩 스피너 */}
+                      {isLoading && (
+                        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-lg">
+                          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white"></div>
+                        </div>
+                      )}
+                    </div>
+                  </TransformComponent>
+                </>
+              )}
+            </TransformWrapper>
           </div>
         </div>
       )}
