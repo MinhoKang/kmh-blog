@@ -90,6 +90,19 @@ export const DEV_TOOLS = ["GitHub", "Cursor", "Jira", "Confluence", "Slack"];
 
 export const API_TOOLS = ["Axios", "ky", "Socket.io"];
 
+export const EDUCATION = [
+  {
+    school: "한국방송통신대학교 (2025.02 ~ 재학 중)",
+    major: "컴퓨터과학과 (3학년 편입)",
+    grade: "3학년 1학기: 4.13/4.5",
+  },
+  {
+    school: "중앙대학교 (2016.03 ~ 2022.02)",
+    major: "교육학과",
+    grade: "졸업학점: 4.05/4.5",
+  },
+];
+
 export const FOCUS_AREAS = [
   "실시간 웹 애플리케이션",
   "모바일 앱 개발",

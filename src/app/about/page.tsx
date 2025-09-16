@@ -13,6 +13,7 @@ import {
   TESTING_TOOLS,
   DEV_TOOLS,
   API_TOOLS,
+  EDUCATION,
 } from "@/constants/constants";
 
 export const metadata: Metadata = {
@@ -105,20 +106,18 @@ export default function AboutPage() {
 
           <AboutSection title="학력">
             <div className="gap-y-4 flex flex-col text-sm font-normal font-body text-neutral-600 dark:text-neutral-400 leading-relaxed tracking-wide">
-              <div className="border-l-2 border-neutral-300 dark:border-neutral-700 pl-4 flex flex-col gap-y-2">
-                <p className="font-medium text-neutral-800 dark:text-neutral-200">
-                  한국방송통신대학교 (2025.02 ~ 재학 중)
-                </p>
-                <p>컴퓨터과학과 (3학년 편입)</p>
-                <p className="text-neutral-500">3학년 1학기: 4.13/4.5</p>
-              </div>
-              <div className="border-l-2 border-neutral-300 dark:border-neutral-700 pl-4 flex flex-col gap-y-2">
-                <p className="font-medium text-neutral-800 dark:text-neutral-200">
-                  중앙대학교 (2016.03 ~ 2022.02)
-                </p>
-                <p>교육학과</p>
-                <p className="text-neutral-500">졸업학점: 4.05/4.5</p>
-              </div>
+              {EDUCATION.map((education, index) => (
+                <div
+                  key={index}
+                  className="border-l-2 border-neutral-300 dark:border-neutral-700 pl-4 flex flex-col gap-y-2"
+                >
+                  <p className="font-medium text-neutral-800 dark:text-neutral-200">
+                    {education.school}
+                  </p>
+                  <p>{education.major}</p>
+                  <p className="text-neutral-500">{education.grade}</p>
+                </div>
+              ))}
             </div>
           </AboutSection>
         </div>
