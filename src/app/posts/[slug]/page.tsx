@@ -56,7 +56,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 async function getPost(slug: string) {
-  const postsDirectory = path.join(process.cwd(), "src/content/posts");
+  const postsDirectory = path.join(process.cwd(), "src/contents/posts");
   const fullPath = path.join(postsDirectory, `${slug}.mdx`);
 
   if (!fs.existsSync(fullPath)) {
@@ -219,7 +219,7 @@ export default async function PostPage({ params }: Props) {
 }
 
 export async function generateStaticParams() {
-  const postsDirectory = path.join(process.cwd(), "src/content/posts");
+  const postsDirectory = path.join(process.cwd(), "src/contents/posts");
 
   if (!fs.existsSync(postsDirectory)) {
     return [];

@@ -20,7 +20,7 @@ interface Post {
 }
 
 function getAllPosts(): Post[] {
-  const postsDirectory = path.join(process.cwd(), "src/content/posts");
+  const postsDirectory = path.join(process.cwd(), "src/contents/posts");
 
   if (!fs.existsSync(postsDirectory)) {
     return [];

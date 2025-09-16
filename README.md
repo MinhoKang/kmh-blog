@@ -74,7 +74,7 @@ src/
 │   ├── posts/             # 블로그 관련 컴포넌트
 │   ├── projects/          # 포트폴리오 관련 컴포넌트
 │   └── about/             # About 페이지 컴포넌트
-├── content/               # MDX 콘텐츠
+├── contents/             # MDX 콘텐츠
 │   ├── posts/            # 블로그 포스트
 │   └── portfolio/        # 포트폴리오 프로젝트
 └── lib/                  # 유틸리티 함수들

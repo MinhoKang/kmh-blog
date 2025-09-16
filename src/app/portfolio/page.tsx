@@ -22,7 +22,7 @@ interface Project {
   readingTime?: string;
 }
 const getAllProjects = (): Project[] => {
-  const projectsDirectory = path.join(process.cwd(), "src/content/portfolio");
+  const projectsDirectory = path.join(process.cwd(), "src/contents/portfolio");
 
   if (!fs.existsSync(projectsDirectory)) {
     return [];

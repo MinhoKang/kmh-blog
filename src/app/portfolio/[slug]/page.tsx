@@ -17,7 +17,7 @@ interface Props {
 }
 
 export async function getProject(slug: string) {
-  const projectsDirectory = path.join(process.cwd(), "src/content/portfolio");
+  const projectsDirectory = path.join(process.cwd(), "src/contents/portfolio");
   const fullPath = path.join(projectsDirectory, `${slug}.mdx`);
 
   if (!fs.existsSync(fullPath)) {
@@ -240,7 +240,7 @@ export default async function ProjectPage({ params }: Props) {
 }
 
 export async function generateStaticParams() {
-  const projectsDirectory = path.join(process.cwd(), "src/content/portfolio");
+  const projectsDirectory = path.join(process.cwd(), "src/contents/portfolio");
 
   if (!fs.existsSync(projectsDirectory)) {
     return [];
