@@ -45,7 +45,7 @@ export const components = {
   blockquote: (props: ComponentProps<"blockquote">) => (
     <blockquote
       {...props}
-      className="border-l-4 border-neutral-300 dark:border-neutral-600 pl-6 mb-8 mt-8 italic text-neutral-600 dark:text-neutral-400"
+      className="border-l-4 !ml-5 !flex !gap-x-2 border-neutral-300 dark:border-neutral-600 !pl-8 mb-8 mt-8 italic text-neutral-600 dark:text-neutral-400"
     />
   ),
   code: InlineCode,

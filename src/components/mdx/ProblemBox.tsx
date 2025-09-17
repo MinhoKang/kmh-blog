@@ -20,17 +20,21 @@ export const ProblemBox = ({
       </h4>
 
       <div className="mb-4">
-        <h5 className="font-medium text-neutral-800 dark:text-neutral-200 mb-2">
+        <h5 className="!font-semibold text-neutral-800 dark:text-neutral-200 mb-2">
           상황
         </h5>
-        <p className="text-neutral-600 dark:text-neutral-400">{situation}</p>
+        <p className="text-neutral-600 dark:text-neutral-400 whitespace-pre-line !pl-4">
+          {situation}
+        </p>
       </div>
 
       <div>
-        <h5 className="font-medium text-neutral-800 dark:text-neutral-200 mb-2">
+        <h5 className="!font-semibold text-neutral-800 dark:text-neutral-200 mb-2">
           해결
         </h5>
-        <p className="text-neutral-600 dark:text-neutral-400">{solution}</p>
+        <p className="text-neutral-600 dark:text-neutral-400 whitespace-pre-line !pl-4">
+          {solution}
+        </p>
       </div>
     </div>
   );
