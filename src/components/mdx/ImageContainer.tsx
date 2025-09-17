@@ -109,7 +109,7 @@ export const ImageContainer = ({
               pinch={{ step: 5 }}
               doubleClick={{ disabled: false }}
               panning={{ disabled: false }}
-              limitToBounds={false}
+              limitToBounds={true}
             >
               {({ zoomIn, zoomOut, resetTransform }) => (
                 <>
