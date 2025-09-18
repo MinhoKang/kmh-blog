@@ -67,7 +67,7 @@ export default function PostsPage() {
       />
 
       {/* 포스트 목록 */}
-      <section className="animate-fade-in delay-200">
+      <section>
         {posts.length === 0 ? (
           <div className="text-center py-20">
             <div className="w-16 h-px bg-neutral-300 dark:bg-neutral-700 mx-auto mb-8"></div>

@@ -20,17 +20,17 @@ export const CONTACT_INFO = [
 ];
 
 export const NAVIGATION_ITEMS = [
-  // { href: "/posts", label: "Posts" },
+  { href: "/posts", label: "Posts" },
   { href: "/portfolio", label: "Portfolio" },
   { href: "/about", label: "About" },
 ];
 
 export const NAVIGATION_CARDS = [
-  // {
-  //   href: "/posts",
-  //   label: "View Posts",
-  //   desc: "Thoughts & Ideas",
-  // },
+  {
+    href: "/posts",
+    label: "View Posts",
+    desc: "Thoughts & Ideas",
+  },
   {
     href: "/portfolio",
     label: "See Work",

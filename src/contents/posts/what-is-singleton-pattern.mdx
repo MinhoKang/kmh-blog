@@ -1,0 +1,182 @@
+---
+title: "Singleton Pattern에 대해서"
+description: "Broadcast Channel API와 Singleton Pattern"
+startDate: "2025-09-18"
+tags: ["Singleton Pattern", "Broadcast Channel API", "requestAnimationFrame", "Race Condition"]
+category: "posts"
+featured: true
+published: true
+---
+
+최근 Broadcast Channel API를 이용하여 새로운 기능을 추가할 일이 있었다. 하나의 탭에서 다른 탭으로 데이터를 넘겨서 새로운 페이지에서 사진이나 동영상을 렌더링해야 했다. Broadcast Channel API는 한 번 사용해본 적이 있어서 구현은 했으나 간헐적으로 두 브라우저 간에 통신이 끊기는 현상이 발생했다.
+
+## 초기 구현과 문제점
+
+처음 구현은 단순히 BroadcastChannel 인스턴스를 생성해서 postMessage를 호출해서 데이터를 보내고, 새 브라우저에서는 `addEventListener('message', callback)` 으로 처리했다.
+
+그러다보니 데이터를 전송하는 시점과 그리는 시점이 맞지 않아 에러가 발생했다. 즉, HTML페이지가 그려지기 전에 데이터는 전송해버리는데 화면을 다 그린 후에는 받은 데이터가 없는 것이었다.
+
+그래서 AI에게 물어보니 두 가지 방법을 제시해줬다.
+
+## 싱글톤 패턴(Singleton Pattern)
+
+### 싱글톤 패턴이란?
+
+싱글톤 패턴은 소프트웨어 디자인 패턴 중 하나로, **어떤 클래스의 인스턴스가 프로그램 전체에서 단 하나만 생성되도록 보장**하고, 그 유일한 인스턴스에 어디서든 접근할 수 있도록 **전역적인 접근점(Global Access Point)을 제공**하는 패턴이다.
+
+즉 어떠한 인스턴스의 유일성을 보장하는 것이다.
+
+### 클래스 기반 구현
+
+```tsx
+class Settings {
+  // 2. 유일한 인스턴스를 저장할 private static 변수
+  private static instance: Settings;
+  public theme: string = "light"; // 예시 설정값
+
+  // 1. 외부에서 new 키워드로 생성을 막는 private 생성자
+  private constructor() {
+    console.log("Settings 인스턴스가 생성되었습니다.");
+    // 이곳에서 설정 파일을 읽어오는 등 초기화 로직을 수행할 수 있습니다.
+  }
+
+  // 3. 인스턴스를 얻기 위한 public static 메서드
+  public static getInstance(): Settings {
+    // 인스턴스가 아직 없으면 새로 생성
+    if (!Settings.instance) {
+      Settings.instance = new Settings();
+    }
+    // 이미 있다면 기존 인스턴스를 반환
+    return Settings.instance;
+  }
+
+  // 비즈니스 로직
+  public setTheme(theme: string) {
+    this.theme = theme;
+  }
+}
+
+// 사용 예시
+// const settings = new Settings(); // 에러 발생! 생성자가 private이라서 new로 생성 불가
+
+const settings1 = Settings.getInstance(); // "Settings 인스턴스가 생성되었습니다." 출력
+const settings2 = Settings.getInstance(); // 아무것도 출력되지 않음 (새로 생성 안 함)
+
+console.log(settings1 === settings2); // true (두 변수는 완전히 동일한 인스턴스를 가리킴)
+
+settings1.setTheme("dark");
+console.log(settings1.theme); // 'dark'
+console.log(settings2.theme); // 'dark' (settings1을 바꿨지만 같은 객체라 settings2도 바뀜)
+```
+
+클래스로 구현된 싱글톤 패턴이다. 클래스는 애플리케이션의 전역 상태를 관리하기에 전체에 유일한 인스턴스를 유지할 수 있다.
+
+사용 예시를 보면 settings1에서 이미 인스턴스가 생성되었기에 settings2에서는 constructor의 로그가 찍히지 않는 것을 알 수 있다.
+
+### ES6 모듈 기반 구현
+
+사실 회사에서든 개인적으로든 프로젝트를 진행하면 주로 ES6 문법을 사용해서 어떻게 구현하나 찾아봤다.
+
+현대 자바스크립트에서는 모듈 시스템 자체가 싱글톤 특징을 가진다고 한다.
+
+```tsx
+// settings.js
+const settings = {
+  theme: "light",
+};
+
+// export default를 사용하면 이 모듈을 import하는 모든 곳에서
+// 동일한 settings 객체를 참조하게 됩니다.
+export default settings;
+
+// app.js
+import settings from "./settings.js";
+settings.theme = "dark";
+
+// otherComponent.js
+import settings from "./settings.js";
+console.log(settings.theme); // 'dark' (app.js에서 변경한 값이 그대로 유지됨)
+```
+
+여기서 의문이 하나 생겼는데 react hook의 경우는 훅을 사용하는 곳의 독립적인 상태를 가지는데 그것과는 다른건가 싶었는데, 훅은 리액트의 생명주기 내에 있기 때문에 그렇다.
+
+여기에서 평소 자주 쓰던 zustand의 작동 방식과 비슷하다고 느꼈다.
+
+### 싱글톤 패턴의 장단점
+
+| 구분     | 내용            | 설명                                          |
+| -------- | --------------- | --------------------------------------------- |
+| **장점** | 메모리 효율     | 단일 인스턴스로 메모리 사용량 최소화          |
+|          | 데이터 공유     | 전역적으로 동일한 데이터에 접근 가능          |
+|          | 자원 관리       | 데이터베이스 연결, 로그 관리 등에 효율적      |
+| **단점** | 강한 결합       | 다른 컴포넌트가 싱글톤에 의존하여 유연성 저하 |
+|          | SOLID 원칙 위배 | 하나의 클래스가 너무 많은 책임을 가질 수 있음 |
+
+### 싱글톤 패턴 사용 사례
+
+- **데이터베이스 연결 객체**: 데이터베이스 연결은 생성 비용이 비싸고 여러 개를 만드는 것은 자원 낭비. 따라서 프로그램 전체에서 단 하나의 연결 객체를 공유해서 사용하는 것이 효율적.
+- **환경 설정 객체**: 앱의 설정 정보(테마, 언어, 서버 주소 등)는 한 곳에서 관리하고 모든 곳에서 동일한 값을 참조해야 함.
+- **로그 관리 객체**: 시스템의 활동 기록을 남기는 로거는 하나만 존재하여 모든 로그를 순차적으로 기록하는 것이 바람직함.
+
+만약 이런 객체들을 필요할 때마다 새로 생성한다면, 메모리 낭비가 심해지고 상태가 일관되지 않는 심각한 문제가 발생할 수 있다.
+
+상황에 맞는 구조 전략을 선택하는 것이 중요하다고 느낀다.
+
+## 실제 문제 해결 방법
+
+사실 싱글톤 패턴은 내가 경험한 문제의 해답은 아니었다.
+
+해답은 생각보다 간단했다.
+
+새 윈도우를 열 때
+
+```tsx
+const popup = window.open(url, "_blank", featureString);
+```
+
+위 함수를 사용하고 있다.
+
+```tsx
+if (newWindow && "addEventListener" in newWindow) {
+  newWindow.addEventListener("load", () => {
+    requestAnimationFrame(() => {
+      safePost(data);
+    });
+  });
+} else if (fallbackImmediate) {
+  safePost(data);
+}
+```
+
+새 윈도우가 로드된 후에 데이터를 전달하는 로직으로 해결했다.
+
+### requestAnimationFrame의 역할
+
+`requestAnimationFrame`가 없으면 데이터를 받지 못하는데, 그 이유는 브라우저가 열리면서 다음과 같은 과정을 거치기 때문이다.
+
+| 단계  | 과정                              | 설명                                                            |
+| ----- | --------------------------------- | --------------------------------------------------------------- |
+| 1단계 | HTML 문서 다운로드 및 파싱        | 기본 HTML 구조 해석                                             |
+| 2단계 | DOM 트리 생성                     | 문서 객체 모델 구조 생성                                        |
+| 3단계 | 리소스 다운로드                   | CSS, 이미지, 스크립트 등 필요한 모든 리소스 다운로드            |
+| 4단계 | `load` 이벤트 발생                | 모든 리소스 다운로드 완료 시점                                  |
+| 5단계 | 프레임워크 초기화 **(문제 구간)** | React/Vue 등이 화면 초기화, 컴포넌트 마운트, 이벤트 리스너 등록 |
+| 6단계 | 첫 페인트(First Paint)            | 사용자 눈에 보이는 화면을 그림                                  |
+
+### Race Condition 해결
+
+`load` 이벤트 핸들러 안에서 `safePost(data)`를 바로 호출하면, **4번 단계**에서 메시지가 즉시 전송된다.
+
+하지만 새 탭에서 메시지를 수신할 `BroadcastChannel`의 이벤트 리스너(`bc.addEventListener('message', ...)` 같은 코드)는 **5번 단계**에서 프레임워크가 초기화되면서 등록될 가능성이 높다.
+
+따라서 **메시지가 리스너보다 먼저 도착**하는 경합 상태(Race Condition)가 발생하여, 받는 쪽에서는 메시지를 놓치게 된다.
+
+한편, `requestAnimationFrame`(rAF)은 브라우저에게 "다음 화면을 그리기 직전에 이 함수를 실행해주세요"라고 요청하는 특별한 스케줄러이다.
+
+따라서 `load` 이벤트 핸들러 안에서 `safePost`를 `rAF`로 감싸면, `safePost` 함수의 실행 시점이 **4번 단계**에서 **6번 단계(첫 페인트) 직전**으로 미뤄진다.
+
+## 마무리
+
+`requestAnimationFrame`은 채팅 스크롤 구현할 때도 봤던 개념인데 이번에 사용해봤다.
+
+다음에는 `requestAnimationFrame`을 좀 더 공부해서 글을 써봐야겠다.
