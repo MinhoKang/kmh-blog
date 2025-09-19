@@ -1,0 +1,91 @@
+---
+title: "EAS Update 호환성 문제 해결기"
+description: "Expo fingerprint와 app version"
+startDate: "2025-09-19"
+tags: ["Expo", "EAS update", "fingerprint"]
+category: "posts"
+featured: true
+published: true
+---
+
+EAS Update를 통해 앱을 업데이트하려고 하는데 `no compatible builds found` 오류가 발생했다. 처음에는 터미널에 경고처럼 나와서 문제없이 배포된 줄 알았지만, 프로덕션을 확인해보니 수정사항이 반영되지 않았다.
+
+## 문제 상황
+
+```bash
+no compatible builds found for the following fingerprints
+```
+
+위 경고 메시지가 출력되면서 EAS Update가 실제로는 배포되지 않았다.
+
+### Fingerprint란?
+
+Fingerprint는 Expo SDK 52부터 도입된 개념으로, 각 배포된 앱들의 유니크한 ID와 같은 것이다. 해당 fingerprint를 기반으로 같은 것들끼리 호환성을 유지한다.
+
+참고: [Understanding and Comparing Fingerprints in Expo Apps](https://expo.dev/blog/understanding-and-comparing-fingerprints-in-expo-apps)
+
+## 해결 시도 과정
+
+### 1단계: 의존성 재설치
+
+처음에는 의존성 중 바뀐 것이 있어서 호환성 문제가 발생했을 것으로 추정했다.
+
+```bash
+npx expo install
+```
+
+하지만 여전히 문제가 해결되지 않았다.
+
+### 2단계: Fingerprint 비교
+
+다음으로 fingerprint를 비교하는 명령어를 사용했다.
+
+```bash
+eas fingerprint:compare
+```
+
+최근 빌드와 현재 프로젝트의 fingerprint를 비교해본 결과, iOS와 Android 모두 동일하다고 나와서 fingerprint 문제도 아니었다.
+
+### 3단계: 버전 차이 확인
+
+마지막으로 Expo Dashboard를 확인해보니 문제의 원인을 발견했다.
+
+| 구분         | 이전 상태 | 문제점                |
+| ------------ | --------- | --------------------- |
+| Build 상태   | None      | 호환 가능한 빌드 없음 |
+| 현재 앱 버전 | 1.0.6     | 이전 버전들과 상이    |
+| 이전 버전들  | 1.0.5     | 버전 불일치           |
+
+![image.png](attachment:d0f4f10a-9850-442a-99be-8cc67c861238:image.png)
+
+## 해결 방법
+
+**app.json의 version을 1.0.6에서 1.0.5로 변경**
+
+```json
+{
+  "expo": {
+    "version": "1.0.5" // 1.0.6에서 변경
+  }
+}
+```
+
+버전을 변경한 후 다시 배포하니 정상적으로 프로덕션에 반영되었다.
+
+## 현재 상황
+
+### 운영 환경별 버전 차이
+
+| 환경         | 앱 버전 | 사유                           |
+| ------------ | ------- | ------------------------------ |
+| **프로덕션** | 1.0.5   | 기존 운영 버전                 |
+| **프리뷰**   | 1.0.6   | iOS 관련 버전 문제로 별도 관리 |
+
+### 문제점
+
+현재 프로덕션과 프리뷰의 앱 버전이 다르게 운영되고 있어, **앱 버전 차이로 인한 호환성 문제**가 지속적으로 발생할 수 있다.
+
+### 학습 포인트
+
+- EAS Update는 동일한 앱 버전 간에만 호환성을 보장한다
+- Fingerprint가 같더라도 앱 버전이 다르면 업데이트가 적용되지 않는다
