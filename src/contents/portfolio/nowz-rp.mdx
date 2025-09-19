@@ -301,6 +301,18 @@ solution="Next.js 캐싱 설정을 직접 수정하여 불필요한 데이터 �
 - useFileViewerSync: 새 창에서 파일 정보 수신 및 동기화
 - 학부모 방에서 파일 클릭 시 새 창으로 열리며 실시간 동기화
 
+```typescript
+if (newWindow && "addEventListener" in newWindow) {
+  newWindow.addEventListener("load", () => {
+    requestAnimationFrame(() => {
+      safePost(data);
+    });
+  });
+} else if (fallbackImmediate) {
+  safePost(data);
+}
+```
+
 **파일 네비게이션**:
 
 - FileNav 컴포넌트로 다중 파일 관리
