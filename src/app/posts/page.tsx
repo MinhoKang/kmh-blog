@@ -61,10 +61,7 @@ export default function PostsPage() {
   return (
     <div className="max-w-4xl flex-col gap-8 flex h-full">
       {/* 헤더 섹션 */}
-      <PageHeader
-        title="Posts"
-        description="Thoughts, ideas, and insights on technology, design, and life. A collection of words that matter."
-      />
+      <PageHeader title="Posts" />
 
       {/* 포스트 목록 */}
       <section>
