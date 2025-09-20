@@ -58,7 +58,10 @@ export const metadata: Metadata = {
     images: ["/og-image.jpeg"], // 👈 트위터용 이미지도 동일하게 설정
   },
 
-  // ... (robots는 그대로 두셔도 좋습니다)
+  // Google Search Console 인증
+  verification: {
+    google: "Cui5KWYHKDLgWI2foeQIYYETzddI5Sow1dEXw07US4Y",
+  },
 };
 
 export default function RootLayout({
