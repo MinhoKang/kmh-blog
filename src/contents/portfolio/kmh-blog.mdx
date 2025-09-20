@@ -159,7 +159,7 @@ published: true
 
 ### 3. rehype-slug와 IntersectionObserver를 이용한 TOC 구현
 
-#### 1️⃣ rehype-slug 설정
+#### 1. rehype-slug 설정
 
 ```typescript
 // CustomMdxRemote.tsx
@@ -176,7 +176,7 @@ const mdxOptions = {
 };
 ```
 
-#### 2️⃣ IntersectionObserver 구현
+#### 2. IntersectionObserver 구현
 
 ```typescript
 // TableOfContents.tsx
@@ -289,6 +289,91 @@ tailwind v3에서는 문제 없는 코드이지만, v4에서는 문제가 되었
 - cssnano 같은 CSS 압축 도구가 특정 CSS 선택자 문법(`*= " "`)을 파싱할 때 발생하는 에러 메커니즘 이해
 - Tailwind CSS v3과 v4 간의 PostCSS 처리 방식 차이점과 하위 호환성 문제 경험
 
+### 3. SEO 최적화 및 검색엔진 최적화
+
+**구글 검색 노출을 위한 SEO 설정 완료**
+
+#### 1. 사이트맵 자동 생성
+
+```typescript
+// src/app/sitemap.xml/route.ts
+export async function GET(): Promise<Response> {
+  const baseUrl = "https://kmh-blog.vercel.app";
+
+  // 모든 페이지 수집 (정적 + 포트폴리오 + 포스트)
+  const allPages = [...staticPages, ...portfolioPages, ...postsPages];
+
+  // XML 사이트맵 생성 및 반환
+  return new Response(sitemap, {
+    headers: { "Content-Type": "application/xml" },
+  });
+}
+```
+
+#### 2. robots.txt 설정
+
+```typescript
+// src/app/robots.txt/route.ts
+export function GET(): Response {
+  const robotsTxt = `User-agent: *
+Allow: /
+Sitemap: https://kmh-blog.vercel.app/sitemap.xml`;
+
+  return new Response(robotsTxt, {
+    headers: { "Content-Type": "text/plain" },
+  });
+}
+```
+
+#### 3. 동적 메타데이터 생성
+
+```typescript
+// src/app/portfolio/[slug]/page.tsx
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const project = await getProject(resolvedParams.slug);
+
+  return {
+    title: `${project.title} | KMH's Portfolio`,
+    description: project.description,
+    keywords: project.tags,
+    openGraph: {
+      /* Open Graph 설정 */
+    },
+    twitter: {
+      /* Twitter 카드 설정 */
+    },
+  };
+}
+```
+
+#### 4. 보안 헤더 추가
+
+```typescript
+// next.config.ts
+const nextConfig: NextConfig = {
+  async headers() {
+    return [
+      {
+        source: "/(.*)",
+        headers: [
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "X-Frame-Options", value: "DENY" },
+          { key: "X-XSS-Protection", value: "1; mode=block" },
+        ],
+      },
+    ];
+  },
+};
+```
+
+**구현 결과**:
+
+- **사이트맵 자동 생성**: 모든 페이지가 구글에 자동 등록
+- **robots.txt 설정**: 검색엔진 크롤러 가이드
+- **동적 메타데이터**: 각 페이지별 고유한 SEO 정보
+- **Open Graph 지원**: 소셜 미디어 공유 최적화
+- **보안 헤더**: SEO 점수 향상
+
 ## 학습한 점
 
 - **Tailwind CSS**: tailwind v4에 맞는 초기 설정 및 사용
@@ -296,14 +381,15 @@ tailwind v3에서는 문제 없는 코드이지만, v4에서는 문제가 되었
 - **gray-matter**: mdx 파일의 front-matter 파싱
 - **반응형 화면**: 구현 및 최적화
 - **rehype-slug**: 라이브러리와 스크롤 계산을 통한 TOC 구현
+- **SEO 설정**: Next.js 환경에서 SEO 설정 방법
 
 ## 향후 계획
 
 ### 단기 목표
 
-- **SEO 최적화**: 메타 태그, 구조화된 데이터 추가
 - **성능 개선**: 이미지 최적화, 코드 스플리팅
 - **콘텐츠 확장**: 더 많은 프로젝트와 블로그 포스트 추가
+- **구글 Search Console 등록**: 사이트맵 제출 및 인덱싱 요청
 
 ### 장기 목표
 

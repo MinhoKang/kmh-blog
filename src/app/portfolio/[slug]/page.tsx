@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 
 import matter from "gray-matter";
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -14,6 +15,43 @@ interface Props {
   params: Promise<{
     slug: string;
   }>;
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const resolvedParams = await params;
+  const project = await getProject(resolvedParams.slug);
+
+  if (!project) {
+    return {
+      title: "Project Not Found",
+      description: "The project you are looking for does not exist.",
+    };
+  }
+
+  return {
+    title: `${project.title} | KMH's Portfolio`,
+    description: project.description,
+    keywords: project.tags,
+    openGraph: {
+      title: `${project.title} | KMH's Portfolio`,
+      description: project.description,
+      type: "article",
+      publishedTime: new Date(project.startDate).toISOString(),
+      images: [
+        {
+          url: project.image || "/og-image.jpeg",
+          width: 1200,
+          height: 630,
+          alt: project.title,
+        },
+      ],
+    },
+    twitter: {
+      title: `${project.title} | KMH's Portfolio`,
+      description: project.description,
+      images: [project.image || "/og-image.jpeg"],
+    },
+  };
 }
 
 export async function getProject(slug: string) {

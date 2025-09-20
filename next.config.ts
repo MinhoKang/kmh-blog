@@ -9,6 +9,28 @@ const nextConfig: NextConfig = {
   images: {
     qualities: [25, 50, 75, 100],
   },
+  // SEO 최적화를 위한 추가 설정
+  async headers() {
+    return [
+      {
+        source: "/(.*)",
+        headers: [
+          {
+            key: "X-Content-Type-Options",
+            value: "nosniff",
+          },
+          {
+            key: "X-Frame-Options",
+            value: "DENY",
+          },
+          {
+            key: "X-XSS-Protection",
+            value: "1; mode=block",
+          },
+        ],
+      },
+    ];
+  },
 };
 
 const withMDX = createMDX({
