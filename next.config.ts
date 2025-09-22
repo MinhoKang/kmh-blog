@@ -8,6 +8,12 @@ const nextConfig: NextConfig = {
   },
   images: {
     qualities: [25, 50, 75, 100],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "**",
+      },
+    ],
   },
   // SEO 최적화를 위한 추가 설정
   async headers() {

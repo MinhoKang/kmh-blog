@@ -1,5 +1,6 @@
 import { ComponentProps } from "react";
 
+import { LinkPreview } from "@/components/common";
 import { ImageContainer, InlineCode, ProblemBox } from "@/components/mdx";
 
 export const components = {
@@ -56,6 +57,7 @@ export const components = {
     />
   ),
   ImageContainer,
+  LinkPreview,
   ProblemBox,
   table: (props: ComponentProps<"table">) => (
     <table

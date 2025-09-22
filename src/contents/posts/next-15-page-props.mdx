@@ -1,0 +1,142 @@
+---
+title: "Next.js 15.5 Route Props Helpers"
+description: "Next.js 15.5.3 스터디"
+startDate: "2025-09-21"
+tags: ["Nextjs", "Route Props Helpers"]
+category: "posts"
+featured: true
+published: true
+---
+
+진행하는 프로젝트에서 next.js 앱라우터를 사용 중인데, 15.5.3버전에 새로운 기능이 나와서 한 번 알아보았다.
+다양한 기능이 있는데 그 중 Route Props Helpers를 공부해봤다.
+
+Next.js 15.5에서 새롭게 도입된 Route Props Helpers는 App Router의 페이지와 레이아웃에서 타입 안전성을 크게 개선해주는 기능이다. 이제 별도의 타입 정의 없이도 자동으로 생성되는 타입을 사용할 수 있다.
+
+## 기존 방식의 불편함
+
+기존에는 각 페이지마다 `params`와 `searchParams`의 타입을 직접 정의해야 했다.
+
+```tsx
+// src/app/test/[testId]/page.tsx
+
+type Props = {
+  params: Promise<{ testId: string }>;
+  searchParams: Promise<{ searchParam1?: string }>;
+};
+
+export default async function Page({ params, searchParams }: Props) {
+  const param1 = (await params).testId;
+  const searchParam1 = (await searchParams).searchParam1;
+}
+```
+
+## Route Props Helpers로 개선된 방식
+
+이제 `PageProps` 타입을 사용하여 타입 정의를 생략할 수 있다.
+
+```tsx
+// src/app/test/[testId]/page.tsx
+
+export default async function Page({ params, searchParams }: PageProps<"/test/[testId]">) {
+  const param1 = (await params).testId;
+  const searchParam1 = (await searchParams).searchParam1;
+}
+```
+
+## 자동 타입 생성의 원리
+
+Next.js는 폴더 기반 라우팅 구조를 분석하여 자동으로 타입을 생성한다.
+
+```tsx
+interface PageProps<AppRoute extends AppRoutes> {
+  params: Promise<ParamMap[AppRoute]>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}
+
+interface ParamMap {
+  "/test/[testId]": { testId: string };
+}
+```
+
+## searchParams 타입 안전성 이슈
+
+`searchParams`의 타입이 `Record<string, string | string[] | undefined>`인 이유는 Next.js가 동일한 키를 가진 쿼리 파라미터를 배열로 처리하기 때문이다.
+
+### 동일한 searchParams가 없는 경우
+
+```tsx
+{
+  searchParam1: "1";
+}
+```
+
+### 동일한 searchParams가 있는 경우
+
+```tsx
+{
+  searchParam1: ["1", "2"];
+}
+```
+
+## 해결책: 유틸 함수 사용
+
+타입 안전성을 위해 유틸 함수를 만들어 사용하는 것이 좋다.
+
+```tsx
+export const getStringParam = (
+  param: string | string[] | undefined,
+  defaultValue: string = ""
+): string => {
+  return Array.isArray(param) ? param[0] : param || defaultValue;
+};
+
+// 사용 예시
+export default async function Page({ params, searchParams }: PageProps<"/test/[testId]">) {
+  const param1 = (await params).testId;
+  const searchParam1 = getStringParam((await searchParams).searchParam1);
+}
+```
+
+## LayoutProps도 함께 제공
+
+페이지뿐만 아니라 레이아웃에서도 동일한 기능을 사용할 수 있다.
+
+```tsx
+type LayoutProps<LayoutRoute extends LayoutRoutes> = {
+  params: Promise<ParamMap[LayoutRoute]>;
+  children: React.ReactNode;
+} & {
+  [K in LayoutSlotMap[LayoutRoute]]: React.ReactNode;
+};
+
+// 사용 예시
+export default function Layout(props: LayoutProps<"/dashboard">) {
+  return (
+    <div>
+      {props.children}
+      {props.analytics} {/* 병렬 라우트 슬롯도 타입 안전 */}
+      {props.team}
+    </div>
+  );
+}
+```
+
+## 장단점 정리
+
+### 장점
+
+- 타입 정의 코드 제거로 보일러플레이트 감소
+- params에 대한 완벽한 타입 안전성
+- 병렬 라우트 지원
+
+### 단점
+
+- searchParams는 여전히 `string | string[] | undefined` 타입
+- 잘못된 searchParam 접근 시 컴파일 타임에서 감지하기 어려움
+
+Route Props Helpers는 Next.js의 타입 안전성을 크게 개선해주는 기능이지만, searchParams 사용 시에는 여전히 주의가 필요하다.
+
+## 참고 자료
+
+<LinkPreview url="https://nextjs.org/blog/next-15-5#route-props-helpers" />
