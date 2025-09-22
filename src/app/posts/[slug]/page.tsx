@@ -158,7 +158,7 @@ export default async function PostPage({ params }: Props) {
       </header>
 
       {/* 포스트 내용 */}
-      <article className="animate-fade-in delay-300 flex gap-8">
+      <article className="flex gap-8">
         <div className="flex-1">
           <div className="prose prose-lg prose-neutral dark:prose-invert max-w-none">
             <CustomMdxRemote source={post.content} />
