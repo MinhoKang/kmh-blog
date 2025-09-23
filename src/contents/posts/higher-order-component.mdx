@@ -1,0 +1,139 @@
+---
+title: "HOC (Higher-Order Component) 패턴 이해하기"
+description: "HOC... 누구냐 넌..."
+startDate: "2025-09-23"
+tags: ["React", "HOC", "Higher-Order Component", "Design Pattern"]
+category: "posts"
+featured: true
+published: true
+---
+
+오늘 일하면서 프로젝트 하나가 기획이 변경되면서 리팩토링을 할 일이 생겼다.  
+컴포넌트를 설계하는 과정에서 HOC 패턴이 생각나서 개념을 한 번 정리해본다.
+
+## HOC (Higher-Order Component)란 무엇인가?
+
+HOC는 Higher-Order Component의 줄임말로, React에서 컴포넌트 로직을 재사용하기 위한 고급 패턴이다.  
+함수형 프로그래밍에서 고차 함수(Higher-Order Function) 개념에서 영감을 받아 만들어진 패턴이다.
+
+## HOC의 기본 개념
+
+HOC는 컴포넌트를 가져와서 새 컴포넌트를 반환하는 함수이다 [2]. 즉, **컴포넌트를 인자로 받아 새로운 컴포넌트를 리턴하는 함수**가 바로 HOC이다.
+
+기본적인 HOC의 구조는 다음과 같다:
+
+```javascript
+const withExtraProps = (WrappedComponent) => {
+  return (props) => {
+    return <WrappedComponent {...props} extraProp="추가된 프로퍼티" />;
+  };
+};
+```
+
+## HOC 작동 원리
+
+HOC는 원본 컴포넌트를 수정하지 않고, 합성(composition)을 통해 새로운 기능을 추가한다. 이는 React의 선언적 특성과 잘 맞아떨어지는 패턴이다.
+
+### 실제 활용 예제
+
+인증 상태를 확인하는 HOC를 만들어보자:
+
+```javascript
+const withAuth = (WrappedComponent) => {
+  return (props) => {
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+    useEffect(() => {
+      // 인증 상태 확인 로직
+      checkAuthStatus().then(setIsAuthenticated);
+    }, []);
+
+    if (!isAuthenticated) {
+      return <div>로그인이 필요합니다</div>;
+    }
+
+    return <WrappedComponent {...props} isAuthenticated={isAuthenticated} />;
+  };
+};
+
+// 사용법
+const ProtectedDashboard = withAuth(Dashboard);
+```
+
+## HOC의 장점과 단점
+
+### 장점
+
+- **로직 재사용성**: 여러 컴포넌트에서 공통된 로직을 쉽게 재사용할 수 있다
+- **관심사 분리**: 컴포넌트의 주요 관심사와 부가적인 기능을 분리할 수 있다
+- **테스트 용이성**: HOC와 원본 컴포넌트를 각각 독립적으로 테스트할 수 있다
+
+### 단점
+
+- **Props 전달 문제**: HOC를 통해 전달되는 props를 추적하기 어려울 수 있다
+- **래퍼 지옥**: 여러 HOC를 중첩하면 디버깅이 어려워질 수 있다
+- **정적 메서드 손실**: 원본 컴포넌트의 정적 메서드가 HOC를 통해 전달되지 않는다
+
+## 현대적 대안: React Hooks
+
+React Hooks의 도입으로 HOC 패턴의 필요성이 많이 줄어들었다. 위의 인증 예제를 Hook으로 구현하면:
+
+```javascript
+const useAuth = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    checkAuthStatus().then(setIsAuthenticated);
+  }, []);
+
+  return { isAuthenticated };
+};
+
+// 사용법
+const Dashboard = () => {
+  const { isAuthenticated } = useAuth();
+
+  if (!isAuthenticated) {
+    return <div>로그인이 필요합니다</div>;
+  }
+
+  return <div>대시보드 컨텐츠</div>;
+};
+```
+
+## HOC 사용 시 주의사항
+
+### 1. 디스플레이 네임 설정
+
+디버깅을 위해 HOC가 반환하는 컴포넌트에 적절한 displayName을 설정해야 한다:
+
+```javascript
+const withAuth = (WrappedComponent) => {
+  const WithAuthComponent = (props) => {
+    // HOC 로직...
+  };
+
+  WithAuthComponent.displayName = `withAuth(${WrappedComponent.displayName || WrappedComponent.name})`;
+
+  return WithAuthComponent;
+};
+```
+
+### 2. Ref 전달
+
+HOC를 사용할 때 ref가 제대로 전달되지 않을 수 있으므로 React.forwardRef를 사용해야 한다:
+
+```javascript
+const withAuth = (WrappedComponent) => {
+  const WithAuthComponent = React.forwardRef((props, ref) => {
+    // HOC 로직...
+    return <WrappedComponent {...props} ref={ref} />;
+  });
+
+  return WithAuthComponent;
+};
+```
+
+단 React 19 부터는 forwardRef 없이 ref를 전달할 수 있다.
+
+<LinkPreview url="https://siosio3103.medium.com/%EB%B2%88%EC%97%AD-%EB%A6%AC%EC%95%A1%ED%8A%B8-19-forwardref-%EC%A7%80%EC%9B%90-%EC%A4%91%EB%8B%A8-%EC%95%9E%EC%9C%BC%EB%A1%9C-ref%EB%A5%BC-%EC%A0%84%EB%8B%AC%ED%95%98%EA%B8%B0-%EC%9C%84%ED%95%9C-%ED%91%9C%EC%A4%80-%EA%B0%80%EC%9D%B4%EB%93%9C-13c02855efd8" />
