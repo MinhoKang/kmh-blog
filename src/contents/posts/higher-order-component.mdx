@@ -137,3 +137,25 @@ const withAuth = (WrappedComponent) => {
 단 React 19 부터는 forwardRef 없이 ref를 전달할 수 있다.
 
 <LinkPreview url="https://siosio3103.medium.com/%EB%B2%88%EC%97%AD-%EB%A6%AC%EC%95%A1%ED%8A%B8-19-forwardref-%EC%A7%80%EC%9B%90-%EC%A4%91%EB%8B%A8-%EC%95%9E%EC%9C%BC%EB%A1%9C-ref%EB%A5%BC-%EC%A0%84%EB%8B%AC%ED%95%98%EA%B8%B0-%EC%9C%84%ED%95%9C-%ED%91%9C%EC%A4%80-%EA%B0%80%EC%9D%B4%EB%93%9C-13c02855efd8" />
+
+## 유용한 사용법
+
+Button 컴포넌트에 아이콘을 추가하는 경우와 같은 상황에서 HOC 패턴이 매우 유용하다.
+
+```javascript
+import { FaPlus, FaTrash, FaPencil } from "react-icons/fa"; // 사용하는 아이콘들을 import
+
+const withReactIcon = (IconComponent) => (WrappedComponent) => {
+  return ({ children, ...props }) => (
+    <WrappedComponent {...props}>
+      <IconComponent style={{ marginRight: "8px" }} />
+      {children}
+    </WrappedComponent>
+  );
+};
+
+// 사용법
+const AddButton = withReactIcon(FaPlus)(Button);
+const DeleteButton = withReactIcon(FaTrash)(Button);
+const EditButton = withReactIcon(FaPencil)(Button);
+```
