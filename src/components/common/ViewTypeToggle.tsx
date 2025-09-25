@@ -17,7 +17,7 @@ export function ViewTypeToggle({
     <div className={`flex items-center gap-1 ${className}`}>
       <button
         onClick={() => onViewTypeChange("list")}
-        className={`p-2 rounded-md transition-all duration-200 ${
+        className={`p-2 rounded-md transition-all duration-200 cursor-pointer ${
           viewType === "list"
             ? "bg-neutral-200 dark:bg-neutral-700 text-neutral-900 dark:text-neutral-100"
             : "text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800"
@@ -41,7 +41,7 @@ export function ViewTypeToggle({
 
       <button
         onClick={() => onViewTypeChange("grid")}
-        className={`p-2 rounded-md transition-all duration-200 ${
+        className={`p-2 rounded-md transition-all duration-200 cursor-pointer ${
           viewType === "grid"
             ? "bg-neutral-200 dark:bg-neutral-700 text-neutral-900 dark:text-neutral-100"
             : "text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800"

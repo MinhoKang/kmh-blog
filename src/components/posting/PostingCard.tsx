@@ -53,7 +53,7 @@ export function PostingCard({ posting, index: _index }: PostingCardProps) {
             <h2 className="text-2xl md:text-3xl font-medium text-neutral-900 dark:text-neutral-100 mb-4 tracking-tight leading-tight">
               <Link
                 href={`/${posting.type === "project" ? "portfolio" : "posts"}/${posting.slug}`}
-                className="hover:text-neutral-600 dark:hover:text-neutral-300 transition-colors duration-300"
+                className="hover:text-neutral-600 dark:hover:text-neutral-300 transition-colors duration-300 cursor-pointer"
               >
                 {posting.title}
               </Link>
@@ -88,7 +88,7 @@ export function PostingCard({ posting, index: _index }: PostingCardProps) {
             <div className="flex gap-6">
               <Link
                 href={`/${posting.type === "project" ? "portfolio" : "posts"}/${posting.slug}`}
-                className="inline-flex items-center text-sm font-light text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors duration-300 tracking-wide group/link gap-x-1"
+                className="inline-flex items-center text-sm font-light text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors duration-300 tracking-wide group/link gap-x-1 cursor-pointer"
               >
                 {posting.type === "project" ? "View Details" : "Read More"}
                 <svg
@@ -111,7 +111,7 @@ export function PostingCard({ posting, index: _index }: PostingCardProps) {
                   href={posting.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center text-sm font-light text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors duration-300 tracking-wide group/link"
+                  className="inline-flex items-center text-sm font-light text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors duration-300 tracking-wide group/link cursor-pointer"
                 >
                   Live Site
                   <svg
@@ -135,7 +135,7 @@ export function PostingCard({ posting, index: _index }: PostingCardProps) {
                   href={posting.github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center text-sm font-light text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors duration-300 tracking-wide"
+                  className="inline-flex items-center text-sm font-light text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors duration-300 tracking-wide cursor-pointer"
                 >
                   GitHub
                 </a>

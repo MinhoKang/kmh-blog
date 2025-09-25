@@ -42,7 +42,10 @@ export function GridView({ postings, basePath }: GridViewProps) {
           className="group bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
         >
           {/* 메인 링크 영역 */}
-          <Link href={`${basePath}/${posting.slug}`} className="block">
+          <Link
+            href={`${basePath}/${posting.slug}`}
+            className="block cursor-pointer"
+          >
             {/* 이미지 영역 */}
             {posting.image && (
               <div className="aspect-video bg-neutral-100 dark:bg-neutral-800 overflow-hidden relative">
@@ -109,7 +112,7 @@ export function GridView({ postings, basePath }: GridViewProps) {
                     href={posting.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-xs font-light text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors duration-200"
+                    className="text-xs font-light text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors duration-200 cursor-pointer"
                   >
                     Live Demo
                   </a>
@@ -119,7 +122,7 @@ export function GridView({ postings, basePath }: GridViewProps) {
                     href={posting.github}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-xs font-light text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors duration-200"
+                    className="text-xs font-light text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors duration-200 cursor-pointer"
                   >
                     GitHub
                   </a>

@@ -85,7 +85,7 @@ export function Header({ variant = "page" }: HeaderProps) {
           >
             <Link
               href="/"
-              className={`font-bold font-heading text-charcoal-gray dark:text-light-text tracking-wide hover:opacity-60 transition-opacity duration-300 ${
+              className={`font-bold font-heading text-charcoal-gray dark:text-light-text tracking-wide hover:opacity-60 transition-opacity duration-300 cursor-pointer ${
                 isHomePage ? "text-xl" : "text-lg"
               }`}
             >
@@ -111,7 +111,7 @@ export function Header({ variant = "page" }: HeaderProps) {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`text-sm font-light tracking-wide transition-all duration-300 relative group ${
+                  className={`text-sm font-light tracking-wide transition-all duration-300 relative group cursor-pointer ${
                     isHomePage
                       ? "text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100"
                       : pathname === item.href
@@ -145,7 +145,7 @@ export function Header({ variant = "page" }: HeaderProps) {
                   <Link
                     key={item.href}
                     href={item.href}
-                    className="text-xs font-light text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors duration-300"
+                    className="text-xs font-light text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors duration-300 cursor-pointer"
                   >
                     {item.label.charAt(0)}
                   </Link>

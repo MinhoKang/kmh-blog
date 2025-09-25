@@ -52,7 +52,7 @@ export default async function PostPage({ params }: Props) {
       <div className="mb-12 animate-fade-in">
         <Link
           href="/posts"
-          className="inline-flex items-center text-sm font-light text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors duration-300 tracking-wide group"
+          className="inline-flex items-center text-sm font-light text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors duration-300 tracking-wide group cursor-pointer"
         >
           <svg
             className="w-4 h-4 mr-2 transition-transform duration-300 group-hover:-translate-x-1"
@@ -134,7 +134,7 @@ export default async function PostPage({ params }: Props) {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
           <Link
             href="/posts"
-            className="inline-flex items-center text-base font-light text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors duration-300 tracking-wide group"
+            className="inline-flex items-center text-base font-light text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors duration-300 tracking-wide group cursor-pointer"
           >
             <svg
               className="w-5 h-5 mr-2 transition-transform duration-300 group-hover:-translate-x-1"
@@ -155,7 +155,7 @@ export default async function PostPage({ params }: Props) {
           <div className="flex gap-6">
             <a
               href={`mailto:hello@kmh.dev?subject=About "${post.title}"`}
-              className="text-sm font-light text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors duration-300 tracking-wide"
+              className="text-sm font-light text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors duration-300 tracking-wide cursor-pointer"
             >
               Discuss
             </a>
@@ -167,7 +167,7 @@ export default async function PostPage({ params }: Props) {
               )}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm font-light text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors duration-300 tracking-wide"
+              className="text-sm font-light text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors duration-300 tracking-wide cursor-pointer"
             >
               Share
             </a>

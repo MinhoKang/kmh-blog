@@ -22,7 +22,7 @@ export function ThemeToggle() {
   return (
     <button
       onClick={() => setTheme(isDark ? "light" : "dark")}
-      className="relative w-10 h-5 bg-neutral-200 dark:bg-neutral-700 rounded-full transition-colors duration-300 focus:outline-none focus:ring-neutral-400 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-neutral-900"
+      className="relative w-10 h-5 bg-neutral-200 dark:bg-neutral-700 rounded-full transition-colors duration-300 focus:outline-none focus:ring-neutral-400 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-neutral-900 cursor-pointer"
       aria-label={`테마를 ${isDark ? "라이트" : "다크"} 모드로 변경`}
     >
       {/* 슬라이더 */}
