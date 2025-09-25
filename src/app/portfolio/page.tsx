@@ -64,7 +64,7 @@ export default async function PortfolioPage() {
   const projects = getAllProjects();
 
   return (
-    <div className="max-w-4xl flex-col gap-8 flex h-full">
+    <div className="flex-col gap-8 flex h-full">
       {/* 헤더 섹션 */}
       <PageHeader title="Portfolio" />
 

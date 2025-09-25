@@ -59,7 +59,7 @@ export default function PostsPage() {
   const posts = getAllPosts();
 
   return (
-    <div className="max-w-4xl flex-col gap-8 flex h-full">
+    <div className="flex-col gap-8 flex h-full">
       {/* 헤더 섹션 */}
       <PageHeader title="Posts" />
 

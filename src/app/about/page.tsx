@@ -43,7 +43,7 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
   return (
-    <div className="max-w-4xl flex-col gap-8 flex h-full">
+    <div className="flex-col gap-8 flex h-full">
       {/* 헤더 */}
       <PageHeader title="About" />
 
