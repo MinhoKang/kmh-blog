@@ -24,7 +24,9 @@ export function ConditionalLayout({ children }: ConditionalLayoutProps) {
       <Header variant="page" />
 
       {/* 메인 콘텐츠 - 헤더 높이만큼 padding-top 추가 */}
-      <main className="px-30 !py-5 flex-1 min-h-0 !pt-20">{children}</main>
+      <main className="md:px-20 sm:px-10 px-5 !py-5 flex-1 min-h-0 !pt-20">
+        {children}
+      </main>
 
       <Footer variant="page" />
     </div>

@@ -2,7 +2,6 @@ import fs from "fs";
 import path from "path";
 
 import matter from "gray-matter";
-import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -14,45 +13,6 @@ interface Props {
   params: Promise<{
     slug: string;
   }>;
-}
-
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const resolvedParams = await params;
-  const post = await getPost(resolvedParams.slug);
-
-  if (!post) {
-    return {
-      title: "Post Not Found",
-      description: "The post you are looking for does not exist.",
-    };
-  }
-
-  return {
-    title: `${post.title} | KMH's Blog`,
-    description: post.description,
-    openGraph: {
-      title: `${post.title} | KMH's Blog`,
-      description: post.description,
-      // 👈 게시글 타입의 콘텐츠임을 명시합니다.
-      type: "article",
-      // 👈 게시글 작성일을 메타데이터에 추가합니다.
-      publishedTime: new Date(post.date).toISOString(),
-      // 👈 게시글에 별도 이미지가 없으므로 기본 OG 이미지를 사용합니다.
-      images: [
-        {
-          url: "/og-image.jpeg",
-          width: 1200,
-          height: 630,
-          alt: post.title,
-        },
-      ],
-    },
-    twitter: {
-      title: `${post.title} | KMH's Blog`,
-      description: post.description,
-      images: ["/og-image.jpeg"],
-    },
-  };
 }
 
 async function getPost(slug: string) {
