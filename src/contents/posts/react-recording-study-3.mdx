@@ -1,0 +1,391 @@
+---
+title: "[시리즈 3편] React에서 녹음 기능 구현하기 - 데이터 처리의 핵심, Blob·FFT·TypedArray 정복하기"
+description: "오디오 데이터의 저장, 분석, 최적화까지 - 바이너리 데이터를 다루는 실전 기법"
+startDate: "2025-09-25"
+tags: ["React", "오디오 녹음", "Blob", "FFT", "TypedArray", "바이너리 데이터", "시리즈"]
+category: "posts"
+featured: true
+published: false
+---
+
+## Blob: 디지털 세상의 택배 상자
+
+2편에서 MediaRecorder가 오디오를 작은 조각(청크)으로 나누어 처리한다고 했는데, 그 조각들을 어떻게 하나의 파일로 만들까? 바로 **Blob**이 그 해답이다.
+
+Blob을 가장 쉽게 이해하는 방법은 **디지털 세상의 택배 상자**로 생각하는 것이다. 여러 개의 물건(데이터 조각들)을 하나의 상자에 담아서 안전하게 배송할 수 있게 해주는 것처럼, Blob은 여러 개의 데이터 조각을 하나의 파일로 묶어주는 역할을 한다.
+
+```javascript
+// 작은 조각들을 하나로 합치기 (택배 포장하듯이)
+const chunks = [조각1, 조각2, 조각3, 조각4]; // 녹음된 오디오 조각들
+
+const completeFile = new Blob(chunks, {
+  type: "audio/webm", // 이 상자 안에는 오디오 파일이 들어있어요!
+});
+
+console.log("완성된 파일 크기:", completeFile.size, "바이트");
+```
+
+### Binary Large Object의 정체
+
+Blob은 **Binary Large Object**의 줄임말이다. 쉽게 말해 "큰 이진 데이터 덩어리"라는 뜻이다. 여기서 이진 데이터란 컴퓨터가 이해하는 0과 1의 조합으로 된 데이터를 말한다.
+
+> **왜 굳이 Blob을 써야 할까?**
+>
+> 일반적인 JavaScript 변수나 배열로는 파일 데이터를 효율적으로 다룰 수 없다. 특히 오디오나 이미지 같은 큰 파일은 메모리를 너무 많이 차지한다. Blob은 이런 문제를 해결해주는 전문 도구이다:
+>
+> - **메모리 효율성**: 큰 파일도 효율적으로 관리
+> - **불변성**: 한 번 만들어지면 변하지 않아 안전함
+> - **스트림 지원**: 필요한 부분만 조금씩 읽을 수 있음
+
+실제 코드에서 이런 과정을 볼 수 있다:
+
+```javascript
+// useMediaRecorder 훅에서 실제로 사용되는 방식
+export function useMediaRecorder(stream) {
+  const [chunks, setChunks] = useState([]); // 조각들을 담을 배열
+
+  useEffect(() => {
+    const recorder = new MediaRecorder(stream);
+
+    // 새로운 조각이 생길 때마다 수집
+    recorder.ondataavailable = (event) => {
+      if (event.data && event.data.size > 0) {
+        setChunks((prev) => [...prev, event.data]); // 조각 하나씩 모으기
+      }
+    };
+
+    recorderRef.current = recorder;
+  }, [stream]);
+
+  // 녹음 끝내고 완성된 파일 만들기
+  const stop = useCallback(() => {
+    return new Promise((resolve) => {
+      const recorder = recorderRef.current;
+
+      recorder.onstop = () => {
+        // 모든 조각을 하나로 합치기 (택배 포장 완료!)
+        const completeAudioFile = new Blob(chunks, {
+          type: mimeType,
+        });
+        resolve(completeAudioFile);
+      };
+
+      recorder.stop();
+    });
+  }, [chunks, mimeType]);
+
+  return { start, stop, chunks };
+}
+```
+
+### Blob을 실제 파일로 만들기
+
+Blob 객체만으로는 사용자가 다운로드할 수 없다. 실제 파일로 만들려면 **URL.createObjectURL()**을 사용해야 한다:
+
+```javascript
+// 녹음 완료 후 다운로드 링크 만들기
+const handleDownload = async () => {
+  const audioBlob = await stop(); // 녹음 정지하고 Blob 받기
+
+  if (audioBlob) {
+    // Blob을 브라우저에서 접근할 수 있는 URL로 변환
+    const downloadUrl = URL.createObjectURL(audioBlob);
+
+    // 다운로드 링크 생성
+    const link = document.createElement("a");
+    link.href = downloadUrl;
+    link.download = "녹음파일.webm"; // 파일명 지정
+    link.click(); // 자동으로 다운로드 시작
+
+    // 메모리 정리 (중요!)
+    URL.revokeObjectURL(downloadUrl);
+  }
+};
+```
+
+> **메모리 관리의 중요성**
+>
+> `URL.createObjectURL()`로 만든 URL은 브라우저 메모리에 계속 남아있다. 사용이 끝나면 반드시 `URL.revokeObjectURL()`로 정리해줘야 메모리 누수가 발생하지 않는다.
+
+## FFT: 소리를 무지개로 만드는 마법의 프리즘
+
+**FFT(Fast Fourier Transform)**를 이해하는 가장 좋은 비유는 **프리즘**이다. 하얀 빛이 프리즘을 통과하면 빨강, 주황, 노랑, 초록, 파랑, 남색, 보라의 무지개로 분해되듯이, FFT는 복잡한 소리를 각각의 주파수 성분으로 분해해준다.
+
+### 시간 vs 주파수: 두 가지 관점
+
+소리를 바라보는 방식에는 두 가지가 있다:
+
+1. **시간 영역(Time Domain)**: "지금 이 순간 소리가 얼마나 클까?"
+2. **주파수 영역(Frequency Domain)**: "이 소리에는 어떤 음정들이 섞여있을까?"
+
+```javascript
+// 시간 영역에서 보는 소리 (파형)
+시간: 0초  0.1초  0.2초  0.3초  0.4초
+소리: 큼    작음    중간    큼    작음
+
+// 주파수 영역에서 보는 소리 (스펙트럼)
+주파수: 100Hz  200Hz  300Hz  400Hz  500Hz
+강도:   강함    약함    중간    강함    없음
+```
+
+> **왜 주파수 분석이 필요할까?**
+>
+> 사람의 목소리와 기계 소음은 시간 영역에서는 비슷해 보일 수 있지만, 주파수 영역에서는 완전히 다르다. 음성 인식, 노이즈 제거, 오디오 이펙트 등 많은 고급 기능들이 주파수 분석을 기반으로 한다.
+
+### 실제 코드에서의 FFT
+
+실제 코드의 `useAudioMeter` 훅에서 이런 분석 과정을 볼 수 있다:
+
+```javascript
+export function useAudioMeter({ audioContext, stream }) {
+  useEffect(() => {
+    if (!audioContext || !stream) return;
+
+    // 1. 소리 분석기 만들기 (프리즘 같은 역할)
+    const analyser = audioContext.createAnalyser();
+    analyser.fftSize = 2048; // 얼마나 자세히 분석할지
+    analyser.smoothingTimeConstant = 0.8; // 얼마나 부드럽게 할지
+
+    // 2. 마이크 소리를 분석기에 연결
+    const source = audioContext.createMediaStreamSource(stream);
+    source.connect(analyser);
+
+    // 3. 분석 결과를 담을 배열 준비
+    const bufferLength = analyser.frequencyBinCount; // 2048/2 = 1024개
+    const data = new Uint8Array(bufferLength); // 0~255 숫자들
+
+    // 4. 실시간으로 분석하기
+    const analyze = () => {
+      // 현재 소리를 시간 영역 데이터로 가져오기
+      analyser.getByteTimeDomainData(data);
+
+      // RMS 계산으로 전체적인 볼륨 구하기
+      let sumSquares = 0;
+      for (let i = 0; i < data.length; i++) {
+        const normalized = (data[i] - 128) / 128; // -1 ~ 1 범위로
+        sumSquares += normalized * normalized;
+      }
+
+      const rms = Math.sqrt(sumSquares / data.length);
+      setLevel(rms); // 계산한 볼륨 레벨 저장
+
+      // 다음 프레임에서 다시 분석
+      requestAnimationFrame(analyze);
+    };
+
+    analyze(); // 분석 시작!
+
+    return cleanup;
+  }, [audioContext, stream]);
+}
+```
+
+### RMS: 소리 크기를 정확하게 측정하는 방법
+
+**RMS(Root Mean Square)**는 "제곱의 평균의 제곱근"이라는 뜻이다. 수학적으로는 복잡해 보이지만, 개념은 간단하다 - **소리의 실제 에너지를 정확하게 측정하는 방법**이다.
+
+```javascript
+// RMS 계산 과정을 쉽게 풀어보면
+function calculateRMS(audioData) {
+  let sum = 0;
+
+  // 1단계: 각 값을 제곱해서 더하기 (음수도 양수로 만들기)
+  for (let i = 0; i < audioData.length; i++) {
+    const value = (audioData[i] - 128) / 128; // -1 ~ 1 범위로 변환
+    sum += value * value; // 제곱해서 더하기
+  }
+
+  // 2단계: 평균 구하기
+  const mean = sum / audioData.length;
+
+  // 3단계: 제곱근 구하기
+  const rms = Math.sqrt(mean);
+
+  return rms; // 0 ~ 1 사이의 값으로 소리 크기 표현
+}
+```
+
+## TypedArray: 메모리의 정리함
+
+일반적인 JavaScript 배열은 편리하지만 메모리를 많이 사용한다. **TypedArray**는 이를 해결해주는 **메모리 전용 정리함**과 같다.
+
+### 왜 TypedArray를 써야 할까?
+
+일반 배열과 TypedArray의 차이를 집으로 비유해보자:
+
+```javascript
+// 일반 배열: 큰 창고 (유연하지만 공간 낭비)
+const normalArray = [1, 2, 3, 4];
+// 각 숫자마다 큰 공간을 차지함 (문자열, 객체 등도 넣을 수 있어서)
+
+// TypedArray: 전용 서랍 (공간 효율적)
+const typedArray = new Uint8Array([1, 2, 3, 4]);
+// 각 숫자가 정확히 1바이트만 차지함
+```
+
+> **Uint8Array의 특징**
+>
+> - **U**: Unsigned (0 이상의 양수만)
+> - **int**: Integer (정수)
+> - **8**: 8비트 (1바이트)
+> - **Array**: 배열
+>
+> 즉, 0부터 255까지의 숫자만 담을 수 있는 1바이트짜리 배열이다. 오디오 데이터 처리에 딱 맞다!
+
+네, 좋은 지적이다! `frequencyBinCount`와 Uint8Array의 연결고리 설명을 추가해보겠다. 기존 글의 TypedArray 섹션에 다음 내용을 추가하면 된다:
+
+---
+
+### 왜 frequencyBinCount가 Uint8Array와 딱 맞을까?
+
+많은 초보 개발자들이 궁금해하는 부분이 바로 이것이다. `analyser.frequencyBinCount`로 배열 크기를 정하는데, 왜 하필 `Uint8Array`(0~255)를 쓸까?
+
+```javascript
+const analyser = audioContext.createAnalyser();
+analyser.fftSize = 2048;
+
+// 왜 이 숫자가 Uint8Array와 맞아떨어지는 걸까?
+const bufferLength = analyser.frequencyBinCount; // 1024개
+const data = new Uint8Array(bufferLength); // 각각 0~255 값
+```
+
+그 답은 **Web Audio API의 내부 동작 방식**에 있다:
+
+1. **원본 데이터는 -1~1 범위**: 마이크에서 들어오는 실제 오디오 신호는 -1.0부터 1.0 사이의 부동소수점 숫자들이다
+
+2. **자동 변환 과정**: `getByteTimeDomainData()`를 호출하면 Web Audio API가 내부적으로 이런 변환을 수행한다:
+
+   ```javascript
+   // Web Audio API 내부에서 일어나는 일 (개념적 설명)
+   원본값 -1.0 → 변환 → 0   (최소값)
+   원본값  0.0 → 변환 → 128 (중간값)
+   원본값  1.0 → 변환 → 255 (최대값)
+   ```
+
+3. **8비트 정수로 정규화**: 이 과정을 통해 모든 오디오 데이터가 자동으로 0~255 범위의 정수로 변환되므로, `Uint8Array`가 완벽하게 맞아떨어진다
+
+> **왜 이렇게 복잡하게?**
+>
+> 이런 변환 과정이 있는 이유는 **효율성** 때문이다. 원본 부동소수점 데이터는 메모리를 많이 차지하지만, 8비트 정수로 변환하면 4분의 1로 줄어든다. 실시간 오디오 분석에서는 이런 최적화가 매우 중요하다.
+
+```javascript
+// 실제 사용 예시
+analyser.getByteTimeDomainData(data); // API가 자동으로 0~255로 변환해서 채워줌
+
+console.log(data[0]); // 128 (무음 상태)
+console.log(data[100]); // 200 (큰 소리)
+console.log(data[500]); // 50  (작은 소리)
+// 모든 값이 0~255 사이에 있음!
+```
+
+이런 식으로 Web Audio API가 알아서 데이터를 적절한 형태로 변환해주기 때문에, 우리는 그냥 `Uint8Array`를 만들고 받아서 쓰기만 하면 된다. 마치 API가 우리를 위해 "번역"을 해주는 것과 같다!
+
+---
+
+이 설명을 기존 TypedArray 섹션의 "실제 사용 예시" 바로 앞에 추가하면 자연스럽게 연결될 것 같다. 독자들이 "왜 이렇게 되는거지?"라는 궁금증을 해결할 수 있을 것이다.
+
+### 실제 사용 예시
+
+실제 코드에서 TypedArray가 어떻게 쓰이는지 보자:
+
+```javascript
+// useAudioMeter에서 실제 사용되는 방식
+const analyser = audioContext.createAnalyser();
+analyser.fftSize = 2048;
+
+// 오디오 데이터를 담을 효율적인 배열 생성
+const bufferLength = analyser.frequencyBinCount; // 1024개
+const data = new Uint8Array(bufferLength); // 1024바이트만 사용
+
+const tick = () => {
+  // Web Audio API가 직접 TypedArray에 데이터 채우기
+  analyser.getByteTimeDomainData(data);
+
+  // 이제 data 배열에는 0~255 사이의 숫자 1024개가 들어있음
+  console.log("첫 번째 샘플:", data[0]); // 예: 127
+  console.log("두 번째 샘플:", data[1]); // 예: 130
+  console.log("배열 전체 크기:", data.length); // 1024
+
+  // 이 데이터로 RMS 계산하거나 다른 분석 수행
+  const rms = calculateRMS(data);
+};
+```
+
+### 메모리 사용량 비교
+
+실제로 메모리를 얼마나 절약할 수 있는지 보자:
+
+| 데이터 유형 | 일반 배열 | TypedArray | 절약률   |
+| ----------- | --------- | ---------- | -------- |
+| 1024개 숫자 | ~16KB     | 1KB        | 94% 절약 |
+| 오디오 1초  | ~700KB    | ~44KB      | 94% 절약 |
+| 오디오 1분  | ~42MB     | ~2.6MB     | 94% 절약 |
+
+> **성능도 빨라진다**
+>
+> TypedArray는 메모리를 절약할 뿐만 아니라 처리 속도도 빠르다. 브라우저가 데이터 타입을 미리 알고 있어서 최적화된 연산을 수행할 수 있기 때문이다.
+
+## 모든 것을 연결하는 실전 예시
+
+이제 배운 것들이 실제로 어떻게 연결되는지 보자. `RecordModal`에서의 전체 플로우이다:
+
+```javascript
+function RecordingWorkflow() {
+  const [audioLevel, setAudioLevel] = useState(0);
+  const [downloadUrl, setDownloadUrl] = useState(null);
+
+  // 1. 오디오 분석 (FFT + TypedArray 사용)
+  const analyzeAudio = useCallback(() => {
+    if (!analyser) return;
+
+    // TypedArray에 현재 오디오 데이터 채우기
+    const data = new Uint8Array(analyser.frequencyBinCount);
+    analyser.getByteTimeDomainData(data); // Web Audio API가 데이터 채움
+
+    // RMS 계산으로 볼륨 측정
+    let sum = 0;
+    for (let i = 0; i < data.length; i++) {
+      const normalized = (data[i] - 128) / 128;
+      sum += normalized * normalized;
+    }
+    const rms = Math.sqrt(sum / data.length);
+
+    setAudioLevel(rms); // UI에 볼륨 레벨 표시
+    requestAnimationFrame(analyzeAudio); // 다음 프레임에서 재분석
+  }, [analyser]);
+
+  // 2. 녹음 완료 후 파일 생성 (Blob 사용)
+  const handleStopRecording = async () => {
+    const audioBlob = await mediaRecorder.stop(); // 청크들을 Blob으로 합치기
+
+    if (audioBlob) {
+      // Blob을 다운로드 가능한 URL로 변환
+      const url = URL.createObjectURL(audioBlob);
+      setDownloadUrl(url);
+
+      // 나중에 메모리 정리를 위해 cleanup 함수에서
+      // URL.revokeObjectURL(url) 호출 필요
+    }
+  };
+
+  return (
+    <div>
+      {/* 실시간 오디오 레벨 표시 (FFT 분석 결과) */}
+      <div>현재 볼륨: {Math.round(audioLevel * 100)}%</div>
+
+      {/* 녹음 완료 후 다운로드 (Blob 활용) */}
+      {downloadUrl && (
+        <a href={downloadUrl} download="녹음파일.webm">
+          녹음 파일 다운로드
+        </a>
+      )}
+    </div>
+  );
+}
+```
+
+## 다음 편 예고
+
+바이너리 데이터 처리의 핵심 개념들을 이해했다면, 이제 React에서 이 모든 것을 효율적으로 관리하는 방법을 알아볼 차례이다. **[시리즈 4편]**에서는 커스텀 훅들이 어떻게 설계되었는지, 훅 간의 의존성은 어떻게 관리하는지, 그리고 상태 전파와 에러 처리는 어떻게 하는지 자세히 살펴보겠다.
+
+택배 상자 같은 Blob, 프리즘 같은 FFT, 정리함 같은 TypedArray - 이렇게 복잡해 보이는 개념들도 적절한 비유와 함께 이해하면 그리 어렵지 않다. 이제 이런 저수준 데이터 처리 기법들을 React의 고수준 패턴과 결합하는 방법을 배워보자!

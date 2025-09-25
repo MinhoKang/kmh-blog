@@ -1,0 +1,212 @@
+---
+title: "[시리즈 1편] React에서 녹음 기능 구현하기 - Navigator와 기본 Web API 이해"
+description: "React 오디오 녹음 시스템 구축을 위한 Navigator 객체와 MediaDevices API 기초"
+startDate: "2025-09-25"
+tags: ["React", "오디오 녹음", "Navigator", "Web API", "MediaDevices", "getUserMedia", "시리즈"]
+category: "posts"
+featured: true
+published: false
+---
+
+## 시작하며
+
+최근 상담 프로그램을 개발하면서 실시간 녹음 기능을 구현할 일이 있었다. 단순히 라이브러리를 가져다 쓰는 것이 아니라, 브라우저의 Web API를 직접 다뤄야 하는 상황이었는데, 생각보다 복잡하고 고려할 점이 많았다. 특히 브라우저별 호환성 문제나 권한 관리, 오디오 데이터 처리 등을 직접 구현하면서 많은 것을 배울 수 있었다.
+
+이 시리즈에서는 그때 구현하면서 배운 내용들을 정리해보려고 한다. Navigator 객체부터 시작해서 Web Audio API, MediaRecorder API, 그리고 React에서 이들을 효과적으로 관리하는 방법까지 단계별로 살펴볼 예정이다.
+
+## Navigator 객체란 무엇인가
+
+웹 브라우저에서 JavaScript를 사용할 때, `navigator`라는 전역 객체를 만날 수 있다. 이 객체는 마치 브라우저의 신분증과 같은 역할을 하며, 사용자의 브라우저와 운영체제에 대한 다양한 정보를 제공하는 중요한 객체이다.
+
+Navigator 객체의 이름은 1990년대 넷스케이프(Netscape)의 초기 웹 브라우저인 '네비게이터'에서 유래되었다. 당시에는 브라우저마다 지원하는 기능이 달라서, 웹 개발자들이 방문자의 브라우저 정보를 미리 파악해 호환성을 유지해야 했는데, 이를 **브라우저 스니핑(Browser Sniffing)**이라고 불렀다.
+
+> **BOM(Browser Object Model)과 Navigator**
+>
+> Navigator 객체는 BOM(Browser Object Model)의 핵심 구성 요소 중 하나이다. BOM은 웹 브라우저의 창이나 프레임을 추상화해서 프로그래밍적으로 제어할 수 있도록 제공하는 객체 모델로, `window` 객체를 최상위로 하는 계층적 구조를 가진다:
+>
+> ```
+> Window (최상위 객체)
+> ├── Document (HTML 문서 객체)
+> ├── Navigator (브라우저 정보) ← 현재 다루는 객체
+> ├── Location (URL 정보)
+> ├── History (방문 기록)
+> └── Screen (화면 정보)
+> ```
+>
+> BOM은 DOM(Document Object Model)과 다르게 W3C 표준이 없어서 브라우저 제작사마다 세부 구현이 다를 수 있지만, 현재는 대부분의 모던 브라우저에서 유사하게 구현되어 있다.
+
+## Navigator 객체의 주요 속성들
+
+Navigator 객체가 제공하는 주요 속성들을 살펴보면 다음과 같다:
+
+| 속성명          | 설명                 | 활용 예시                  |
+| --------------- | -------------------- | -------------------------- |
+| `appName`       | 브라우저의 이름      | 대부분 "Netscape"로 표시됨 |
+| `appCodeName`   | 브라우저의 코드명    | 대부분 "Mozilla"로 표시됨  |
+| `appVersion`    | 브라우저의 버전 정보 | 버전 문자열 반환           |
+| `userAgent`     | 상세한 브라우저 정보 | 서버 식별용 문자열         |
+| `platform`      | 운영체제 정보        | "Win32", "MacIntel" 등     |
+| `language`      | 브라우저 기본 언어   | "ko", "en-US" 등           |
+| `onLine`        | 인터넷 연결 상태     | true/false                 |
+| `cookieEnabled` | 쿠키 사용 가능 여부  | true/false                 |
+
+실제로 브라우저의 개발자 도구에서 `navigator` 객체를 직접 확인해볼 수 있다:
+
+```javascript
+console.log(navigator.userAgent);
+console.log(navigator.platform);
+console.log(navigator.language);
+```
+
+## 하드웨어 접근의 시작점: MediaDevices API
+
+Navigator 객체의 가장 흥미로운 부분은 바로 `navigator.mediaDevices` 속성이다. 이는 사용자의 카메라, 마이크 같은 미디어 장치에 접근할 수 있게 해주는 **MediaDevices API**의 진입점이다.
+
+### getUserMedia()의 동작 원리
+
+`navigator.mediaDevices.getUserMedia()`는 사용자의 미디어 장치에 접근하기 위한 핵심 메서드이다. 이 메서드를 호출하면 다음과 같은 과정이 일어난다:
+
+1. **권한 요청**: 브라우저가 사용자에게 마이크/카메라 사용 권한을 요청한다
+2. **사용자 승인**: 사용자가 '허용' 또는 '차단'을 선택한다
+3. **스트림 반환**: 승인되면 MediaStream 객체를 Promise로 반환한다
+4. **에러 처리**: 거부되거나 오류 발생 시 에러를 던진다
+
+```javascript
+// 마이크 권한 요청 예시
+navigator.mediaDevices
+  .getUserMedia({ audio: true })
+  .then((stream) => {
+    console.log("마이크 접근 성공!", stream);
+  })
+  .catch((error) => {
+    console.error("마이크 접근 실패:", error);
+  });
+```
+
+### MediaStream 객체 심화 이해
+
+`getUserMedia()`가 반환하는 **MediaStream**은 실시간 미디어 데이터의 스트림을 나타내는 핵심 객체이다. 이 객체는 다음과 같은 특징을 가진다:
+
+> **MediaStream의 핵심 개념**
+>
+> - **트랙 기반 구조**: 하나 이상의 오디오/비디오 트랙(MediaStreamTrack)으로 구성된다
+> - **실시간 데이터**: 카메라나 마이크에서 실시간으로 들어오는 데이터를 담고 있다
+> - **상태 관리**: 각 트랙은 'live', 'muted', 'ended' 등의 상태를 가진다
+> - **이벤트 지원**: 트랙 추가/제거, 상태 변경 등의 이벤트를 발생시킨다
+>
+> MediaStream은 단순한 데이터 덩어리가 아니라, 실시간으로 변화하는 미디어 데이터의 '흐름'을 추상화한 객체이다. 이 스트림은 Web Audio API나 MediaRecorder API 등 다른 API들의 입력으로 사용될 수 있다.
+
+```javascript
+// MediaStream의 구체적인 활용 예시
+navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
+  // 스트림의 트랙 정보 확인
+  const audioTracks = stream.getAudioTracks();
+  console.log("오디오 트랙 개수:", audioTracks.length);
+  console.log("첫 번째 트랙 상태:", audioTracks[0].readyState);
+
+  // 트랙 이벤트 리스너 등록
+  audioTracks[0].addEventListener("ended", () => {
+    console.log("오디오 트랙이 종료되었습니다");
+  });
+});
+```
+
+### HTTPS 필수 요건
+
+`getUserMedia()`는 보안상의 이유로 **HTTPS 환경에서만 동작**한다. 이는 사용자의 프라이버시를 보호하기 위한 웹 표준이며, localhost를 제외한 모든 환경에서 SSL 인증서가 필요하다.
+
+## Permissions API로 권한 상태 확인하기
+
+Permissions API는 애플리케이션의 권한 상태를 확인할 수 있게 해주는 최신 웹 API이다. 이를 통해 사용자에게 권한을 요청하기 전에 미리 상태를 확인할 수 있다.
+
+```javascript
+// 마이크 권한 상태 확인
+navigator.permissions.query({ name: "microphone" }).then((permissionStatus) => {
+  console.log("마이크 권한 상태:", permissionStatus.state);
+  // 'granted', 'denied', 'prompt' 중 하나 반환
+});
+```
+
+### 권한 상태의 종류
+
+| 상태      | 의미                  | 대응 방법                        |
+| --------- | --------------------- | -------------------------------- |
+| `granted` | 이미 권한이 허용됨    | 바로 기능 사용 가능              |
+| `denied`  | 권한이 거부됨         | 사용자에게 설정 변경 안내        |
+| `prompt`  | 아직 권한을 묻지 않음 | getUserMedia() 호출 시 팝업 표시 |
+
+## 브라우저 호환성과 기능 감지
+
+과거에는 브라우저별로 지원하는 기능이 달랐지만, 현재는 **기능 감지(Feature Detection)** 방식을 주로 사용한다. 특정 API가 존재하는지 먼저 확인하고, 지원되는 경우에만 해당 기능을 사용하는 방식이다.
+
+```javascript
+// 기능 감지 예시
+if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+  // getUserMedia 지원됨
+  console.log("마이크/카메라 사용 가능");
+} else {
+  // 지원되지 않음
+  console.log("미디어 장치 접근 불가");
+}
+```
+
+### 브라우저별 지원 현황
+
+현재 대부분의 모던 브라우저에서 MediaDevices API를 지원하지만, 일부 구형 브라우저나 특정 환경에서는 제한이 있을 수 있다:
+
+- **Chrome/Edge**: 완전 지원 (HTTPS 필수)
+- **Firefox**: 완전 지원 (HTTPS 필수)
+- **Safari**: 지원하지만 일부 제한 사항 존재
+- **모바일 브라우저**: 대부분 지원하지만 권한 정책이 엄격함
+
+> Permissions API의 경우 상대적으로 최신 API이므로, 일부 브라우저에서는 지원하지 않을 수 있다. 이런 경우 try-catch를 통한 에러 처리가 필요하다
+
+## React에서의 활용 방향성
+
+React에서 녹음 기능을 구현할 때 Navigator와 MediaDevices API는 다음과 같이 활용된다:
+
+- **커스텀 훅 설계**: `useMicrophone` 훅에서 getUserMedia() 호출과 권한 관리
+- **상태 관리**: 마이크 권한 상태를 React state로 관리하여 UI 반영
+- **에러 처리**: 브라우저별 에러 상황을 React 컴포넌트에서 적절히 처리
+- **생명주기 관리**: useEffect를 통한 미디어 스트림의 생성과 정리
+
+## 실제 활용 예제
+
+다음은 Navigator 객체와 MediaDevices API를 실제로 활용하는 간단한 예제이다:
+
+```javascript
+// 브라우저 환경 체크 및 마이크 접근
+async function checkAndRequestMicrophone() {
+  // 1. 기본 환경 체크
+  console.log("브라우저:", navigator.userAgent);
+  console.log("플랫폼:", navigator.platform);
+  console.log("온라인 상태:", navigator.onLine);
+
+  // 2. MediaDevices API 지원 여부 확인
+  if (!navigator.mediaDevices?.getUserMedia) {
+    alert("이 브라우저는 마이크 접근을 지원하지 않습니다");
+    return;
+  }
+
+  // 3. 권한 상태 확인 (지원하는 브라우저만)
+  if (navigator.permissions) {
+    const permission = await navigator.permissions.query({ name: "microphone" });
+    console.log("마이크 권한 상태:", permission.state);
+  }
+
+  // 4. 마이크 접근 시도
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    console.log("마이크 접근 성공!");
+    return stream;
+  } catch (error) {
+    console.error("마이크 접근 실패:", error.message);
+  }
+}
+```
+
+## 다음 편 예고
+
+Navigator 객체와 기본 Web API들을 이해했다면, 이제 실제 오디오 데이터를 처리하고 조작할 수 있는 Web Audio API와 MediaRecorder API에 대해 알아볼 차례이다. **[시리즈 2편]**에서는 AudioContext의 생명주기 관리와 실시간 오디오 처리 방법, 그리고 MediaRecorder를 통한 녹음 메커니즘에 대해 자세히 살펴보겠다.
+
+웹 브라우저의 관문인 Navigator 객체는 단순히 브라우저 정보를 제공하는 것을 넘어서, 사용자의 하드웨어에 접근할 수 있는 강력한 도구들의 시작점이다. 이를 제대로 이해하고 활용한다면, React에서 더욱 풍부한 오디오 애플리케이션을 만들 수 있을 것이다.

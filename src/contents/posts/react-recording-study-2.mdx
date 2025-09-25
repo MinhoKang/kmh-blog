@@ -1,0 +1,359 @@
+---
+title: "[시리즈 2편] React에서 녹음 기능 구현하기 - Web Audio API와 MediaRecorder API 마스터하기"
+description: "AudioContext 생명주기부터 실시간 녹음 메커니즘까지, 오디오 처리의 핵심 원리"
+startDate: "2025-09-25"
+tags: ["React", "오디오 녹음", "Web Audio API", "MediaRecorder API", "AudioContext", "시리즈"]
+category: "posts"
+featured: true
+published: false
+---
+
+## AudioContext: 오디오 세계의 관리자
+
+지난 1편에서 Navigator를 통해 브라우저가 마이크에 접근하는 방법을 배웠다면, 이번에는 실제로 오디오를 다루는 **AudioContext**에 대해 알아보자.
+
+AudioContext를 가장 쉽게 이해하는 방법은 **오디오 작업을 총괄하는 관리자**로 생각하는 것이다. 마치 음향 엔지니어가 녹음실에서 여러 장비들을 조작하듯이, AudioContext는 브라우저에서 모든 오디오 작업을 관리한다.
+
+```javascript
+// 오디오 관리자 생성
+const audioContext = new AudioContext();
+console.log("관리자 상태:", audioContext.state); // 'suspended' 또는 'running'
+```
+
+### 왜 처음에는 멈춰있을까?
+
+AudioContext를 처음 만들면 보통 `suspended`(일시정지) 상태로 시작한다. 이는 브라우저가 사용자를 보호하기 위해서이다. 갑자기 소리가 나면 깜짝 놀랄 수 있으니까!
+
+> **브라우저의 배려: 사용자 제스처 필요**
+>
+> 요즘 브라우저들은 사용자가 직접 버튼을 클릭하거나 화면을 터치하는 등의 행동을 해야만 오디오가 시작되도록 한다. 이를 **사용자 제스처 정책**이라고 한다. 마치 "정말 소리를 들으시겠어요?"라고 물어보는 것과 같다.
+
+```javascript
+// 사용자가 버튼을 클릭했을 때만 오디오 시작
+button.addEventListener("click", async () => {
+  if (audioContext.state === "suspended") {
+    await audioContext.resume(); // 이제 진짜 시작!
+    console.log("오디오 관리자가 일을 시작했다!");
+  }
+});
+```
+
+실제 코드에서 본 `useAudioContext` 훅은 이런 복잡한 과정을 자동으로 처리해준다:
+
+```javascript
+export function useAudioContext() {
+  const [audioContext, setAudioContext] = useState(null);
+  const [isRunning, setIsRunning] = useState(false);
+
+  useEffect(() => {
+    // 브라우저별로 다른 이름을 가진 AudioContext 처리
+    const Ctx = window.AudioContext || window.webkitAudioContext;
+    const ctx = new Ctx();
+
+    // 상태가 바뀔 때마다 알려주기
+    const onState = () => setIsRunning(ctx.state === "running");
+    ctx.addEventListener("statechange", onState);
+
+    setAudioContext(ctx);
+
+    // 컴포넌트가 사라질 때 깔끔하게 정리
+    return () => {
+      ctx.removeEventListener("statechange", onState);
+      ctx.close().catch(() => {}); // 혹시 에러가 나도 무시
+    };
+  }, []);
+
+  // 사용자가 버튼을 누르면 호출할 함수
+  const resume = useMemo(() => {
+    return async () => {
+      if (audioContext && audioContext.state !== "running") {
+        await audioContext.resume();
+      }
+    };
+  }, [audioContext]);
+
+  return { audioContext, isRunning, resume };
+}
+```
+
+## 오디오 노드: 레고 블록처럼 조립하는 오디오
+
+Web Audio API의 가장 재미있는 부분은 **오디오 노드(Audio Node)** 시스템이다. 이를 레고 블록에 비유하면 이해하기 쉽다. 각각의 블록은 하나의 기능을 담당하고, 이들을 연결해서 원하는 결과를 만들어낸다.
+
+### 오디오 노드의 세 가지 역할
+
+오디오 노드는 크게 세 가지 역할로 나눌 수 있다:
+
+1. **입력(Input)**: 소리가 들어오는 곳
+   - 마이크에서 들어오는 소리
+   - 파일에서 재생되는 음악
+   - 컴퓨터가 만들어내는 신호음
+
+2. **가공(Effects)**: 소리를 변화시키는 곳
+   - 볼륨을 크게/작게 만들기
+   - 에코나 잔향 효과 넣기
+   - 소리를 분석해서 데이터 뽑아내기
+
+3. **출력(Destination)**: 소리가 나가는 곳
+   - 스피커나 헤드폰으로 내보내기
+
+```javascript
+// 1. 관리자 생성
+const audioContext = new AudioContext();
+
+// 2. 마이크 소리를 가져오기 (입력)
+const source = audioContext.createMediaStreamSource(stream);
+
+// 3. 볼륨 조절기 만들기 (가공)
+const gainNode = audioContext.createGain();
+gainNode.gain.value = 0.5; // 볼륨 50%
+
+// 4. 소리 분석기 만들기 (가공)
+const analyser = audioContext.createAnalyser();
+
+// 5. 레고 블록처럼 연결하기
+source.connect(gainNode); // 마이크 → 볼륨조절
+gainNode.connect(analyser); // 볼륨조절 → 분석
+analyser.connect(audioContext.destination); // 분석 → 스피커
+```
+
+> **왜 이렇게 복잡하게?**
+>
+> 처음에는 복잡해 보이지만, 이 방식의 장점은 **유연성**이다. 마치 레고로 집을 짓듯이, 필요에 따라 다양한 조합을 만들 수 있다. 녹음할 때는 스피커 연결을 빼고, 이펙트를 추가하고 싶으면 중간에 노드를 하나 더 끼우면 된다.
+
+실제 코드의 `useAudioMeter` 훅에서 이런 연결 과정을 볼 수 있다:
+
+```javascript
+export function useAudioMeter({ audioContext, stream }) {
+  useEffect(() => {
+    if (!audioContext || !stream) return;
+
+    // 1. 마이크 소리를 오디오 세계로 가져오기
+    const source = audioContext.createMediaStreamSource(stream);
+
+    // 2. 소리를 분석할 수 있는 도구 만들기
+    const analyser = audioContext.createAnalyser();
+    analyser.smoothingTimeConstant = 0.8; // 얼마나 부드럽게 할지
+    analyser.fftSize = 2048; // 얼마나 자세히 분석할지
+
+    // 3. 연결하기 (스피커는 연결 안 함 → 소리 안 남)
+    source.connect(analyser);
+
+    // 4. 실시간으로 소리 크기 측정하기
+    const data = new Uint8Array(analyser.frequencyBinCount);
+
+    const measureVolume = () => {
+      // 현재 소리 데이터 가져오기
+      analyser.getByteTimeDomainData(data);
+
+      // 평균 볼륨 계산하기 (수학적 계산)
+      let sum = 0;
+      for (let i = 0; i < data.length; i++) {
+        const value = (data[i] - 128) / 128; // -1 ~ 1 범위로 변환
+        sum += value * value;
+      }
+      const rms = Math.sqrt(sum / data.length);
+      setLevel(rms); // 계산한 볼륨을 상태에 저장
+
+      // 다음 프레임에서 다시 측정
+      rafRef.current = requestAnimationFrame(measureVolume);
+    };
+
+    measureVolume(); // 측정 시작!
+
+    return cleanup; // 컴포넌트가 사라지면 정리
+  }, [audioContext, stream]);
+}
+```
+
+## MediaRecorder: 소리를 파일로 저장하는 녹음기
+
+Web Audio API가 소리를 실시간으로 분석하고 가공하는 도구라면, **MediaRecorder API**는 그 소리를 실제로 파일로 저장하는 녹음기이다.
+
+### 녹음은 어떻게 동작할까?
+
+MediaRecorder의 동작 방식은 정말 간단하다:
+
+1. **소리 들어옴**: 마이크에서 실시간으로 소리가 들어온다
+2. **작은 조각으로 나누기**: 긴 녹음을 작은 덩어리(청크)로 나눈다
+3. **파일 조각 만들기**: 각 덩어리를 파일 형태로 변환한다
+4. **조각들 모으기**: 녹음이 끝나면 모든 조각을 합쳐서 완전한 파일을 만든다
+
+```javascript
+// 녹음기 만들기
+const mediaRecorder = new MediaRecorder(stream, {
+  mimeType: "audio/webm", // 어떤 형식으로 저장할지
+});
+
+// 파일 조각들을 담을 바구니
+const chunks = [];
+
+// 조각이 만들어질 때마다 바구니에 담기
+mediaRecorder.ondataavailable = (event) => {
+  if (event.data && event.data.size > 0) {
+    chunks.push(event.data);
+    console.log("새로운 조각이 생겼어요!", event.data.size, "바이트");
+  }
+};
+
+// 녹음이 끝나면 조각들을 하나로 합치기
+mediaRecorder.onstop = () => {
+  const completeFile = new Blob(chunks, { type: "audio/webm" });
+  const downloadUrl = URL.createObjectURL(completeFile);
+  console.log("완성된 파일!", downloadUrl);
+};
+
+// 녹음 시작 (0.1초마다 조각 만들기)
+mediaRecorder.start(100);
+```
+
+### 왜 조각으로 나눌까?
+
+> **실시간 처리의 비밀**
+>
+> 녹음을 작은 조각으로 나누는 이유는 **실시간 처리** 때문이다. 만약 10분짜리 녹음을 통째로 처리하려면 메모리도 많이 쓰고, 녹음 중간에 뭔가 문제가 생기면 모든 걸 잃을 수 있다. 하지만 작은 조각으로 나누면:
+>
+> - 메모리를 효율적으로 사용할 수 있다
+> - 실시간으로 서버에 전송할 수 있다
+> - 문제가 생겨도 일부분만 잃는다
+> - 진행 상황을 사용자에게 보여줄 수 있다
+
+실제 코드의 `useMediaRecorder` 훅은 이런 복잡한 과정을 간단하게 만들어준다:
+
+```javascript
+export function useMediaRecorder(stream, options) {
+  const [isRecording, setIsRecording] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
+  const [chunks, setChunks] = useState([]);
+
+  useEffect(() => {
+    if (!stream) return;
+
+    try {
+      // 녹음기 생성
+      const recorder = new MediaRecorder(stream, {
+        mimeType: options?.mimeType || "audio/webm",
+      });
+
+      // 조각이 생길 때마다 모으기
+      recorder.ondataavailable = (e) => {
+        if (e.data && e.data.size > 0) {
+          setChunks((prev) => [...prev, e.data]);
+        }
+      };
+
+      // 뭔가 잘못되면 알려주기
+      recorder.onerror = () => {
+        setError("녹음 중 문제가 발생했어요!");
+      };
+
+      recorderRef.current = recorder;
+    } catch (err) {
+      setError("녹음기를 만들 수 없어요!");
+    }
+  }, [stream]);
+
+  // 녹음 시작하기
+  const start = useCallback(() => {
+    setChunks([]); // 이전 조각들 비우기
+    setError(null); // 이전 에러 지우기
+
+    const recorder = recorderRef.current;
+    if (recorder && recorder.state === "inactive") {
+      recorder.start(100); // 0.1초마다 조각 만들기
+      setIsRecording(true);
+    }
+  }, []);
+
+  // 녹음 끝내고 파일 만들기
+  const stop = useCallback(() => {
+    return new Promise((resolve) => {
+      const recorder = recorderRef.current;
+      if (!recorder) return resolve(null);
+
+      recorder.onstop = () => {
+        setIsRecording(false);
+        // 모든 조각을 하나로 합치기
+        const finalFile = new Blob(chunks, { type: mimeType });
+        resolve(finalFile);
+      };
+      recorder.stop();
+    });
+  }, [chunks, mimeType]);
+
+  return { isRecording, isPaused, start, pause, resume, stop };
+}
+```
+
+## 브라우저별 호환성: 현실의 벽
+
+이론은 완벽하지만, 현실에서는 브라우저마다 지원하는 오디오 형식이 다르다. 마치 다른 언어를 쓰는 것과 같다:
+
+| 브라우저 | 좋아하는 형식 | 특징                        |
+| -------- | ------------- | --------------------------- |
+| Chrome   | `audio/webm`  | 웹엠 형식을 좋아함          |
+| Firefox  | `audio/ogg`   | 오그 형식을 선호            |
+| Safari   | `audio/mp4`   | 엠피포 형식만 알아듣기도 함 |
+
+```javascript
+// 브라우저가 어떤 형식을 지원하는지 미리 확인하기
+function findSupportedFormat() {
+  const formats = [
+    "audio/webm;codecs=opus", // 가장 좋은 품질
+    "audio/webm", // 기본 웹엠
+    "audio/ogg;codecs=opus", // 파이어폭스용
+    "audio/mp4", // 사파리용
+  ];
+
+  for (const format of formats) {
+    if (MediaRecorder.isTypeSupported(format)) {
+      console.log("이 브라우저는", format, "형식을 지원해요!");
+      return format;
+    }
+  }
+
+  return "audio/webm"; // 최후의 수단
+}
+```
+
+## 모든 것을 하나로: 실제 사용 예시
+
+이제 배운 것들을 모두 합쳐서 실제로 사용하는 방법을 보자. 실제 코드의 `RecordModal`에서 이런 패턴을 볼 수 있다:
+
+```javascript
+function RecordingApp() {
+  // 1. 각각의 기능을 담당하는 훅들
+  const { audioContext, isRunning, resume } = useAudioContext();
+  const { stream, isEnabled, enable } = useMicrophone();
+  const { level } = useAudioMeter({ audioContext, stream });
+  const { isRecording, start, stop } = useMediaRecorder(stream);
+
+  // 2. 녹음 버튼을 눌렀을 때
+  const handleRecord = async () => {
+    // 먼저 오디오 관리자를 깨우기
+    if (!isRunning) await resume();
+    // 그 다음 마이크 켜기
+    if (!isEnabled) await enable();
+
+    if (!isRecording) {
+      start(); // 녹음 시작!
+    } else {
+      const audioFile = await stop(); // 녹음 끝내고 파일 받기
+      // 이제 파일을 다운로드하거나 서버에 보낼 수 있다
+    }
+  };
+
+  return (
+    <div>
+      <div>현재 소리 크기: {Math.round(level * 100)}%</div>
+      <button onClick={handleRecord}>{isRecording ? "녹음 정지" : "녹음 시작"}</button>
+    </div>
+  );
+}
+```
+
+## 다음 편 예고
+
+Web Audio API와 MediaRecorder API의 기본 동작 원리를 쉽게 이해했다면, 이제 실제 데이터가 어떻게 처리되는지 더 자세히 알아볼 차례이다. **[시리즈 3편]**에서는 Blob이라는 파일 저장 방식, 소리를 숫자로 분석하는 FFT, 그리고 메모리를 효율적으로 사용하는 TypedArray에 대해 알아보겠다.
+
+복잡해 보이는 오디오 API들도 하나씩 차근차근 이해하면 생각보다 어렵지 않다. 마치 레고 블록을 조립하듯이, 각 부분의 역할을 이해하고 연결하면 멋진 녹음 애플리케이션을 만들 수 있을 것이다.
