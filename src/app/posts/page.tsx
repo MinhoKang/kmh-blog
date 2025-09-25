@@ -4,7 +4,7 @@ import path from "path";
 import matter from "gray-matter";
 
 import { PageHeader } from "@/components/common";
-import { PostingCard } from "@/components/posting/PostingCard";
+import { PostsView } from "@/components/posts/PostsView";
 import { formatDateRange, sortProjectsByStartDate } from "@/lib/date-utils";
 import { getReadingTimeFromMdx } from "@/lib/readingTime";
 
@@ -63,33 +63,8 @@ export default function PostsPage() {
       {/* 헤더 섹션 */}
       <PageHeader title="Posts" />
 
-      {/* 포스트 목록 */}
-      <section>
-        {posts.length === 0 ? (
-          <div className="text-center py-20">
-            <div className="w-16 h-px bg-neutral-300 dark:bg-neutral-700 mx-auto mb-8"></div>
-            <p className="text-lg font-light text-neutral-500 dark:text-neutral-500 mb-2 tracking-wide">
-              No posts yet.
-            </p>
-            <p className="text-sm font-light text-neutral-400 dark:text-neutral-600 tracking-wide">
-              Check back soon for new content.
-            </p>
-          </div>
-        ) : (
-          <div className="space-y-20">
-            {posts.map((post, index) => (
-              <PostingCard
-                key={post.slug}
-                posting={{
-                  ...post,
-                  type: "post" as const,
-                }}
-                index={index}
-              />
-            ))}
-          </div>
-        )}
-      </section>
+      {/* 포스트 뷰 */}
+      <PostsView posts={posts} />
     </div>
   );
 }

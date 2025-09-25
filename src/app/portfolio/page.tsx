@@ -4,7 +4,7 @@ import path from "path";
 import matter from "gray-matter";
 
 import { PageHeader } from "@/components/common";
-import { PostingCard } from "@/components/posting/PostingCard";
+import { PortfolioView } from "@/components/portfolio/PortfolioView";
 import { formatDateRange, sortProjectsByStartDate } from "@/lib/date-utils";
 import { getReadingTimeFromMdx } from "@/lib/readingTime";
 
@@ -60,7 +60,7 @@ const getAllProjects = (): Project[] => {
     .sort(sortProjectsByStartDate);
 };
 
-export default async function PortfolioPage() {
+export default function PortfolioPage() {
   const projects = getAllProjects();
 
   return (
@@ -68,23 +68,8 @@ export default async function PortfolioPage() {
       {/* 헤더 섹션 */}
       <PageHeader title="Portfolio" />
 
-      {/* 프로젝트 목록 */}
-      <section>
-        {projects.length !== 0 && (
-          <div className="space-y-32">
-            {projects.map((project, index) => (
-              <PostingCard
-                key={project.slug}
-                posting={{
-                  ...project,
-                  type: "project" as const,
-                }}
-                index={index}
-              />
-            ))}
-          </div>
-        )}
-      </section>
+      {/* 포트폴리오 뷰 */}
+      <PortfolioView projects={projects} />
     </div>
   );
 }
