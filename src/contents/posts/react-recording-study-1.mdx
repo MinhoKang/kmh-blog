@@ -1,11 +1,11 @@
 ---
 title: "[시리즈 1편] React에서 녹음 기능 구현하기 - Navigator와 기본 Web API 이해"
 description: "React 오디오 녹음 시스템 구축을 위한 Navigator 객체와 MediaDevices API 기초"
-startDate: "2025-09-25"
+startDate: "2025-09-26"
 tags: ["React", "오디오 녹음", "Navigator", "Web API", "MediaDevices", "getUserMedia", "시리즈"]
 category: "posts"
 featured: true
-published: false
+published: true
 ---
 
 ## 시작하며
@@ -18,22 +18,28 @@ published: false
 
 웹 브라우저에서 JavaScript를 사용할 때, `navigator`라는 전역 객체를 만날 수 있다. 이 객체는 마치 브라우저의 신분증과 같은 역할을 하며, 사용자의 브라우저와 운영체제에 대한 다양한 정보를 제공하는 중요한 객체이다.
 
-Navigator 객체의 이름은 1990년대 넷스케이프(Netscape)의 초기 웹 브라우저인 '네비게이터'에서 유래되었다. 당시에는 브라우저마다 지원하는 기능이 달라서, 웹 개발자들이 방문자의 브라우저 정보를 미리 파악해 호환성을 유지해야 했는데, 이를 **브라우저 스니핑(Browser Sniffing)**이라고 불렀다.
+### BOM(Browser Object Model)과 Navigator
 
-> **BOM(Browser Object Model)과 Navigator**
->
-> Navigator 객체는 BOM(Browser Object Model)의 핵심 구성 요소 중 하나이다. BOM은 웹 브라우저의 창이나 프레임을 추상화해서 프로그래밍적으로 제어할 수 있도록 제공하는 객체 모델로, `window` 객체를 최상위로 하는 계층적 구조를 가진다:
->
-> ```
-> Window (최상위 객체)
-> ├── Document (HTML 문서 객체)
-> ├── Navigator (브라우저 정보) ← 현재 다루는 객체
-> ├── Location (URL 정보)
-> ├── History (방문 기록)
-> └── Screen (화면 정보)
-> ```
->
-> BOM은 DOM(Document Object Model)과 다르게 W3C 표준이 없어서 브라우저 제작사마다 세부 구현이 다를 수 있지만, 현재는 대부분의 모던 브라우저에서 유사하게 구현되어 있다.
+<div className="border-l-4 border-neutral-300 dark:border-neutral-600 pl-8 mb-8 mt-8 italic text-neutral-600 dark:text-neutral-400">
+
+Navigator 객체는 BOM(Browser Object Model)의 핵심 구성 요소 중 하나이다. BOM은 웹 브라우저의 창이나 프레임을 추상화해서 프로그래밍적으로 제어할 수 있도록 제공하는 객체 모델로, `window` 객체를 최상위로 하는 계층적 구조를 가진다:
+
+<br />
+
+```
+Window (최상위 객체)
+├── Document (HTML 문서 객체)
+├── Navigator (브라우저 정보) ← 현재 다루는 객체
+├── Location (URL 정보)
+├── History (방문 기록)
+└── Screen (화면 정보)
+```
+
+<br />
+
+BOM은 DOM(Document Object Model)과 다르게 W3C 표준이 없어서 브라우저 제작사마다 세부 구현이 다를 수 있지만, 현재는 대부분의 모던 브라우저에서 유사하게 구현되어 있다.
+
+</div>
 
 ## Navigator 객체의 주요 속성들
 
@@ -54,8 +60,13 @@ Navigator 객체가 제공하는 주요 속성들을 살펴보면 다음과 같�
 
 ```javascript
 console.log(navigator.userAgent);
+// Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Whale/4.33.325.17 Safari/537.36
+
 console.log(navigator.platform);
+// MacIntel
+
 console.log(navigator.language);
+// ko-KR
 ```
 
 ## 하드웨어 접근의 시작점: MediaDevices API
@@ -77,6 +88,12 @@ navigator.mediaDevices
   .getUserMedia({ audio: true })
   .then((stream) => {
     console.log("마이크 접근 성공!", stream);
+    /* active: true
+        id: "4c072993-a27b-4e49-8cec-bd94482119d8"
+        onactive: null
+        onaddtrack: null
+        oninactive: null
+        onremovetrack: null */
   })
   .catch((error) => {
     console.error("마이크 접근 실패:", error);
@@ -87,14 +104,14 @@ navigator.mediaDevices
 
 `getUserMedia()`가 반환하는 **MediaStream**은 실시간 미디어 데이터의 스트림을 나타내는 핵심 객체이다. 이 객체는 다음과 같은 특징을 가진다:
 
-> **MediaStream의 핵심 개념**
->
+#### **MediaStream의 핵심 개념**
+
 > - **트랙 기반 구조**: 하나 이상의 오디오/비디오 트랙(MediaStreamTrack)으로 구성된다
 > - **실시간 데이터**: 카메라나 마이크에서 실시간으로 들어오는 데이터를 담고 있다
 > - **상태 관리**: 각 트랙은 'live', 'muted', 'ended' 등의 상태를 가진다
 > - **이벤트 지원**: 트랙 추가/제거, 상태 변경 등의 이벤트를 발생시킨다
->
-> MediaStream은 단순한 데이터 덩어리가 아니라, 실시간으로 변화하는 미디어 데이터의 '흐름'을 추상화한 객체이다. 이 스트림은 Web Audio API나 MediaRecorder API 등 다른 API들의 입력으로 사용될 수 있다.
+
+MediaStream은 단순한 데이터 덩어리가 아니라, 실시간으로 변화하는 미디어 데이터의 '흐름'을 추상화한 객체이다. 이 스트림은 Web Audio API나 MediaRecorder API 등 다른 API들의 입력으로 사용될 수 있다.
 
 ```javascript
 // MediaStream의 구체적인 활용 예시
@@ -102,7 +119,9 @@ navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
   // 스트림의 트랙 정보 확인
   const audioTracks = stream.getAudioTracks();
   console.log("오디오 트랙 개수:", audioTracks.length);
+  // 오디오 트랙 개수: 1
   console.log("첫 번째 트랙 상태:", audioTracks[0].readyState);
+  // 첫 번째 트랙 상태: live
 
   // 트랙 이벤트 리스너 등록
   audioTracks[0].addEventListener("ended", () => {
