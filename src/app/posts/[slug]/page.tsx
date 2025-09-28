@@ -72,7 +72,7 @@ export default async function PostPage({ params }: Props) {
       </div>
 
       {/* 포스트 헤더 */}
-      <header className="mb-16 slide-up-fade">
+      <header className="mb-16 slide-up-fade flex flex-col gap-y-4">
         {/* 날짜 */}
         <div className="mb-6 flex items-center gap-4">
           <time className="text-sm font-light text-neutral-500 dark:text-neutral-500 tracking-widest uppercase">
