@@ -30,7 +30,7 @@ async function getPost(slug: string) {
   return {
     title: data.title || slug,
     description: data.description || "",
-    date: data.date || "2024-01-01",
+    date: data.date || data.startDate || "2024-01-01",
     tags: data.tags || [],
     content,
     readingTime,

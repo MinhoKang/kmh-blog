@@ -108,7 +108,7 @@ async function getPost(slug: string) {
   return {
     title: data.title || slug,
     description: data.description || "",
-    date: data.date || "2024-01-01",
+    date: data.date || data.startDate || "2024-01-01",
     tags: data.tags || [],
     published: data.published !== false, // 기본값은 true, 명시적으로 false인 경우만 제외
   };
