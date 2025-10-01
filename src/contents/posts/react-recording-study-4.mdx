@@ -1,34 +1,31 @@
 ---
 title: "[시리즈 4편] React에서 녹음 기능 구현하기 - React로 오디오 시스템 설계하기, 커스텀 훅 아키텍처"
 description: "복잡한 오디오 시스템을 React 패턴으로 우아하게 설계하는 방법"
-startDate: "2025-09-25"
+startDate: "2025-10-01"
 tags: ["React", "오디오 녹음", "커스텀 훅", "아키텍처", "상태 관리", "의존성 설계", "시리즈"]
 category: "posts"
 featured: true
-published: false
+published: true
 ---
 
-## React 훅: 오디오 시스템의 전문가들
+## React 훅: 오디오 시스템의 핵심 구성요소들
 
 지금까지 Navigator부터 Blob까지 오디오의 기본 원리를 배웠다면, 이제는 이 모든 것을 **React 답게** 관리하는 방법을 알아볼 차례이다.
 
-커스텀 훅을 이해하는 가장 좋은 비유는 **전문가 팀**이다. 복잡한 프로젝트를 혼자서 다 하려고 하면 힘들지만, 각 분야의 전문가들이 협력하면 훨씬 효율적이고 안정적인 결과를 만들 수 있다. React 커스텀 훅도 마찬가지로, 각각이 하나의 전문 영역을 담당하면서 서로 협력한다.
-
 ```javascript
-// 각자의 전문 분야를 가진 훅들
-const { audioContext, resume } = useAudioContext(); // 오디오 환경 관리 전문가
-const { stream, enable } = useMicrophone(); // 마이크 전문가
-const { level } = useAudioMeter({ audioContext, stream }); // 소리 분석 전문가
-const { isRecording, start, stop } = useMediaRecorder(stream); // 녹음 전문가
-const { formattedTime } = useRecordingTimer(isRecording); // 시간 측정 전문가
+const { audioContext, resume } = useAudioContext(); // 오디오 환경 관리
+const { stream, enable } = useMicrophone(); // 마이크 관리
+const { level } = useAudioMeter({ audioContext, stream }); // 소리 분석
+const { isRecording, start, stop } = useMediaRecorder(stream); // 녹음 관리
+const { formattedTime } = useRecordingTimer(isRecording); // 시간 측정
 ```
 
 ## useAudioContext: 오디오 세계의 관리자
 
-`useAudioContext`는 모든 오디오 작업의 기반이 되는 **관리자 전문가**이다. 마치 회사의 CEO처럼, 전체적인 환경을 조성하고 다른 전문가들이 일할 수 있는 기반을 만들어준다.
+`useAudioContext`는 모든 오디오 작업의 기반이 되는 **관리자**이다. 마치 회사의 CEO처럼, 전체적인 환경을 조성하고 다른 구성요소들이 일할 수 있는 기반을 만들어준다.
 
 ```javascript
-export function useAudioContext() {
+export const useAudioContext = () => {
   const [audioContext, setAudioContext] = useState(null);
   const [isRunning, setIsRunning] = useState(false);
   const ctxRef = useRef(null);
@@ -64,46 +61,54 @@ export function useAudioContext() {
   }, []);
 
   return { audioContext, isRunning, resume };
-}
+};
 ```
 
 ### 설계 포인트: 왜 이렇게 만들었을까?
 
-> **Ref vs State의 전략적 사용**
->
-> 코드를 보면 `audioContext`는 state에, `ctxRef.current`는 ref에 동시에 저장한다. 이는 각각의 목적이 다르기 때문이다:
->
-> - `state`: 다른 컴포넌트에서 사용할 수 있도록 반환
-> - `ref`: cleanup 시 접근할 수 있도록 참조 유지
->
-> 만약 state만 사용했다면 cleanup 함수에서 접근할 수 없고, ref만 사용했다면 리렌더링이 일어나지 않아 다른 훅들이 변화를 감지하지 못한다.
+**Ref vs State의 전략적 사용**
+
+코드를 보면 `audioContext`는 state에, `ctxRef.current`는 ref에 동시에 저장한다. 이는 각각의 목적이 다르기 때문이다:
+
+- `state`: 다른 컴포넌트에서 사용할 수 있도록 반환
+- `ref`: cleanup 시 접근할 수 있도록 참조 유지
+
+만약 state만 사용했다면 cleanup 함수에서 접근할 수 없고, ref만 사용했다면 리렌더링이 일어나지 않아 다른 훅들이 변화를 감지하지 못한다.
 
 ## useMicrophone: 마이크 권한의 달인
 
-`useMicrophone`은 복잡한 브라우저 권한 체계를 단순하게 만들어주는 **권한 관리 전문가**이다. 사용자의 프라이버시를 지키면서도 필요할 때 적절히 접근할 수 있게 도와준다.
+`useMicrophone`은 복잡한 브라우저 권한 체계를 단순하게 만들어주는 **권한 관리자**이다. 사용자의 프라이버시를 지키면서도 필요할 때 적절히 접근할 수 있게 도와준다.
 
 ```javascript
-export function useMicrophone() {
+export const useMicrophone = () => {
   const [stream, setStream] = useState(null);
   const [isEnabled, setIsEnabled] = useState(false);
   const [permission, setPermission] = useState("unknown");
   const [error, setError] = useState(null);
   const streamRef = useRef(null);
+  const mountedRef = useRef(true);
 
   // 권한 상태를 실시간으로 추적
   useEffect(() => {
-    let mounted = true;
     const nav = navigator;
 
     if (nav.permissions?.query) {
       nav.permissions
         .query({ name: "microphone" })
         .then((status) => {
-          if (!mounted) return;
+          if (!mountedRef.current) return;
           setPermission(status.state);
-          status.onchange = () => setPermission(status.state);
+          status.onchange = () => {
+            if (mountedRef.current) {
+              setPermission(status.state);
+            }
+          };
         })
-        .catch(() => setPermission("unknown"));
+        .catch(() => {
+          if (mountedRef.current) {
+            setPermission("unknown");
+          }
+        }); // 에러 발생 시 'unknown'으로 설정
     } else {
       setPermission("prompt"); // Permissions API 미지원 브라우저
     }
@@ -180,27 +185,27 @@ export function useMicrophone() {
   }, []);
 
   return { stream, isEnabled, permission, error, enable, disable };
-}
+};
 ```
 
 ### 설계 포인트: 방어적 프로그래밍
 
-> **에러 처리의 계층화**
->
-> 이 훅의 가장 중요한 특징은 **계층화된 에러 처리**이다:
->
-> 1. **브라우저 레벨**: Permissions API 지원 여부 확인
-> 2. **API 레벨**: getUserMedia 호출 시 발생하는 다양한 에러 타입 분류
-> 3. **사용자 레벨**: 기술적 에러를 이해하기 쉬운 메시지로 변환
->
-> 이렇게 하면 개발자는 복잡한 에러 처리를 신경 쓰지 않고, 사용자는 명확한 해결 방법을 제시받을 수 있다.
+**에러 처리의 계층화**
+
+이 훅의 가장 중요한 특징은 **계층화된 에러 처리**이다:
+
+1.  **브라우저 레벨**: Permissions API 지원 여부 확인
+2.  **API 레벨**: getUserMedia 호출 시 발생하는 다양한 에러 타입 분류
+3.  **사용자 레벨**: 기술적 에러를 이해하기 쉬운 메시지로 변환
+
+이렇게 하면 개발자는 복잡한 에러 처리를 신경 쓰지 않고, 사용자는 명확한 해결 방법을 제시받을 수 있다.
 
 ## useMediaRecorder: 녹음 상태의 마에스트로
 
-`useMediaRecorder`는 복잡한 녹음 상태를 관리하는 **상태 머신 전문가**이다. 녹음의 시작, 일시정지, 재개, 정지라는 복잡한 상태 전환을 안전하게 처리한다.
+`useMediaRecorder`는 복잡한 녹음 상태를 관리하는 **상태 머신**이다. 녹음의 시작, 일시정지, 재개, 정지라는 복잡한 상태 전환을 안전하게 처리한다.
 
 ```javascript
-export function useMediaRecorder(stream, options) {
+export const useMediaRecorder = (stream, options) => {
   const [isRecording, setIsRecording] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [chunks, setChunks] = useState([]);
@@ -278,28 +283,28 @@ export function useMediaRecorder(stream, options) {
   }, [chunks, mimeType]);
 
   return { isRecording, isPaused, start, pause, resume, stop, reset, error };
-}
+};
 ```
 
 ### 설계 포인트: 상태 머신 패턴
 
-> **상태 전환의 안전성**
->
-> MediaRecorder는 'inactive', 'recording', 'paused' 세 가지 상태를 가진다. 이 훅은 각 상태에서 안전한 전환만 허용한다:
->
-> - `inactive → recording`: start() 호출
-> - `recording → paused`: pause() 호출
-> - `paused → recording`: resume() 호출
-> - `recording/paused → inactive`: stop() 호출
->
-> 잘못된 상태에서 메서드를 호출하면 무시되므로, 사용자가 실수로 잘못된 순서로 호출해도 앱이 깨지지 않는다.
+**상태 전환의 안전성**
+
+MediaRecorder는 'inactive', 'recording', 'paused' 세 가지 상태를 가진다. 이 훅은 각 상태에서 안전한 전환만 허용한다:
+
+- `inactive → recording`: start() 호출
+- `recording → paused`: pause() 호출
+- `paused → recording`: resume() 호출
+- `recording/paused → inactive`: stop() 호출
+
+잘못된 상태에서 메서드를 호출하면 무시되므로, 사용자가 실수로 잘못된 순서로 호출해도 앱이 깨지지 않는다.
 
 ## useAudioMeter: 실시간 분석의 귀재
 
-`useAudioMeter`는 복잡한 오디오 분석을 실시간으로 수행하는 **분석 전문가**이다. FFT와 RMS 계산 같은 어려운 수학을 내부에 숨기고, 단순한 0-1 값으로 결과를 제공한다.
+`useAudioMeter`는 복잡한 오디오 분석을 실시간으로 수행하는 **분석기**이다. FFT와 RMS 계산 같은 어려운 수학을 내부에 숨기고, 단순한 0-1 값으로 결과를 제공한다.
 
 ```javascript
-export function useAudioMeter({ audioContext, stream, smoothing = 0.8, fftSize = 2048 }) {
+export const useAudioMeter = ({ audioContext, stream, smoothing = 0.8, fftSize = 2048 }) => {
   const [level, setLevel] = useState(0);
   const sourceRef = useRef(null);
   const analyserRef = useRef(null);
@@ -366,18 +371,18 @@ export function useAudioMeter({ audioContext, stream, smoothing = 0.8, fftSize =
   }, [audioContext, stream, smoothing, fftSize, cleanup]);
 
   return { level };
-}
+};
 ```
 
 ### 설계 포인트: 성능과 정확성의 균형
 
-> **requestAnimationFrame의 전략적 사용**
->
-> 실시간 오디오 분석은 CPU를 많이 사용하는 작업이다. 이 훅은 `requestAnimationFrame`을 사용해 브라우저의 렌더링 주기에 맞춰 분석을 수행한다. 이렇게 하면:
->
-> - 불필요한 계산을 줄여 성능을 최적화
-> - 브라우저가 바쁠 때는 자동으로 빈도를 줄임
-> - 사용자가 탭을 바꾸면 분석을 중단해 배터리 절약
+**requestAnimationFrame의 전략적 사용**
+
+실시간 오디오 분석은 CPU를 많이 사용하는 작업이다. 이 훅은 `requestAnimationFrame`을 사용해 브라우저의 렌더링 주기에 맞춰 분석을 수행한다. 이렇게 하면:
+
+- 불필요한 계산을 줄여 성능을 최적화
+- 브라우저가 바쁠 때는 자동으로 빈도를 줄임
+- 사용자가 탭을 바꾸면 분석을 중단해 배터리 절약
 
 ## 훅 간의 의존성 설계: 안전한 협력 체계
 
@@ -403,7 +408,7 @@ const mediaRecorder = useMediaRecorder(
 실제 `RecordModal`에서 이런 의존성을 어떻게 관리하는지 보자:
 
 ```javascript
-async function handleRecordClick() {
+const handleRecordClick = async () => {
   // 1단계: AudioContext 먼저 활성화
   if (!isRunning) await resumeAudioContext();
 
@@ -421,19 +426,19 @@ async function handleRecordClick() {
     const blob = await stop(); // 녹음 정지 및 파일 생성
     if (blob) setDownloadUrl(URL.createObjectURL(blob));
   }
-}
+};
 ```
 
-> **방어적 초기화의 중요성**
->
-> 각 단계가 성공했는지 확인하고 다음 단계로 넘어가는 것이 중요하다. 만약 AudioContext가 활성화되지 않은 상태에서 녹음을 시작하려고 하면, 녹음은 되지만 분석이나 재생에서 문제가 발생할 수 있다.
+**방어적 초기화의 중요성**
+
+각 단계가 성공했는지 확인하고 다음 단계로 넘어가는 것이 중요하다. 만약 AudioContext가 활성화되지 않은 상태에서 녹음을 시작하려고 하면, 녹음은 되지만 분석이나 재생에서 문제가 발생할 수 있다.
 
 ## 에러 전파와 복구 전략
 
 각 훅에서 발생한 에러가 어떻게 전체 시스템에 영향을 주는지, 그리고 어떻게 우아하게 복구하는지 살펴보자:
 
 ```javascript
-function RecordingErrorHandler() {
+const RecordingErrorHandler = () => {
   const { error: micError } = useMicrophone();
   const { error: recError } = useMediaRecorder(stream);
 
@@ -455,20 +460,20 @@ function RecordingErrorHandler() {
       <RecordButton disabled={hasError} />
     </div>
   );
-}
+};
 ```
 
 ### 점진적 기능 저하 (Graceful Degradation)
 
-> **모든 게 완벽하지 않아도 괜찮다**
->
-> 좋은 오디오 앱은 일부 기능에 문제가 있어도 나머지 기능은 계속 동작해야 한다:
->
-> - 마이크 권한이 없어도 → 파일 업로드는 가능
-> - 분석 기능이 안 되어도 → 녹음 자체는 가능
-> - 타이머가 고장나도 → 녹음 시작/정지는 가능
->
-> 각 훅이 독립적으로 설계되어 있어서 이런 점진적 기능 저하가 가능하다.
+**모든 게 완벽하지 않아도 괜찮다**
+
+좋은 오디오 앱은 일부 기능에 문제가 있어도 나머지 기능은 계속 동작해야 한다:
+
+- 마이크 권한이 없어도 → 파일 업로드는 가능
+- 분석 기능이 안 되어도 → 녹음 자체는 가능
+- 타이머가 고장나도 → 녹음 시작/정지는 가능
+
+각 훅이 독립적으로 설계되어 있어서 이런 점진적 기능 저하가 가능하다.
 
 ## 커스텀 훅 분리의 장점: 관심사의 분리
 
@@ -486,4 +491,4 @@ function RecordingErrorHandler() {
 
 React로 오디오 시스템을 설계하는 아키텍처 패턴을 이해했다면, 이제 실제 프로덕션 환경에서 고려해야 할 성능 최적화와 확장성에 대해 알아볼 차례이다. **[시리즈 5편]**에서는 메모리 누수 방지, 브라우저별 호환성 처리, 서버 연동, 그리고 실제 서비스 배포 시 주의사항까지 다뤄보겠다.
 
-복잡한 오디오 시스템도 적절한 추상화와 관심사 분리를 통해 관리 가능한 크기로 나눌 수 있다. 각 훅이 하나의 전문가처럼 자신의 영역에서 최선을 다하고, 서로 협력하는 구조로 설계하면 유지보수하기 쉽고 확장 가능한 오디오 애플리케이션을 만들 수 있을 것이다!
+복잡한 오디오 시스템도 적절한 추상화와 관심사 분리를 통해 관리 가능한 크기로 나눌 수 있다. 각 훅이 자신의 영역에서 최선을 다하고, 서로 협력하는 구조로 설계하면 유지보수하기 쉽고 확장 가능한 오디오 애플리케이션을 만들 수 있을 것이다!
