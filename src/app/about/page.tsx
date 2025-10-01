@@ -14,6 +14,7 @@ import {
   DEV_TOOLS,
   API_TOOLS,
   EDUCATION,
+  AI_TOOLS,
 } from "@/constants/constants";
 
 export const metadata: Metadata = {
@@ -101,6 +102,7 @@ export default function AboutPage() {
               <SkillList title="통신" skills={API_TOOLS} />
               <SkillList title="테스팅 & 품질관리" skills={TESTING_TOOLS} />
               <SkillList title="개발 도구" skills={DEV_TOOLS} />
+              <SkillList title="AI 도구" skills={AI_TOOLS} />
             </div>
           </AboutSection>
 

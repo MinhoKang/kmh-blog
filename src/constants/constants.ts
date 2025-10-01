@@ -86,7 +86,9 @@ export const STATE_MANAGEMENT = ["TanStack Query", "Zustand"];
 
 export const TESTING_TOOLS = ["Jest", "React Testing Library", "MSW", "Sentry"];
 
-export const DEV_TOOLS = ["GitHub", "Cursor", "Jira", "Confluence", "Slack"];
+export const DEV_TOOLS = ["GitHub", "Jira", "Confluence", "Slack"];
+
+export const AI_TOOLS = ["Cursor", "NotebookLM"];
 
 export const API_TOOLS = ["Axios", "ky", "Socket.io"];
 
