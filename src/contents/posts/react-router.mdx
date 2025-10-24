@@ -1,0 +1,119 @@
+---
+title: "react-router에서 useBlocker사용하기(react-router의 3가지 모드)"
+description: "react-router-dom에서 react-router로"
+startDate: "2025-10-24"
+tags: ["React", "Vite", "react-router", "useBlocker", "react-router's modes"]
+category: "posts"
+featured: true
+published: true
+---
+
+요즘 녹음 기능이 들어간 페이지를 개발 중이다.
+해당 페이지 개발을 마치고 생각해보니, 녹음 중일 때 뒤로 가거나 새고고침을 할 경우에 대한 기획이 없었다.
+그냥 넘어갈수도 있었지만, 사용성에 심각한 영향을 줄 것이라 생각하고 우선 급하게 기능을 추가했다.
+
+추가해야 하는 기능은 다음과 같았다.
+
+- 녹음 중 뒤로가기 방지
+- 녹음 중 새로고침 및 브라우저 닫기 방지
+
+우선 뒤로가기 방지를 구현하는데, react-router-dom의 useBlocker을 사용하면 쉽게 구현이 가능했다.
+하지만 에러가 발생했다.
+
+useBlocker must be used within a data router
+
+참고 링크를 들어가보니 react-router-dom에는 3개의 모드가 있었다.
+
+<LinkPreview url="https://www.heropy.dev/p/9tesDt" />
+
+내용은 위 블로그에 잘 정리되어있다.
+
+선언적(Declarative), 데이터(Data), 프레임워크(Framework) 세 개의 모드는 기능이 누적적으로 변한다.
+나는 선언적 모드를 사용해왔는데, useBlocker는 데이터 모드에서부터 사용이 가능하다.
+따라서 모드를 수정했다.
+
+```tsx
+import './App.css'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import Dashboard from './pages/dashboard/Dashboard'
+import MainLayout from './components/layout/MainLayout'
+import { Toaster } from 'react-hot-toast'
+import CounselingDetail from './pages/client/CounselingDetail'
+import { Providers } from './providers/Providers'
+import Record from './pages/record/Record'
+import CounselScript from './pages/client/counsel-record/script/CounselScript'
+
+기존 코드
+function App() {
+  return (
+    <Providers>
+      <BrowserRouter>
+        <Routes>
+          <Route path='/' element={<MainLayout />}>
+            <Route index element={<Dashboard />} />
+            <Route
+              path='/client/:clientId/counsel-record/script'
+              element={<CounselScript />}
+            />
+            <Route path='/client/:clientId' element={<CounselingDetail />} />
+            <Route path='/record' element={<Record />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+      <Toaster
+        position='bottom-center'
+        containerStyle={{ width: '100%', marginBottom: 100 }}
+      />
+    </Providers>
+  )
+}
+
+export default App
+```
+
+```
+수정 코드
+const routes: RouteObject[] = [
+  {
+    path: '/',
+    element: <MainLayout />,
+    children: [
+      {
+        index: true,
+        element: <Dashboard />,
+      },
+      {
+        path: '/client/:clientId/counsel-record/script',
+        element: <CounselScript />,
+      },
+      {
+        path: '/client/:clientId',
+        element: <CounselingDetail />,
+      },
+      {
+        path: '/record',
+        element: <Record />,
+      },
+    ],
+  },
+]
+
+function App() {
+  return (
+    <Providers>
+      <RouterProvider router={createBrowserRouter(routes)} />
+      <Toaster
+        position='bottom-center'
+        containerStyle={{ width: '100%', marginBottom: 100 }}
+      />
+    </Providers>
+  )
+}
+```
+
+수정하니 문제 없이 작동했다.
+
+더 알아보니 react-router-dom은 웹용 라이브러리이고 react-router는 라우팅의 핵심 라이브러리라고 하는데, react-router로 마이그레이션을 했다.
+사실 react-router에서 웹용으로 뺀게 react-router-dom이니 import만 바꾸니 잘 작동했다.
+
+react-router에 재밌는 기능들이 있는 것 같은데, 우선 다음 주까지 개발을 완료해야하니 추후 유지보수할 때 적용해봐야겠다.
