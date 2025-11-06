@@ -27,23 +27,23 @@ published: true
 
 ## 기본 예제
 
-```
+```tsx
 const outer = () => {
   let count = 0;
 
   const inner = () => {
-    count++
-    console.log(count)
-  }
+    count++;
+    console.log(count);
+  };
 
-  return inner
-}
+  return inner;
+};
 
-const plus = outer()
+const plus = outer();
 
-console.log(plus()) // 1
-console.log(plus()) // 2
-console.log(plus()) // 3
+console.log(plus()); // 1
+console.log(plus()); // 2
+console.log(plus()); // 3
 ```
 
 위 코드에서 `outer` 함수는 이미 종료되었음에도 불구하고, 반환된 `inner` 함수는 여전히 `count` 변수에 접근할 수 있다. 이것이 **클로저**이다.
@@ -59,29 +59,29 @@ console.log(plus()) // 3
 
 ## 고급 예제 1: 모듈 패턴 (데이터 은닉)
 
-```
-const counter = (function() {
-  let count = 0;  // private 변수
+```tsx
+const counter = (function () {
+  let count = 0; // private 변수
 
   return {
-    increment: function() {
+    increment: function () {
       count++;
       return count;
     },
-    decrement: function() {
+    decrement: function () {
       count--;
       return count;
     },
-    getCount: function() {
+    getCount: function () {
       return count;
-    }
+    },
   };
 })();
 
 console.log(counter.increment()); // 1
 console.log(counter.increment()); // 2
 console.log(counter.decrement()); // 1
-console.log(counter.count);       // undefined (직접 접근 불가)
+console.log(counter.count); // undefined (직접 접근 불가)
 ```
 
 **장점:**
@@ -96,11 +96,11 @@ console.log(counter.count);       // undefined (직접 접근 불가)
 
 ### 문제: var 사용 시
 
-```
-const buttons = document.querySelectorAll('button');
+```tsx
+const buttons = document.querySelectorAll("button");
 
 for (var i = 0; i < buttons.length; i++) {
-  buttons[i].addEventListener('click', function() {
+  buttons[i].addEventListener("click", function () {
     console.log(`버튼 ${i} 클릭됨`);
   });
 }
@@ -116,9 +116,9 @@ for (var i = 0; i < buttons.length; i++) {
 
 ### 해결책 1: let 사용 (추천)
 
-```
+```tsx
 for (let i = 0; i < buttons.length; i++) {
-  buttons[i].addEventListener('click', function() {
+  buttons[i].addEventListener("click", function () {
     console.log(`버튼 ${i} 클릭됨`);
   });
 }
@@ -128,10 +128,10 @@ for (let i = 0; i < buttons.length; i++) {
 
 ### 해결책 2: IIFE 사용
 
-```
+```tsx
 for (var i = 0; i < buttons.length; i++) {
-  (function(j) {
-    buttons[j].addEventListener('click', function() {
+  (function (j) {
+    buttons[j].addEventListener("click", function () {
       console.log(`버튼 ${j} 클릭됨`);
     });
   })(i);
@@ -142,10 +142,10 @@ for (var i = 0; i < buttons.length; i++) {
 
 ### 해결책 3: dataset 사용
 
-```
+```tsx
 for (var i = 0; i < buttons.length; i++) {
   buttons[i].dataset.index = i;
-  buttons[i].addEventListener('click', function() {
+  buttons[i].addEventListener("click", function () {
     console.log(`버튼 ${this.dataset.index} 클릭됨`);
   });
 }
@@ -155,7 +155,7 @@ for (var i = 0; i < buttons.length; i++) {
 
 ## 고급 예제 3: React Hooks와 클로저
 
-```
+```tsx
 function Counter() {
   const [count, setCount] = useState(0);
 
@@ -181,7 +181,7 @@ function Counter() {
 
 **해결책:**
 
-```
+```tsx
 useEffect(() => {
   const timer = setInterval(() => {
     console.log(count); // count 변경 시마다 최신값 출력
@@ -197,7 +197,7 @@ useEffect(() => {
 
 ### 메모리 유지
 
-```
+```tsx
 const functions = [];
 
 for (let i = 0; i < 10000; i++) {
