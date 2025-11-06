@@ -1,0 +1,220 @@
+---
+title: "closure 알아보기"
+startDate: "2025-11-06"
+tags: ["closure", "클로저", "렉시컬 환경"]
+category: "posts"
+featured: true
+published: true
+---
+
+## 클로저란
+
+클로저란 **내부 함수가 외부 함수의 변수에 접근할 수 있고, 외부 함수가 종료되어도 외부 함수의 변수를 내부 함수가 기억하고 있어서 계속 사용할 수 있는 특성**이다. 이는 **렉시컬 환경에 대한 참조를 유지**하기 때문이다.
+
+### 기본 개념
+
+클로저 = **함수 + 그 함수가 선언된 렉시컬 환경의 조합**
+
+### 핵심 용어 정리
+
+| 용어              | 의미                                                         | 예시                                         |
+| ----------------- | ------------------------------------------------------------ | -------------------------------------------- |
+| **렉시컬 환경**   | 함수가 선언될 때의 주변 변수들의 정보                        | `makeMultiplier` 함수 내의 `multiplier` 변수 |
+| **렉시컬 스코프** | 함수가 어디서 **선언**되었는지에 따라 스코프가 결정되는 규칙 | `inner` 함수는 `outer` 함수 스코프에 속함    |
+| **자유 변수**     | 내부 함수에서 사용하지만 외부에서 선언된 변수                | `count`, `multiplier` 같은 변수              |
+
+---
+
+## 기본 예제
+
+```
+const outer = () => {
+  let count = 0;
+
+  const inner = () => {
+    count++
+    console.log(count)
+  }
+
+  return inner
+}
+
+const plus = outer()
+
+console.log(plus()) // 1
+console.log(plus()) // 2
+console.log(plus()) // 3
+```
+
+위 코드에서 `outer` 함수는 이미 종료되었음에도 불구하고, 반환된 `inner` 함수는 여전히 `count` 변수에 접근할 수 있다. 이것이 **클로저**이다.
+
+### 왜 이런 일이 가능할까?
+
+1. `outer()` 호출 시 `count = 0`이 생성됨
+2. `inner` 함수는 `outer`의 렉시컬 환경을 기억함
+3. `outer` 함수가 종료되어도 `inner` 함수가 `count`를 참조하고 있어서 메모리에서 해제되지 않음
+4. 따라서 `plus` 호출 시마다 `count`가 계속 증가
+
+---
+
+## 고급 예제 1: 모듈 패턴 (데이터 은닉)
+
+```
+const counter = (function() {
+  let count = 0;  // private 변수
+
+  return {
+    increment: function() {
+      count++;
+      return count;
+    },
+    decrement: function() {
+      count--;
+      return count;
+    },
+    getCount: function() {
+      return count;
+    }
+  };
+})();
+
+console.log(counter.increment()); // 1
+console.log(counter.increment()); // 2
+console.log(counter.decrement()); // 1
+console.log(counter.count);       // undefined (직접 접근 불가)
+```
+
+**장점:**
+
+- 데이터 은닉: 외부에서 직접 수정 불가능
+- 캡슐화: 공개 인터페이스를 통해서만 접근
+- 전역 변수 오염 방지
+
+---
+
+## 고급 예제 2: var/let 차이와 루프 문제
+
+### 문제: var 사용 시
+
+```
+const buttons = document.querySelectorAll('button');
+
+for (var i = 0; i < buttons.length; i++) {
+  buttons[i].addEventListener('click', function() {
+    console.log(`버튼 ${i} 클릭됨`);
+  });
+}
+
+// 모든 버튼 클릭 시: "버튼 3 클릭됨" (반복 횟수)
+```
+
+**왜 이런 일이 발생하는가?**
+
+- `var`는 **함수 스코프**를 가짐
+- 모든 콜백이 **같은 `i` 변수**를 참조
+- 루프가 끝나서 `i=3`일 때 모든 콜백이 3을 출력
+
+### 해결책 1: let 사용 (추천)
+
+```
+for (let i = 0; i < buttons.length; i++) {
+  buttons[i].addEventListener('click', function() {
+    console.log(`버튼 ${i} 클릭됨`);
+  });
+}
+```
+
+**원리:** `let`은 **블록 스코프**이므로 각 반복마다 새로운 `i` 생성
+
+### 해결책 2: IIFE 사용
+
+```
+for (var i = 0; i < buttons.length; i++) {
+  (function(j) {
+    buttons[j].addEventListener('click', function() {
+      console.log(`버튼 ${j} 클릭됨`);
+    });
+  })(i);
+}
+```
+
+**원리:** IIFE가 호출될 때마다 새로운 함수 스코프 생성
+
+### 해결책 3: dataset 사용
+
+```
+for (var i = 0; i < buttons.length; i++) {
+  buttons[i].dataset.index = i;
+  buttons[i].addEventListener('click', function() {
+    console.log(`버튼 ${this.dataset.index} 클릭됨`);
+  });
+}
+```
+
+---
+
+## 고급 예제 3: React Hooks와 클로저
+
+```
+function Counter() {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      console.log(count); // 항상 0으로 출력됨
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []); // 의존성 배열이 비어있음
+
+  return <button onClick={() => setCount(count + 1)}>클릭</button>;
+}
+```
+
+**문제:** `count`가 항상 0으로만 출력됨
+
+**원인:**
+
+- 의존성 배열이 비어있으므로 컴포넌트 마운트 시에만 `useEffect` 실행
+- `setInterval` 콜백이 **그 시점의 `count` (0)를 클로저로 기억**
+- 이후 `count`가 변경되어도 콜백은 초기값 0을 참조 (**stale closure**)
+
+**해결책:**
+
+```
+useEffect(() => {
+  const timer = setInterval(() => {
+    console.log(count); // count 변경 시마다 최신값 출력
+  }, 1000);
+
+  return () => clearInterval(timer);
+}, [count]); // count를 의존성 배열에 추가
+```
+
+---
+
+## 클로저의 메모리 관리
+
+### 메모리 유지
+
+```
+const functions = [];
+
+for (let i = 0; i < 10000; i++) {
+  functions.push(() => console.log(i));
+}
+```
+
+- 10000개의 함수 각각이 자신의 렉시컬 환경을 메모리에 유지
+- 10000개의 `i` 변수가 메모리에 보관됨
+- 필요시 명시적으로 참조를 끊어야 함
+
+```
+functions = null; // 가비지 컬렉션 대상이 됨
+```
+
+---
+
+## 요약
+
+**"클로저는 내부 함수가 외부 함수의 변수에 접근할 수 있고, 외부 함수가 종료되어도 그 변수를 기억해서 계속 사용할 수 있는 특성. 이는 렉시컬 환경에 대한 참조를 유지하기 때문. 실무에서는 데이터 은닉, 상태 유지, React Hooks 등에 활용."**
