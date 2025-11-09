@@ -16,9 +16,9 @@ export const TableOfContents = ({ className = "" }: TableOfContentsProps) => {
   const [tocItems, setTocItems] = useState<TocItem[]>([]);
   const [activeId, setActiveId] = useState<string>("");
   const [isOpen, setIsOpen] = useState(false);
-  const tocRef = useRef<HTMLDivElement>(null);
+  const observerRef = useRef<IntersectionObserver | null>(null); // Obsever 참조 추가
 
-  // 헤딩 요소들을 추출하여 TOC 생성
+  // 1. 헤딩 요소들을 추출하여 TOC 생성 (기존과 동일)
   useEffect(() => {
     const headings = document.querySelectorAll("h1, h2, h3, h4, h5, h6");
     const items: TocItem[] = [];
@@ -36,29 +36,47 @@ export const TableOfContents = ({ className = "" }: TableOfContentsProps) => {
     setTocItems(items);
   }, []);
 
-  // 스크롤에 따른 활성 섹션 감지
+  // 2. 스크롤에 따른 활성 섹션 감지 (IntersectionObserver로 변경)
   useEffect(() => {
-    const handleScroll = () => {
-      const headings = document.querySelectorAll("h1, h2, h3, h4, h5, h6");
-      let current = "";
+    // tocItems가 로드되지 않았으면 아무것도 하지 않음
+    if (tocItems.length === 0) return;
 
-      headings.forEach((heading) => {
-        const rect = heading.getBoundingClientRect();
-        if (rect.top <= 100) {
-          current = heading.id;
+    // 기존 Observer가 있다면 연결 해제
+    if (observerRef.current) {
+      observerRef.current.disconnect();
+    }
+
+    // Observer 콜백: 화면 영역에 들어온(intersecting) 항목을 활성화
+    const callback: IntersectionObserverCallback = (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setActiveId(entry.target.id);
         }
       });
-
-      setActiveId(current);
     };
 
-    window.addEventListener("scroll", handleScroll);
-    handleScroll(); // 초기 실행
+    // Observer 생성
+    observerRef.current = new IntersectionObserver(callback, {
+      // 뷰포트 상단에서 100px 아래 ~ 뷰포트 하단에서 40% 위
+      // 이 영역(Trigger Zone)에 헤딩이 들어오면 활성화됨
+      rootMargin: "-100px 0px -40% 0px",
+      threshold: 0, // 1px라도 보이면 바로 실행
+    });
 
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    // 모든 헤딩 요소를 가져와서 관찰 시작
+    const elements = tocItems
+      .map((item) => document.getElementById(item.id))
+      .filter((el): el is HTMLElement => el !== null);
 
-  // 헤딩으로 스크롤
+    elements.forEach((el) => observerRef.current?.observe(el));
+
+    // 컴포넌트 언마운트 시 Observer 연결 해제
+    return () => {
+      observerRef.current?.disconnect();
+    };
+  }, [tocItems]); // tocItems가 로드되면 이 effect를 실행
+
+  // 3. 헤딩으로 스크롤 (기존과 동일)
   const scrollToHeading = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
@@ -71,21 +89,21 @@ export const TableOfContents = ({ className = "" }: TableOfContentsProps) => {
     setIsOpen(false); // 모바일에서 클릭 후 닫기
   };
 
-  // TOC가 비어있으면 렌더링하지 않음
+  // 4. JSX (기존과 동일)
   if (tocItems.length === 0) {
     return null;
   }
 
   return (
     <>
-      {/* 데스크톱 버전 - 오른쪽 고정 */}
+      {/* 데스크톱 버전 */}
       <div className={`hidden lg:block ${className}`}>
         <div className="sticky top-24 w-64">
           <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg p-6 shadow-sm">
             <h3 className="text-md font-medium text-neutral-900 dark:text-neutral-100 tracking-wide">
               목차
             </h3>
-            <nav className="flex flex-col gap-y-1">
+            <nav className="mt-4 flex flex-col gap-y-1">
               {tocItems.map((item) => (
                 <button
                   key={item.id}
@@ -112,9 +130,8 @@ export const TableOfContents = ({ className = "" }: TableOfContentsProps) => {
         </div>
       </div>
 
-      {/* 모바일 버전 - 플로팅 버튼 */}
+      {/* 모바일 버전 */}
       <div className="lg:hidden fixed bottom-6 right-6 z-50">
-        {/* TOC 토글 버튼 */}
         <button
           onClick={() => setIsOpen(!isOpen)}
           className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-full p-3 shadow-lg hover:shadow-xl transition-all duration-200"
@@ -137,20 +154,13 @@ export const TableOfContents = ({ className = "" }: TableOfContentsProps) => {
           </svg>
         </button>
 
-        {/* TOC 팝업 */}
         {isOpen && (
           <>
-            {/* 배경 오버레이 */}
             <div
               className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40"
               onClick={() => setIsOpen(false)}
             />
-
-            {/* TOC 패널 */}
-            <div
-              ref={tocRef}
-              className="fixed bottom-20 right-6 w-80 max-w-[calc(100vw-3rem)] bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg shadow-xl z-50 max-h-96 overflow-y-auto"
-            >
+            <div className="fixed bottom-20 right-6 w-80 max-w-[calc(100vw-3rem)] bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg shadow-xl z-50 max-h-96 overflow-y-auto">
               <div className="p-4 border-b border-neutral-200 dark:border-neutral-800 mb-2">
                 <h3 className="text-sm font-medium text-neutral-900 dark:text-neutral-100 tracking-wide">
                   목차
